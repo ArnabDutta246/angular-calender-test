@@ -1,4 +1,13 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap");
+:root{
+  --ion-color-primary: #387ef5; //#85b1ff;
+  --ion-color-secondary: #32db64;
+  --ion-color-danger: #f53d3d;
+  --ion-color-dark: #222;
+  --ion-color-light: #f4f4f4;
+
+};
+
 $color-primary: #0f266a;
 $color-white: #ffffff;
 $color-yellow: #edf613;
@@ -320,13 +329,14 @@ ion-calendar {
     // color: rgba(16, 16, 16, 0.3) !important;
   }
 }
-.between button.days-btn.holidayDate {
-  background: #85b1ff !important;
-}
-.startSelection button.days-btn.holidayDate,
-.endSelection button.days-btn.holidayDate {
-  background: $color-blue-bg-start !important;
-}
+// .between button.days-btn, .between button.days-btn.holidayDate  {
+//   background: #85b1ff !important;
+// }
+//
+// .startSelection button.days-btn.holidayDate,
+// .endSelection button.days-btn.holidayDate {
+//   background: $color-blue-bg-start !important;
+// }
 .holidayDate {
   // background: $color-peach-bg !important;
   background: $color-white-bg !important;
@@ -370,9 +380,9 @@ ion-calendar {
   }
 }
 
-.on-selected {
-  background: $color-blue-bg-start;
-}
+// .on-selected {
+//   background: $color-blue-bg-start;
+// }
 
 .sectionTitle {
   .item-inner {

@@ -348,26 +348,26 @@ export class CalendarModal implements OnInit, AfterViewInit {
 
     if (detail.scrollTop <= 200 && detail.velocityY < 0 && this._scrollLock) {
       let content = document.getElementById("elementioncontent");
-      content.getScrollElement().then((scrollElem) => {
-        // this.content.getScrollElement().then((scrollElem) => {
-        this._scrollLock = !1;
-
-        const heightBeforeMonthPrepend = scrollElem.scrollHeight;
-        this.backwardsMonth();
-        setTimeout(() => {
-          const heightAfterMonthPrepend = scrollElem.scrollHeight;
-
-          // this.content
-          content.scrollTo(
-            0,
-            heightAfterMonthPrepend - heightBeforeMonthPrepend
-          );
-          // .then(() => {
-
-          // });
-          this._scrollLock = !0;
-        }, 180);
-      });
+      // content.getScrollElement().then((scrollElem) => {
+      //   // this.content.getScrollElement().then((scrollElem) => {
+      //   this._scrollLock = !1;
+      //
+      //   const heightBeforeMonthPrepend = scrollElem.scrollHeight;
+      //   this.backwardsMonth();
+      //   setTimeout(() => {
+      //     const heightAfterMonthPrepend = scrollElem.scrollHeight;
+      //
+      //     // this.content
+      //     content.scrollTo(
+      //       0,
+      //       heightAfterMonthPrepend - heightBeforeMonthPrepend
+      //     );
+      //     // .then(() => {
+      //
+      //     // });
+      //     this._scrollLock = !0;
+      //   }, 180);
+      // });
     }
   }
 
@@ -378,15 +378,15 @@ export class CalendarModal implements OnInit, AfterViewInit {
    */
   repaintDOM() {
     let content = document.getElementById("elementioncontent");
-    return content.getScrollElement().then((scrollElem) => {
-      // return this.content.getScrollElement().then((scrollElem) => {
-      // Update scrollElem to ensure that height of the container changes as Months are appended/prepended
-      scrollElem.style.zIndex = "2";
-      scrollElem.style.zIndex = "initial";
-      // Update monthsEle to ensure selected state is reflected when tapping on a day
-      this.monthsEle.nativeElement.style.zIndex = "2";
-      this.monthsEle.nativeElement.style.zIndex = "initial";
-    });
+    // return content.getScrollElement().then((scrollElem) => {
+    //   // return this.content.getScrollElement().then((scrollElem) => {
+    //   // Update scrollElem to ensure that height of the container changes as Months are appended/prepended
+    //   scrollElem.style.zIndex = "2";
+    //   scrollElem.style.zIndex = "initial";
+    //   // Update monthsEle to ensure selected state is reflected when tapping on a day
+    //   this.monthsEle.nativeElement.style.zIndex = "2";
+    //   this.monthsEle.nativeElement.style.zIndex = "initial";
+    // });
   }
 
   findInitMonthNumber(date: Date): number {
