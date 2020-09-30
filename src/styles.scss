@@ -1,1 +1,479 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap");
+$color-primary: #0f266a;
+$color-white: #ffffff;
+$color-yellow: #edf613;
+$color-ash: #cdcbcc;
+$color-accent: #e83a4f;
+$color-green: #3ec896;
+$color-sky: #18bcf2;
+$color-black: #292826;
+$color-deep_black: #000000;
+$color-gray: rgba(205, 203, 204, 0.27); //#cdcbcc45;
+$color-fab-btn: #488aff;
+$color-light-grey: #f2f2f2;
+$color-amber: #f6c513;
+$color-dark-grey: #737272;
+$color-aqua: #89ffd4; //#05ffa3;
+$color-brown: #8d6e63;
+$color-bright-blue: rgb(69, 202, 252); //rgb(120, 115, 245);
+$color-dark-blue: rgb(48, 63, 159);
+$color-primary-bg: linear-gradient(
+  40deg,
+  rgb(48, 63, 159),
+  rgb(69, 202, 252)
+); //linear-gradient(40deg, #0f266a, rgb(120, 115, 245)); //#0f266a;
+$color-secondary-bg: linear-gradient(
+  40deg,
+  rgb(32, 150, 255),
+  rgb(5, 255, 163)
+);
+$color-purple-bg: linear-gradient(
+  40deg,
+  rgb(255, 110, 196),
+  rgb(120, 115, 245)
+);
+$color-blue-bg: linear-gradient(
+  40deg,
+  rgb(48, 63, 159),
+  rgb(69, 202, 252)
+); //linear-gradient(40deg, rgb(69, 202, 252), rgb(48, 63, 159));
+$color-peach-bg: linear-gradient(40deg, rgb(255, 216, 111), rgb(252, 98, 98));
+$color-aqua-bg: linear-gradient(40deg, rgb(32, 150, 255), rgb(5, 255, 163));
+$color-green-bg: linear-gradient(40deg, #62b796, rgb(5, 255, 163));
+$color-accent-bg: linear-gradient(40deg, #e83a4f, rgb(252, 98, 98));
+$color-ash-bg: linear-gradient(40deg, #cdcbcc, #cdcbcc45);
+$color-brown-bg: linear-gradient(40deg, #8d6e63, #f6c513);
+$color-blue-bg-start: linear-gradient(
+  to right,
+  rgb(69, 202, 252),
+  rgb(32, 150, 255)
+);
+$color-blue-bg-body: rgb(32, 150, 255);
+$color-blue-bg-end: linear-gradient(
+  to right,
+  rgb(32, 150, 255),
+  rgb(69, 202, 252)
+);
+$color-light-purple-bg: linear-gradient(40deg, #b39ddb, #e98df5);
+$color-white-bg: linear-gradient(40deg, #ffffff, #ffffff);
+
+$color-accept: #62b796;
+$color-reject-dismiss: #fd7a70;
+$color-notification-border: #b6b4b5;
+
+$default-padding: 10px;
+$font-family: "Poppins", sans-serif;
+
+$child_font: 10px;
+$details_font: 12px;
+$input_font: 13px;
+$floating_font: 14px;
+$header_font: 15px;
+$title_font: 16px;
+$alert_title_font: 18px;
+$emphasis_font: 22px;
+
+$big_weight: 600;
+$small_weight: 500;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+}
+body {
+  font-family: $font-family;
+}
+.clear {
+  clear: both;
+}
+
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+  .md .modal-wrapper {
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css?family=Questrial&display=swap");
+// colors
+$primary-color: #10266b;
+$bold-text-color-code: #292826;
+$gradien_back: linear-gradient(to right, #10266b, #6a0ceb);
+$thin-text-color-code: #000000;
+$color-accent: #e91e63;
+$color-red: red;
+$color-green: #4caf50;
+$color-yellow: #ff9800;
+$my-color-white: #f5f5f5;
+$pure-white: #ffffff;
+$color-ass: #777777;
+$button-disable-color: #aaaaaa;
+// paddings
+$padding-default: 13px;
+// fonts
+// 'Questrial'
+$main-font: "Poppins", sans-serif;
+
+ion-calendar {
+  margin-top: 5px;
+  .title {
+    box-shadow: 0 5px 3px rgba(0, 0, 0, 0.5);
+    .switch-btn {
+      width: 100% !important;
+    }
+  }
+}
+.highattendance,
+.exceed,
+.aquabg {
+  background: $color-secondary-bg;
+  p {
+    color: $color-white !important;
+  }
+}
+.bluebg {
+  background: $color-blue-bg-start;
+  p {
+    color: $color-white !important;
+  }
+}
+.moderateattendance,
+.moderate {
+  background: $color-primary-bg;
+  p {
+    color: $color-white !important;
+  }
+}
+.lowattendance,
+.poor,
+.redbg {
+  background: $color-accent-bg;
+  p {
+    color: $color-white !important;
+  }
+}
+.maxBarHeight {
+  background: $color-peach-bg;
+  opacity: 0.3;
+}
+
+.exceedDate {
+  // background: $color-secondary-bg;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-secondary-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.moderateDate {
+  // background: $color-primary-bg;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-primary-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.poorDate {
+  // background: $color-accent-bg;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-accent-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.approvedDate {
+  // background: $color-secondary-bg;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-secondary-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.pendingDate {
+  // background: $color-peach-bg;
+  // background: $color-white-bg !important;
+  p {
+    // color: $color-white !important;
+    // color: rgba(16, 16, 16, 0.3) !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-peach-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.rejectedDate {
+  // background: $color-accent-bg;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-accent-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+.approved,
+.APPROVED {
+  background: $color-secondary-bg;
+  p {
+    color: $color-white !important;
+  }
+}
+.rejected,
+.REJECTED {
+  background: $color-accent-bg;
+  p {
+    color: $color-white !important;
+  }
+}
+.holiday,
+.HOLIDAY,
+.pending,
+.PENDING,
+.peachbg {
+  background: $color-peach-bg !important;
+  p {
+    color: $color-white !important;
+    // color: rgba(16, 16, 16, 0.3) !important;
+  }
+}
+.purplebg {
+  background: $color-purple-bg !important;
+  p {
+    color: $color-white !important;
+    // color: rgba(16, 16, 16, 0.3) !important;
+  }
+}
+.ashbg {
+  background: $color-ash-bg !important;
+  p {
+    color: $color-white !important;
+    // color: rgba(16, 16, 16, 0.3) !important;
+  }
+}
+.cancelled,
+.CANCELED,
+.CANCELLED {
+  background: $color-reject-dismiss !important;
+  p {
+    color: $color-white !important;
+    // color: rgba(16, 16, 16, 0.3) !important;
+  }
+}
+.between button.days-btn.holidayDate {
+  background: #85b1ff !important;
+}
+.startSelection button.days-btn.holidayDate,
+.endSelection button.days-btn.holidayDate {
+  background: $color-blue-bg-start !important;
+}
+.holidayDate {
+  // background: $color-peach-bg !important;
+  background: $color-white-bg !important;
+  // border: 1px solid $color-reject-dismiss !important;
+  p {
+    // color: $color-white !important;
+    color: $color-reject-dismiss !important; //rgba(16, 16, 16, 0.3) !important;
+    font-weight: $small_weight !important;
+  }
+  // &::after{
+  //   content: '';
+  //   width: 15px;
+  //   height: 3px;
+  //   margin-top: 5px;
+  //   background: $color-reject-dismiss;
+  //   // opacity: 0.5;
+  //   border-radius: 2px;
+  //   position: absolute;
+  //   // bottom: -15px;
+  //   left: 12px;
+  // }
+}
+.attendance,
+.ATTENDANCE,
+.attendanceDate {
+  // background: $color-light-purple-bg !important;
+  p {
+    // color: $color-white !important;
+  }
+  &::after {
+    content: "";
+    width: 15px;
+    height: 3px;
+    margin-top: 5px;
+    background: $color-purple-bg;
+    // opacity: 0.5;
+    border-radius: 2px;
+    position: absolute;
+    // bottom: -15px;
+    left: 12px;
+  }
+}
+
+.on-selected {
+  background: $color-blue-bg-start;
+}
+
+.sectionTitle {
+  .item-inner {
+    margin-left: -16px;
+    border-bottom: none !important;
+    .label {
+      color: $color-black;
+      font-size: $title_font;
+      font-weight: $big_weight;
+      .icons {
+        color: $color-accent; //rgba(0,0,0,0.4);
+        // opacity: 0.8;
+        padding-right: 10px;
+      }
+      .add {
+        float: right;
+        font-size: 25px;
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+.inputTitle {
+  .item-inner {
+    margin-left: -16px;
+    // border-bottom: none !important;
+    .label {
+      color: $color-black;
+      font-size: $title_font;
+      font-weight: $big_weight;
+      .icons {
+        color: $color-accent; //rgba(0,0,0,0.4);
+        // opacity: 0.8;
+        padding-right: 10px;
+      }
+      .input-has-focus {
+        .label {
+          color: #488aff !important;
+          .icons {
+            color: #488aff !important;
+          }
+        }
+      }
+      .add {
+        float: right;
+        font-size: 25px;
+        padding-right: 10px;
+      }
+    }
+  }
+}
+.inputTitle.input-has-focus {
+  .item-inner {
+    margin-left: -16px;
+    // border-bottom: none !important;
+    .label {
+      color: #488aff !important;
+      font-size: $title_font;
+      font-weight: $big_weight;
+      .icons {
+        color: #488aff !important;
+        // opacity: 0.8;
+        padding-right: 10px;
+      }
+      .add {
+        float: right;
+        font-size: 25px;
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    // opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    // opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slide-left {
+  100% {
+    // opacity: 0;
+    transform: translateX(0%);
+  }
+  0% {
+    // opacity: 1;
+    transform: translateX(100%);
+  }
+}
+@keyframes slide-right {
+  0% {
+    // opacity: 1;
+    transform: translateX(-100%);
+  }
+  100% {
+    // opacity: 0;
+    transform: translateX(0%);
+  }
+}

@@ -8,23 +8,22 @@ import { Component } from "@angular/core";
 export class AppComponent {
   title = "my-sassy-app";
   options: any = {
-    pickMode: 'range'
+    pickMode: "range",
   };
 
   onChange($event) {
     console.log($event);
   }
-  onSelect($event){
-    console.log("onSelect",$event);
+  onSelect($event) {
+    console.log("onSelect", $event);
   }
-  onSelectStart($event){
-    console.log("onSelectStart",$event);
+  onSelectStart($event) {
+    console.log("onSelectStart", $event);
   }
-  onSelectEnd($event){
-    console.log("onSelectEnd",$event);
+  onSelectEnd($event) {
+    console.log("onSelectEnd", $event);
   }
-  onMonthChange($event){
-    console.log("onMonthChange",$event);
+  onMonthChange($event) {
+    console.log("onMonthChange", $event);
   }
-
 }
