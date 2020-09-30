@@ -10,14 +10,10 @@
     </ion-calendar>
   </div>
   <div class="col-md-6 col-lg-6">
-    <ion-calendar
-    [options]="options"
-    (select)="onSelect($event)"
-    (selectStart)="onSelectStart($event)"
-    (selectEnd)="onSelectEnd($event)"
-    (monthChange)="onMonthChange($event)"
-    >
-    </ion-calendar>
+    <div class="dynamicText">
+      <h2>This is a dynamic allocation example</h2>
+      <p>The sole purpose of this example is to demostrate that the page rendering is
+        responsive based on the screen size. It automtically adjusts the content to fit into the view area.</p></div>
   </div>
 </div>
 <hr />
