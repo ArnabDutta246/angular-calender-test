@@ -1,5 +1,25 @@
-<ion-calendar></ion-calendar>
-
+<div class="row">
+  <div class="col-md-6 col-lg-6">
+    <ion-calendar
+    [options]="options"
+    (select)="onSelect($event)"
+    (selectStart)="onSelectStart($event)"
+    (selectEnd)="onSelectEnd($event)"
+    (monthChange)="onMonthChange($event)"
+    >
+    </ion-calendar>
+  </div>
+  <div class="col-md-6 col-lg-6">
+    <ion-calendar
+    [options]="options"
+    (select)="onSelect($event)"
+    (selectStart)="onSelectStart($event)"
+    (selectEnd)="onSelectEnd($event)"
+    (monthChange)="onMonthChange($event)"
+    >
+    </ion-calendar>
+  </div>
+</div>
 <hr />
 
 <!-- <ion-calendar-week></ion-calendar-week>

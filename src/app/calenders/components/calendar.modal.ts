@@ -9,7 +9,7 @@ import {
   AfterViewInit,
   HostBinding,
 } from "@angular/core";
-import { NavParams, ModalController, IonContent } from "@ionic/angular";
+// import { NavParams, ModalController, IonContent } from "@ionic/angular";
 import {
   CalendarDay,
   CalendarMonth,
@@ -70,7 +70,7 @@ const NUM_OF_MONTHS_TO_CREATE = 3;
       </ion-calendar-week>
     </ion-header>
 
-    <ion-content
+    <ion-content id="elementioncontent" #elementioncontent
       (ionScroll)="onScroll($event)"
       class="calendar-page"
       [scrollEvents]="true"
@@ -109,8 +109,8 @@ const NUM_OF_MONTHS_TO_CREATE = 3;
   `,
 })
 export class CalendarModal implements OnInit, AfterViewInit {
-  @ViewChild(IonContent)
-  content: IonContent;
+  @ViewChild("elementioncontent")
+  // content: IonContent;
 
   @ViewChild("months", { static: true })
   monthsEle: ElementRef;
@@ -134,8 +134,8 @@ export class CalendarModal implements OnInit, AfterViewInit {
   constructor(
     private _renderer: Renderer2,
     public _elementRef: ElementRef,
-    public params: NavParams,
-    public modalCtrl: ModalController,
+    // public params: NavParams,
+    // public modalCtrl: ModalController,
     public ref: ChangeDetectorRef,
     public calSvc: CalendarService
   ) {}
@@ -229,16 +229,16 @@ export class CalendarModal implements OnInit, AfterViewInit {
   }
 
   onCancel(): void {
-    this.modalCtrl.dismiss(null, "cancel");
+    // this.modalCtrl.dismiss(null, "cancel");
   }
 
   done(): void {
     const { pickMode } = this._d;
 
-    this.modalCtrl.dismiss(
-      this.calSvc.wrapResult(this.datesTemp, pickMode),
-      "done"
-    );
+    // this.modalCtrl.dismiss(
+    //   this.calSvc.wrapResult(this.datesTemp, pickMode),
+    //   "done"
+    // );
   }
 
   canDone(): boolean {
@@ -329,7 +329,9 @@ export class CalendarModal implements OnInit, AfterViewInit {
       const defaultDateMonth = monthElement ? monthElement.offsetTop : 0;
 
       if (defaultDateIndex !== -1 && defaultDateMonth !== 0) {
-        this.content.scrollByPoint(0, defaultDateMonth, 128);
+        let content = document.getElementById('elementioncontent');
+        content.scrollByPoint(0, defaultDateMonth, 128);
+        // this.content.scrollByPoint(0, defaultDateMonth, 128);
       }
     }, domElemReadyWaitTime);
   }
@@ -344,7 +346,9 @@ export class CalendarModal implements OnInit, AfterViewInit {
     const { detail } = $event;
 
     if (detail.scrollTop <= 200 && detail.velocityY < 0 && this._scrollLock) {
-      this.content.getScrollElement().then((scrollElem) => {
+      let content = document.getElementById('elementioncontent');
+      content.getScrollElement().then((scrollElem) => {
+      // this.content.getScrollElement().then((scrollElem) => {
         this._scrollLock = !1;
 
         const heightBeforeMonthPrepend = scrollElem.scrollHeight;
@@ -352,7 +356,8 @@ export class CalendarModal implements OnInit, AfterViewInit {
         setTimeout(() => {
           const heightAfterMonthPrepend = scrollElem.scrollHeight;
 
-          this.content
+          // this.content
+          content
             .scrollByPoint(
               0,
               heightAfterMonthPrepend - heightBeforeMonthPrepend,
@@ -372,7 +377,9 @@ export class CalendarModal implements OnInit, AfterViewInit {
    * See for more details: https://github.com/Polymer/polymer/issues/4701
    */
   repaintDOM() {
-    return this.content.getScrollElement().then((scrollElem) => {
+    let content = document.getElementById('elementioncontent');
+    return content.getScrollElement().then((scrollElem) => {
+    // return this.content.getScrollElement().then((scrollElem) => {
       // Update scrollElem to ensure that height of the container changes as Months are appended/prepended
       scrollElem.style.zIndex = "2";
       scrollElem.style.zIndex = "initial";
