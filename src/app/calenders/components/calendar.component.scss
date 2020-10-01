@@ -25,11 +25,13 @@
     :host .title .back {
       margin-left: -100%;
       left: -40px;
-      width: 40px; }
+      width: 40px;
+      border: none; }
     :host .title .forward {
       margin-left: -40px;
       right: -40px;
-      width: 40px; }
+      width: 40px;
+      border: none;}
     :host .title .switch-btn {
       --margin-top: 0;
       --margin-bottom: 0;
@@ -38,7 +40,8 @@
       width: 100%;
       text-align: center;
       line-height: 32px;
-      color: #757575; }
+      color: #757575;
+      border: none;}
       :host .title .switch-btn .arrow-dropdown {
         margin-left: 5px; }
   :host .days.between .days-btn.is-last,
