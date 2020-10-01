@@ -8,14 +8,15 @@ import { Component } from "@angular/core";
 export class AppComponent {
   title = "my-sassy-app";
   options: any = {
-    pickMode: "range",
+    pickMode: "single",
   };
-
+  singleDaysEvents: boolean = false;
   onChange($event) {
     console.log($event);
   }
   onSelect($event) {
     console.log("onSelect", $event);
+    this.singleDaysEvents = true;
   }
   onSelectStart($event) {
     console.log("onSelectStart", $event);

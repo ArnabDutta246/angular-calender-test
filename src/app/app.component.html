@@ -1,23 +1,34 @@
-<div class="row">
-  <div class="col-md-6 col-lg-6">
-    <ion-calendar
-    [options]="options"
-    (select)="onSelect($event)"
-    (selectStart)="onSelectStart($event)"
-    (selectEnd)="onSelectEnd($event)"
-    (monthChange)="onMonthChange($event)"
+<div class="p-3 mt-5">
+  <div class="row">
+    <div class="col-md-6 col-lg-6">
+      <ion-calendar
+        [options]="options"
+        (select)="onSelect($event)"
+        (selectStart)="onSelectStart($event)"
+        (selectEnd)="onSelectEnd($event)"
+        (monthChange)="onMonthChange($event)"
+      >
+      </ion-calendar>
+    </div>
+    <div
+      class="col-md-6 col-lg-6"
+      [ngClass]="singleDaysEvents == true ? '' : 'd-none'"
     >
-    </ion-calendar>
-  </div>
-  <div class="col-md-6 col-lg-6">
-    <ion-calendar
-    [options]="options"
-    (select)="onSelect($event)"
-    (selectStart)="onSelectStart($event)"
-    (selectEnd)="onSelectEnd($event)"
-    (monthChange)="onMonthChange($event)"
-    >
-    </ion-calendar>
+      <p class="div-title-design">Details for the selected dates</p>
+      <ul>
+        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
+        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
+        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
+        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
+      </ul>
+    </div>
+    <div class="col-md-6 col-lg-6">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, fugiat
+        magnam. Eos repellendus odit nihil possimus excepturi laboriosam
+        adipisci saepe?
+      </p>
+    </div>
   </div>
 </div>
 <hr />

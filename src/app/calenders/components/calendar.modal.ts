@@ -226,7 +226,7 @@ export class CalendarModal implements OnInit, AfterViewInit {
       this.done();
     }
 
-    this.repaintDOM();
+    //this.repaintDOM();
   }
 
   onCancel(): void {
@@ -293,7 +293,7 @@ export class CalendarModal implements OnInit, AfterViewInit {
       )
     );
     event.target.complete();
-    this.repaintDOM();
+    //this.repaintDOM();
   }
 
   backwardsMonth(): void {
@@ -348,26 +348,23 @@ export class CalendarModal implements OnInit, AfterViewInit {
 
     if (detail.scrollTop <= 200 && detail.velocityY < 0 && this._scrollLock) {
       let content = document.getElementById("elementioncontent");
-      content.getScrollElement().then((scrollElem) => {
-        // this.content.getScrollElement().then((scrollElem) => {
-        this._scrollLock = !1;
+      // content.getScrollElement().then((scrollElem) => {
+      // this.content.getScrollElement().then((scrollElem) => {
+      this._scrollLock = !1;
 
-        const heightBeforeMonthPrepend = scrollElem.scrollHeight;
-        this.backwardsMonth();
-        setTimeout(() => {
-          const heightAfterMonthPrepend = scrollElem.scrollHeight;
+      const heightBeforeMonthPrepend = content.scrollHeight;
+      this.backwardsMonth();
+      setTimeout(() => {
+        const heightAfterMonthPrepend = content.scrollHeight;
 
-          // this.content
-          content.scrollTo(
-            0,
-            heightAfterMonthPrepend - heightBeforeMonthPrepend
-          );
-          // .then(() => {
+        // this.content
+        content.scrollTo(0, heightAfterMonthPrepend - heightBeforeMonthPrepend);
+        // .then(() => {
 
-          // });
-          this._scrollLock = !0;
-        }, 180);
-      });
+        // });
+        this._scrollLock = !0;
+      }, 180);
+      //  });
     }
   }
 
@@ -376,18 +373,18 @@ export class CalendarModal implements OnInit, AfterViewInit {
    * shadowRoot descendants don't cause a browser repaint.
    * See for more details: https://github.com/Polymer/polymer/issues/4701
    */
-  repaintDOM() {
-    let content = document.getElementById("elementioncontent");
-    return content.getScrollElement().then((scrollElem) => {
-      // return this.content.getScrollElement().then((scrollElem) => {
-      // Update scrollElem to ensure that height of the container changes as Months are appended/prepended
-      scrollElem.style.zIndex = "2";
-      scrollElem.style.zIndex = "initial";
-      // Update monthsEle to ensure selected state is reflected when tapping on a day
-      this.monthsEle.nativeElement.style.zIndex = "2";
-      this.monthsEle.nativeElement.style.zIndex = "initial";
-    });
-  }
+  // repaintDOM() {
+  //   let content = document.getElementById("elementioncontent");
+  //   return content.getScrollElement().then((scrollElem) => {
+  //     // return this.content.getScrollElement().then((scrollElem) => {
+  //     // Update scrollElem to ensure that height of the container changes as Months are appended/prepended
+  //     scrollElem.style.zIndex = "2";
+  //     scrollElem.style.zIndex = "initial";
+  //     // Update monthsEle to ensure selected state is reflected when tapping on a day
+  //     this.monthsEle.nativeElement.style.zIndex = "2";
+  //     this.monthsEle.nativeElement.style.zIndex = "initial";
+  //   });
+  // }
 
   findInitMonthNumber(date: Date): number {
     let startDate = this.actualFirstTime
