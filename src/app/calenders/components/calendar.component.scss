@@ -1,4 +1,3 @@
-@import "../../../styles.scss";
 :host {
   padding: 10px 20px;
   box-sizing: border-box;
@@ -26,17 +25,18 @@
 :host .title .back,
 :host .title .forward {
   color: #757575;
-  background: #e4e1e1;
 }
 :host .title .back {
   margin-left: -100%;
   left: -40px;
   width: 40px;
+  border: none;
 }
 :host .title .forward {
   margin-left: -40px;
   right: -40px;
   width: 40px;
+  border: none;
 }
 :host .title .switch-btn {
   --margin-top: 0;
@@ -47,6 +47,7 @@
   text-align: center;
   line-height: 32px;
   color: #757575;
+  border: none;
 }
 :host .title .switch-btn .arrow-dropdown {
   margin-left: 5px;
@@ -57,11 +58,7 @@
 }
 :host .component-mode .days.startSelection.is-last-wrap::after {
   border-radius: 0;
-  background: $color-bright-blue;
-  color: #000 !important;
 }
 :host .component-mode .days.endSelection.is-first-wrap::after {
   border-radius: 0;
-  background: $color-bright-blue;
-  color: #000 !important;
 }

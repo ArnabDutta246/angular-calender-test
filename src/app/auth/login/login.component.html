@@ -1,0 +1,283 @@
+<!-- navbar -->
+<div class="body-login">
+  <div class="containerr px-3 pt-2">
+    <div class="row">
+      <div class="col-12 formSection">
+        <div
+          class="d-flex justify-content-between align-items-center px-3 pt-4"
+        >
+          <img
+            src="../../../assets/image/imgs/logo.png"
+            alt="occurens"
+            id="occurens-logo"
+          />
+          <ul class="d-flex justify-content-end mt-3">
+            <li class="mr-2">
+              <a class="" routerLink="/">
+                <button type="button" class="btn btn-home btn-sm">
+                  <i class="fas fa-home mr-1"></i>
+                  <span class="d-none d-lg-block">Go to home</span>
+                </button>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="container px-4 pt-4">
+          <div class="card-box">
+            <div class="card-body-box login-card-box">
+              <h5 class="card-title">Login</h5>
+              <div class="straight-line"></div>
+              <form
+                [formGroup]="loginForm"
+                (ngSubmit)="onSubmit()"
+                class="pt-3"
+              >
+                <div class="form-group mb-2">
+                  <label for="subscriptionID"
+                    ><img
+                      src="../../assets/image/imgs/sub.svg"
+                      alt="org icon"
+                      style="transform: scale(1.2)"
+                    />Subcription ID
+                    <span
+                      data-title="Please enter the unique code for the organization,get in touch with your admin if you do not know the code"
+                      ><i class="fas fa-info-circle ml-2" title=""></i
+                    ></span>
+                  </label>
+                  <input
+                    id="subscriptionID"
+                    type="text"
+                    class="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    formControlName="subscriptionID"
+                    style="text-transform: uppercase"
+                    (keyup)="checkSID($event)"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.subscriptionID.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && f.subscriptionID.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.subscriptionID.errors.required">
+                      Subscription ID is required
+                    </div>
+                    <div *ngIf="f.subscriptionID.errors.minlength">
+                      Invalid Subscription ID (atleast 3 letter)
+                    </div>
+                    <div *ngIf="f.subscriptionID.errors.maxlength">
+                      Invalid Subscription ID (max 20 letter)
+                    </div>
+                    <div *ngIf="f.subscriptionID.errors.pattern">
+                      Invalid Pattern
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="subscriptionEmail"
+                    ><img
+                      src="../../../assets/image/imgs/msg.png"
+                      alt="email icon"
+                    />Email Address</label
+                  >
+                  <input
+                    id="subscriptionEmail"
+                    type="text"
+                    class="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    formControlName="subscriberEmail"
+                    [ngClass]="{
+                      'is-invalid': submitted && f.subscriberEmail.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && f.subscriberEmail.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.subscriberEmail.errors.required">
+                      Email address is required
+                    </div>
+                    <div *ngIf="f.subscriberEmail.errors.email">
+                      Invalid Email
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group mb-3 col-12">
+                    <label for="password"
+                      ><img
+                        src="../../../assets/image/imgs/password.png"
+                        alt="password icon"
+                      />Password</label
+                    >
+                    <input
+                      id="password"
+                      [type]="passshow ? 'text' : 'password'"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      formControlName="password"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.password.errors
+                      }"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.password.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.password.errors.required">
+                        Password is required
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="hideAndShow"
+                    style="cursor: pointer"
+                    (click)="passShow()"
+                  >
+                    <span class="">
+                      <i
+                        class="fas"
+                        [ngClass]="{
+                          'fa-eye-slash': !passshow,
+                          'fa-eye': passshow
+                        }"
+                      ></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div
+                    class="col-sm-12 col-md-12 col-lg-8 order-sm-12 order-md-12 order-lg-1 mb-1"
+                  >
+                    <div>
+                      <span class="" style="font-size: 14px"
+                        >Don't have an account?<strong
+                          ><a routerLink="/register" class="text-primary">
+                            Sign up</a
+                          ></strong
+                        ></span
+                      ><br />
+                      <span class="" style="font-size: 14px"
+                        >Forgot password?<strong
+                          ><a
+                            class="text-primary"
+                            data-toggle="modal"
+                            data-target="#exampleModal"
+                          >
+                            Recover</a
+                          ></strong
+                        ></span
+                      >
+                    </div>
+                    <div></div>
+                  </div>
+                  <div
+                    class="col-sm-12 col-md-12 col-lg-4 order-sm-1 order-md-1 order-lg-12"
+                  >
+                    <button
+                      class="btn btn-sm btn-primary custom_log_reg_btn"
+                      type="submit"
+                    >
+                      LOG IN
+                    </button>
+                  </div>
+                </div>
+                <!-- <div class="d-flex flex-row justify-content-between">
+                  <div>
+                    <span class="" style="font-size: 14px"
+                      >Don't have an account?<strong
+                        ><a routerLink="/register" class="text-primary">
+                          Sign up</a
+                        ></strong
+                      ></span
+                    ><br />
+                    <span class="" style="font-size: 14px"
+                      >Forgot password?<strong
+                        ><a
+                          class="text-primary"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                        >
+                          Recover</a
+                        ></strong
+                      ></span
+                    >
+                  </div>
+                  <div>
+                    <button
+                      class="btn btn-sm btn-primary mt-2 custom_log_reg_btn"
+                      type="submit"
+                    >
+                      LOG IN
+                    </button>
+                  </div>
+                </div> -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- navbar -->
+</div>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="exampleModalLabel">{{}}</h5> -->
+      </div>
+      <div class="modal-body">
+        <p>Please enter your email address</p>
+        <form [formGroup]="resetPassForm">
+          <div class="form-group mb-1">
+            <input
+              type="email"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              formControlName="emailAdd"
+              [ngClass]="{ 'is-invalid': ff.emailAdd.errors }"
+            />
+            <div *ngIf="ff.emailAdd.errors" class="invalid-feedback">
+              <div *ngIf="ff.emailAdd.errors.required">
+                Email address is required
+              </div>
+              <div *ngIf="ff.emailAdd.errors.email">Invalid Email</div>
+              <div *ngIf="ff.emailAdd.errors.pattern">
+                Invalid Email pattern
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="resetPassword()"
+          [disabled]="ff.emailAdd.errors"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------   model open  ------------------------>

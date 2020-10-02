@@ -1,0 +1,334 @@
+/* ---------------------member list design -----------------------*/
+.badge-warning {
+  color: #ffc107;
+  background-color: #ffffff;
+  border: 1.1px solid #ffc107;
+  font-weight: 600;
+}
+.assign-admin-header {
+  color: white;
+  /* background-color: $navyColorThree); */
+  background: $color-blue-bg;
+}
+.member-list-header {
+  color: white;
+  font-size: 14px;
+  /* background-color: $navyColorThree); */
+  background: $color-primary-bg;
+}
+.card-header:first-child {
+  border-radius: calc(-0.75rem - 1px) calc(-0.75rem - 1px) 0 0 !important;
+}
+.input-searchBox .form-control {
+  background-color: rgb(226, 226, 226);
+  height: calc(1.3em + 0.95rem + 2px);
+  background-clip: padding-box;
+  border-radius: 0px;
+  -webkit-transition: border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  outline: none;
+  border: none;
+  color: rgb(0, 0, 0);
+  border-bottom: 1.2px solid #ffffff;
+}
+.input-searchBox input::placeholder {
+  color: rgb(88, 88, 88);
+}
+.searchButton {
+  font-size: 21px;
+  margin-top: 3px;
+}
+.searchButtonBox {
+  cursor: pointer;
+}
+.member-list-col {
+  font-size: 11.7px;
+  padding: 1px 8px;
+}
+.member-list-pro-img,
+.member-list-pro-img-admin {
+  height: 39px;
+  width: 39px;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: 1px;
+  border: 1px solid rgb(243, 243, 243);
+  margin: 6px;
+}
+.member-list-pro-img-admin {
+  border: 1px solid rgb(255, 194, 62);
+}
+.new-reg-form {
+  font-size: 13px;
+}
+.new-reg-form .col-4 {
+  padding-left: 0;
+  padding-right: 0;
+}
+.new-reg-form .invalid-feedback {
+  font-size: 70%;
+}
+.new-reg-form .form-group {
+  height: 70px;
+}
+.new-reg-form .form-control {
+  height: calc(1em + 0.95rem + 0px);
+  border-bottom: 1.2px solid #aaa7a7 !important;
+  font-size: small;
+}
+.new-reg-form .custom-select {
+  height: calc(1.6em + 0.75rem + 2px) !important;
+  font-size: 0.71rem !important;
+}
+.custom-selecttt,
+.custom-selecttt_two {
+  background: white !important;
+  border-radius: 20px !important;
+  padding: 7px 19px !important;
+  font-size: 14px !important;
+  margin-top: 12px !important;
+  color: black !important;
+}
+.custom-selecttt_two {
+  background: #e6e6e6 !important;
+  border-radius: 0 !important;
+  padding: 7px 10px !important;
+}
+.custom-select {
+  display: inline-block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  vertical-align: middle;
+  border: 1px solid #ced4da !important;
+  border-radius: 0 !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.member-list-table-name {
+  font-size: 13px;
+  text-transform: capitalize;
+}
+.member-list-table-email {
+  font-size: 12px;
+}
+:root {
+  --color-peach-bg: linear-gradient(
+    40deg,
+    rgb(255, 216, 111),
+    rgb(252, 98, 98)
+  );
+}
+.member-list-col .custom-selecttt {
+  margin-top: 0px !important;
+}
+@media only screen and (max-width: 920px) {
+  .card-body-plan-bg-img p {
+    font-size: 10px;
+  }
+  .card-body-pay-btn {
+    padding: 8px 11px;
+    font-size: 10px !important;
+  }
+  .sideNav-sec-name {
+    font-size: 9px;
+  }
+}
+.btn_color_amber {
+  background-image: $color-peach-bg !important;
+}
+
+/*----------------member list design----------------*/
+/*----------------subscription design--------------*/
+.card-body-plan-bg-img {
+  height: 205px;
+  background-image: url("../src/assets/image/imgs/crd_1.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: repeat-y;
+  margin-top: 0px;
+  padding: 0.175rem !important;
+}
+.card-body-plan-bg-img p {
+  font-size: 13px;
+}
+.text-medium-size {
+  font-size: 16px !important;
+}
+.card-body-pay-duration {
+  font-size: 17px;
+}
+.card-body-pay-btn {
+  padding: 6px 21px;
+  background-color: #8fc5f4;
+  margin: 10px;
+  border-radius: 10px;
+  color: $color-white;
+  letter-spacing: 2px;
+  height: 30px;
+  font-size: 13px !important;
+  font-weight: 700;
+}
+//---------------------------
+/*----------------Risk section design------------------*/
+.ex-img {
+  height: 21px;
+  margin-right: 6px;
+}
+.risk-state-button-single input[type="radio"] {
+  display: none;
+}
+.risk-state-button-single label {
+  height: auto;
+  width: 100%;
+  color: black;
+  background-color: #e0e0e0;
+  text-align: center;
+  padding: 5px 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.card-meeting-details-agenda .risk-state-button-single label {
+  height: auto;
+  width: 100%;
+  color: black;
+  background-color: #e0e0e0;
+  text-align: center;
+  padding: 5px 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.risk-state-button-single-green input:checked + label {
+  /* background-color: #a2de7a; */
+  background: $color-green-bg;
+  color: white;
+}
+.risk-state-button-single-amber input:checked + label {
+  /* background-color: #fab183; */
+  background: $color-peach-bg;
+  color: white;
+}
+.risk-state-button-single-red input:checked + label {
+  background-color: #ff0000;
+  color: white;
+}
+/*-----------------rgister member role(user/admin/ex)-------*/
+.new-reg-form .risk-state-button-single-red-resolve input:checked + label,
+.modal-body .risk-state-button-single-red-resolve input:checked + label {
+  /* background-color: $navyColorThree); */
+  background: $color-primary-bg;
+  color: white;
+}
+.new-reg-form .risk-state-button-single label,
+.modal-body .risk-state-button-single label {
+  padding: 4px 8px;
+  font-size: 13px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+/*-----------------status button-------------------------*/
+.risk-state-button-single-green-open input:checked + label {
+  /* background-color: $colorAmber); */
+  background: $color-peach-bg;
+  color: white;
+}
+.risk-state-button-single-amber-progress input:checked + label {
+  /* background-color: skyblue; */
+  background: $color-blue-bg;
+  color: white;
+}
+.risk-state-button-single-red-resolve input:checked + label {
+  /* background-color: $colorAccent); */
+  background: $color-green-bg;
+  color: white;
+}
+/*-------------------organisation edit box-------------------*/
+.org-plan-details-box {
+  /* background: var(--navyColorTwo); */
+  background-color: var(--navyColorThree);
+  color: white;
+}
+
+.org-data-edit label {
+  font-size: 13px;
+  color: grey;
+}
+.org-data-edit .form-control {
+  height: calc(0.9em + 0.54rem + 1px);
+}
+.org-profile-box {
+  font-size: 16px;
+  height: 257px;
+}
+.org-profile-box .org-profile-box-cancel {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  color: red;
+  cursor: pointer;
+  padding: 3px;
+  /* visibility: visible; */
+}
+.org-profile-box p {
+  margin-bottom: 0.6rem;
+}
+.org-profile-box-image {
+  margin: 2px;
+  height: 60px;
+}
+.org-profile-box label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.org-profile-box .form-group {
+  height: 43px;
+}
+.org-profile-box .form-control {
+  font-size: 15px;
+}
+.org-profile-box .custom-select {
+  font-size: 14px;
+  height: calc(1.2em + 0.7rem + 2px);
+}
+.org-profile-box .invalid-feedback {
+  font-size: 54%;
+}
+.custom-nav {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1;
+}
+.custom-nav-btn {
+  font-size: 13px;
+  font-weight: 300;
+  padding: 0.38rem 0.5rem;
+}
+.pay-btn {
+  cursor: pointer;
+  font-size: 16px;
+}
+#home-tab {
+  display: none;
+}
+
+.section {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 30px 50px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.section > div {
+  flex: 1;
+  padding: 0.5rem;
+}
+/* --------------------------------------------------------- */

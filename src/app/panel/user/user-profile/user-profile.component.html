@@ -1,0 +1,498 @@
+<!-- navbar -->
+<div class="top-page-header d-flex flex-row justify-content-between">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a routerLink="/panel/dashboard"
+          ><i class="fab fa-houzz mr-1"></i>Dashboard</a
+        >
+      </li>
+      <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
+        <i class="fas fa-tasks mr-1"></i> User Profile
+      </li>
+    </ol>
+  </nav>
+</div>
+<!-- nabar -->
+<div class="container pt-2 pb-5" *ngIf="currentUser !== null; else loading">
+  <div class="row">
+    <div class="col-4">
+      <div class="card pt-4 px-2 pb-2">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <div class="profile-page-user-images">
+              <img
+                [src]="
+                  currentUser.picUrl !== ''
+                    ? currentUser.picUrl
+                    : '../../../../assets/image/imgs/profile.png'
+                "
+                (error)="profileImgErrorHandler(currentUser)"
+                alt="user profile image"
+              />
+              <span (click)="compressFile()" id="image_upload_icon"
+                ><img src="../../../../assets/image/imgs/edit.png" alt="upload"
+              /></span>
+            </div>
+            <br />
+            <div class="user_info px-3">
+              <div class="text-center">
+                <span class="font-weight-bold">{{ currentUser.name }}</span>
+              </div>
+              <hr />
+              <div class="d-flex flex-row justify-content-between mb-2">
+                <span>Subscriber ID</span>
+                <span class="font-weight-bold">{{
+                  currentUser.subscriberId
+                }}</span>
+              </div>
+
+              <div class="d-flex flex-row justify-content-between mb-2">
+                <span>Email</span>
+                <span class="font-weight-bold">{{ currentUser.email }}</span>
+              </div>
+
+              <div class="d-flex flex-row justify-content-between mb-2">
+                <span>Joined</span>
+                <span class="font-weight-bold">{{
+                  currentUser?.userCreationTimeStamp?.toDate()
+                    | date: "MMM d, y hh:mm a"
+                }}</span>
+              </div>
+              <div class="d-flex flex-row justify-content-between mb-2">
+                <span>Last updated</span>
+                <span class="font-weight-bold">{{
+                  currentUser?.lastProfileUpdateAt?.toDate()
+                    | date: "MMM d, y hh:mm a"
+                }}</span>
+              </div>
+            </div>
+            <br />
+            <button
+              class="btn btn-block btn-sm btn-primary"
+              id="signOut_btn"
+              (click)="loginService.logout()"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="card px-3 py-4 self_profile_form">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-2 mt-1">
+            <label for="" class=""
+              ><img
+                src="../../../../../assets/image/imgs/user.png"
+                alt=""
+                srcset=""
+              />Name of the user</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              [ngClass]="
+                f.subscriberName.touched || f.subscriberName.dirty
+                  ? f.subscriberName.errors
+                    ? 'is-invalid'
+                    : 'is-valid'
+                  : ''
+              "
+              formControlName="subscriberName"
+              style="text-transform: capitalize;"
+            />
+            <div
+              *ngIf="
+                (f.subscriberName.touched || f.subscriberName.dirty) &&
+                f.subscriberName.errors
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f.subscriberName.errors.required">
+                Name is required
+              </div>
+              <div *ngIf="f.subscriberName.errors.pattern">
+                Invalid Name Please Enter Full Name
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3 mt-1">
+            <label for="" class=""
+              ><img
+                src="../../../../../assets/image/imgs/role.png"
+                alt=""
+                srcset=""
+              />Position in the organisation
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              [ngClass]="
+                f.subscriberJobTitle.touched || f.subscriberJobTitle.dirty
+                  ? f.subscriberJobTitle.errors
+                    ? 'is-invalid'
+                    : 'is-valid'
+                  : ''
+              "
+              formControlName="subscriberJobTitle"
+            />
+            <div
+              *ngIf="
+                (f.subscriberJobTitle.touched || f.subscriberJobTitle.dirty) &&
+                f.subscriberJobTitle.errors
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f.subscriberJobTitle.errors.required">
+                Users position is required
+              </div>
+            </div>
+          </div>
+          <label
+            ><img
+              src="../../../../../assets/image/imgs/call.png"
+              alt=""
+              srcset=""
+            />User phone number</label
+          >
+          <div class="form-row">
+            <div class="col-5">
+              <div class="form-group mb-1">
+                <label for=""></label>
+                <select
+                  class="custom-select"
+                  id="inputGroupSelect01"
+                  (change)="changeCountry($event)"
+                  [ngClass]="
+                    f.subscriberCtc.touched || f.subscriberCtc.dirty
+                      ? f.subscriberCtc.errors
+                        ? 'is-invalid'
+                        : ''
+                      : ''
+                  "
+                  formControlName="subscriberCtc"
+                  required
+                >
+                  <option value="null" disabled selected>
+                    <div>Country</div>
+                  </option>
+                  <option
+                    *ngFor="let country of Cd; let i = index"
+                    [value]="country.Iso2"
+                    [selected]="country.Iso2 === f.subscriberCtc.value"
+                  >
+                    <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    (f.subscriberCtc.touched || f.subscriberCtc.dirty) &&
+                    f.subscriberCtc.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberCtc.errors.required">
+                    Counrty is required
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-7 pt-0">
+              <div class="form-group mb-1">
+                <input
+                  type="tel"
+                  class="form-control"
+                  placeholder="phone number"
+                  [ngClass]="
+                    f.subscriberPhone.touched || f.subscriberPhone.dirty
+                      ? f.subscriberPhone.errors
+                        ? 'is-invalid'
+                        : 'is-valid'
+                      : ''
+                  "
+                  formControlName="subscriberPhone"
+                />
+
+                <div
+                  *ngIf="
+                    (f.subscriberPhone.touched || f.subscriberPhone.dirty) &&
+                    f.subscriberPhone.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberPhone.errors.required">
+                    Phone number is required
+                  </div>
+                  <div *ngIf="f.subscriberPhone.errors.pattern">
+                    Invalid phone no
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-2 mt-1">
+            <label for="" class=""
+              ><img
+                src="../../../../../assets/image/imgs/role.png"
+                alt=""
+                srcset=""
+              />User Role</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-default"
+              style="text-transform: capitalize;"
+              readonly
+              [value]="this.currentUser.role"
+            />
+          </div>
+          <!-- password changes -->
+          <div class="form-row mb-2">
+            <div class="col-12">
+              <div class="form-group">
+                <label for=""
+                  ><img
+                    src="../../../assets/image/imgs/password.png"
+                    alt="password icon"
+                  />Password</label
+                >
+                <input
+                  [type]="passshow ? 'text' : 'password'"
+                  class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  [ngClass]="{
+                    'is-invalid':
+                      f.oldPassword.value !== '' && f.oldPassword.errors
+                  }"
+                  formControlName="oldPassword"
+                />
+                <div
+                  *ngIf="f.oldPassword.value !== '' && f.oldPassword.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.oldPassword.errors.required">
+                    Password is required
+                  </div>
+                  <div *ngIf="f.oldPassword.errors.pattern">
+                    Password must be at least 8 characters containing
+                    symbol,number,capital & small letter
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="hideAndShow"
+              style="cursor: pointer;"
+              (click)="passShow()"
+            >
+              <span class="mt-0">
+                <i
+                  class="fas"
+                  [ngClass]="{ 'fa-eye-slash': !passshow, 'fa-eye': passshow }"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div [ngClass]="changePass !== true ? 'd-none' : ''">
+            <div class="form-row mb-5">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for=""
+                    ><img
+                      src="../../../assets/image/imgs/password.png"
+                      alt="password icon"
+                    />New Password</label
+                  >
+                  <input
+                    [type]="passshow ? 'text' : 'password'"
+                    class="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    [ngClass]="{
+                      'is-invalid': f.password.value !== '' && f.password.errors
+                    }"
+                    formControlName="password"
+                    (keyup)="paswStrength($event)"
+                  />
+                  <div
+                    *ngIf="f.password.value !== '' && f.password.errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.password.errors.required">
+                      Password is required
+                    </div>
+                    <div *ngIf="f.password.errors.pattern">
+                      Password must be at least 8 characters containing
+                      symbol,number,capital & small letter
+                    </div>
+                  </div>
+                </div>
+                <!-- password strength checker -->
+                <div class="passwordStrength">
+                  <span
+                    [ngStyle]="
+                      passwordStrength > 0
+                        ? {
+                            background:
+                              'linear-gradient(to right, #ed3746, #bc3af0)'
+                          }
+                        : { 'background-color': '#ffffff' }
+                    "
+                  ></span>
+                  <span
+                    [ngStyle]="
+                      passwordStrength > 20
+                        ? {
+                            background:
+                              'linear-gradient(to right, #bc3af0, #2d6ceb)'
+                          }
+                        : { 'background-color': '#ffffff' }
+                    "
+                  ></span>
+                  <span
+                    [ngStyle]="
+                      passwordStrength > 40
+                        ? {
+                            background:
+                              'linear-gradient(to right, #2d6ceb, #3d6ceb)'
+                          }
+                        : { 'background-color': '#ffffff' }
+                    "
+                  ></span>
+                  <span
+                    [ngStyle]="
+                      passwordStrength > 60
+                        ? {
+                            background:
+                              'linear-gradient(to right, #3d6ceb, #4fe397)'
+                          }
+                        : { 'background-color': '#ffffff' }
+                    "
+                  ></span>
+                  <span
+                    [ngStyle]="
+                      passwordStrength > 80
+                        ? {
+                            background:
+                              'linear-gradient(to right, #4fe397, #aee34b)'
+                          }
+                        : { 'background-color': '#ffffff' }
+                    "
+                  ></span>
+                </div>
+              </div>
+              <div
+                class="hideAndShow"
+                style="cursor: pointer;"
+                (click)="passShow()"
+              >
+                <span class="mt-0">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-eye-slash': !passshow,
+                      'fa-eye': passshow
+                    }"
+                  ></i>
+                </span>
+              </div>
+            </div>
+            <div class="form-row mt-3 mb-2">
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for=""
+                    ><img
+                      src="../../../assets/image/imgs/password.png"
+                      alt="password icon"
+                    />Confirm Password</label
+                  >
+                  <input
+                    [type]="passshowT ? 'text' : 'password'"
+                    class="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    [ngClass]="{
+                      'is-invalid':
+                        f.confirmPassword.value !== '' &&
+                        f.confirmPassword.errors
+                    }"
+                    formControlName="confirmPassword"
+                    (keyup)="
+                      checkPass(f.password.value, f.confirmPassword.value)
+                    "
+                  />
+                  <div
+                    *ngIf="
+                      f.confirmPassword.value !== '' && f.confirmPassword.errors
+                    "
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f.confirmPassword.errors.required">
+                      Confirm Password is required
+                    </div>
+                    <div *ngIf="f.confirmPassword.errors.validatePass">
+                      Confirm Password Not Matched
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="hideAndShow"
+                style="cursor: pointer;"
+                (click)="passShowT()"
+              >
+                <span class="mt-0">
+                  <i
+                    class="fas"
+                    [ngClass]="{
+                      'fa-eye-slash': !passshowT,
+                      'fa-eye': passshowT
+                    }"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- password changes -->
+          <div
+            class="d-flex flex-row justify-content-between align-items-center mt-4"
+          >
+            <span (click)="changePassToggle()" class="cursor"
+              ><small
+                >Manage password?<strong>{{
+                  changePass !== true
+                    ? "Change Password"
+                    : "Hide Change Password"
+                }}</strong></small
+              ></span
+            >
+            <button
+              class="btn btn-primary btn-sm"
+              type="submit"
+              [disabled]="this.registerForm.invalid"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinner-border mt-5" role="status"></div>
+    <br />
+    <span class="">loading...</span>
+  </div>
+</ng-template>

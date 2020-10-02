@@ -1,4 +1,16 @@
-<div class="p-3 mt-5">
+<ngx-spinner
+  bdOpacity="0.5"
+  bdColor="rgba(51,51,51,0.77)"
+  size="medium"
+  color="#fff"
+  type="square-loader"
+  [fullScreen]="true"
+>
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+<router-outlet></router-outlet>
+
+<!-- <div class="p-3 mt-5">
   <div class="row">
     <div class="col-md-6 col-lg-6">
       <ion-calendar
@@ -13,28 +25,24 @@
     <div
       class="col-md-6 col-lg-6"
       [ngClass]="singleDaysEvents == true ? '' : 'd-none'"
-    >
-      <p class="div-title-design">Details for the selected dates</p>
-      <ul>
-        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
-        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
-        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
-        <li>jasgdfjkgaslkdfg akjshdfjkaskd aksjdhfkahskdfg</li>
-      </ul>
-    </div>
+    ></div>
     <div class="col-md-6 col-lg-6">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, fugiat
-        magnam. Eos repellendus odit nihil possimus excepturi laboriosam
-        adipisci saepe?
-      </p>
+      <div class="dynamicText">
+        <h2>This is a dynamic allocation example</h2>
+        <p>
+          The sole purpose of this example is to demostrate that the page
+          rendering is responsive based on the screen size. It automtically
+          adjusts the content to fit into the view area.
+        </p>
+      </div>
     </div>
   </div>
+  <hr />
+
+ <ion-calendar-week></ion-calendar-week>
+
+<hr />
+
+<ion-calendar-month></ion-calendar-month>
 </div>
-<hr />
-
-<!-- <ion-calendar-week></ion-calendar-week>
-
-<hr />
-
-<ion-calendar-month></ion-calendar-month> -->
+ -->

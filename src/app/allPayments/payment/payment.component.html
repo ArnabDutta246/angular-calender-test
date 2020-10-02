@@ -1,0 +1,131 @@
+<!-- navbar -->
+<div class="topbar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="logo">
+          <a routerLink="/"
+            ><img src="../../../assets/image/imgs/logo.png" alt="occurens logo"
+          /></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="bkmnu">
+          <ul>
+            <li class="bk cursor" (click)="navpage(1)">
+              <a routerLink="/plans/purchase"
+                ><i class="fas fa-arrow-left"></i> Back to plans</a
+              >
+            </li>
+
+            <li class="lg cursor d-none" (click)="navpage(2)">
+              <a routerLink="/login"
+                ><i class="fas fa-sign-in-alt"></i> Sign In</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="paymentsec pt-md-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-1"></div>
+      <div class="col-lg-6 col-md-10">
+        <div class="paybox">
+          <div class="playbox-head">
+            <ul>
+              <li>
+                Organization:<span>{{ orgNameHere }}</span>
+              </li>
+              <li>
+                Active License:<span>{{
+                  noOfUserAllowedHas - noOfFreeLicenseHas
+                }}</span>
+              </li>
+              <li>
+                Current Plan:<span>{{ oldPlanType }}</span>
+              </li>
+            </ul>
+          </div>
+          <div class="d-flex justify-content-center">
+            <span class="font-weight-bold">
+              <small>**Minimum 3 License you have to buy</small>
+            </span>
+          </div>
+          <p *ngIf="planId" class="paybh">
+            Chosen Plan: {{ planName }}
+            <span>USD {{ planPrice * planMin }}/month</span>
+          </p>
+
+          <div class="row complex mb-3">
+            <div class="col-md-12">
+              <input
+                type="radio"
+                name="payment"
+                id="silver"
+                [value]="planId"
+                checked
+              />
+
+              <label for="silver">
+                <div class="d-flex flex-row justify-content-between">
+                  <span class="label-plan-title">{{ planName }}</span>
+
+                  <span class="text-medium-size"
+                    >USD {{ planPrice }} / month</span
+                  >
+                </div>
+                <div class="px-3">
+                  <ul class="planTags">
+                    <ng-container *ngFor="let tag of planTag; let i = index">
+                      <ng-container *ngIf="i < 4">
+                        <li>{{ tag }}</li>
+                      </ng-container>
+                    </ng-container>
+                  </ul>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="row add">
+            <div class="col-md-4">
+              <p>Amount of license</p>
+            </div>
+            <div class="col-md-8">
+              <div class="number" *ngIf="planId">
+                <span
+                  class="minus text-center"
+                  [hidden]="planName === 'Free'"
+                  (click)="des()"
+                  >-</span
+                >
+                <input
+                  class="text-center"
+                  type="text"
+                  [(ngModel)]="planMin"
+                  [value]="planMin"
+                  readonly
+                />
+                <span
+                  class="plus text-center"
+                  [hidden]="planName === 'Free'"
+                  (click)="inc()"
+                  >+</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row btnpay">
+            <div class="col-md-12">
+              <div #paypal></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-1"></div>
+      </div>
+    </div>
+  </div>
+</div>

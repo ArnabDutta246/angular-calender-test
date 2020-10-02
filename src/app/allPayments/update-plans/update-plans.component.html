@@ -1,0 +1,166 @@
+<div class="topbar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="logo">
+          <a routerLink="/"
+            ><img src="../../../assets/image/imgs/logo.png"
+          /></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="bkmnu">
+          <ul>
+            <li class="lg cursor" (click)="navpage(2)">
+              <a (click)="navpage(2)"
+                ><i class="fas fa-arrow-left"></i> Back To plans</a
+              >
+            </li>
+            <li
+              class="bk cursor"
+              (click)="navpage(1)"
+              *ngIf="getUserData.subscriptionExpire === true"
+            >
+              <a routerLink="/panel/member-management"
+                ><i class="fas fa-sign-in-alt"></i> Go to home</a
+              >
+            </li>
+            <!-- <ng-template #gotologin>
+              <li class="lg cursor" (click)="navpage(2)">
+                <a routerLink="/login"
+                  ><i class="fas fa-sign-in-alt"></i> Sign In</a
+                >
+              </li>
+            </ng-template> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="paymentsec pt-md-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-1"></div>
+      <div class="col-lg-6 col-md-10">
+        <div class="paybox">
+          <div class="playbox-head">
+            <ul>
+              <li>
+                Organization:<span>{{ orgNameHere }}</span>
+              </li>
+              <li>
+                Active License:<span>{{
+                  noOfUserAllowedHas - noOfFreeLicenseHas
+                }}</span>
+              </li>
+              <li>
+                Current Plan:<span>{{ oldPlanType }}</span>
+              </li>
+            </ul>
+            <!-- <div class="d-flex flex-row justify-content-end">
+              <button
+                class="btn btn-primary btn-sm custom_btn design_btn"
+                [ngClass]="
+                  isPrevPlanFreeOrNot !== true && currPlanActiveOrNot === true
+                    ? ''
+                    : 'd-none'
+                "
+                (click)="getSubcriptionDetailsCancel(paypalIDHas, true)"
+              >
+                Cancel this plan
+              </button>
+              <span
+                class="text-warning"
+                [ngClass]="
+                  isPrevPlanFreeOrNot !== true && currPlanActiveOrNot !== true
+                    ? ''
+                    : 'd-none'
+                "
+                ><small class="font-weight-bold"
+                  >You have canceled this subscription</small
+                >
+              </span>
+            </div> -->
+            <div class="clearfix"></div>
+          </div>
+          <p *ngIf="planId" class="paybh">
+            Chosen Plan : {{ planName }}
+            <span>USD {{ planPrice * planMin }}/month</span>
+          </p>
+          <div class="row complex mb-3">
+            <ng-container *ngFor="let plan of plansAll; let i = index">
+              <div class="col-md-12">
+                <input
+                  type="radio"
+                  [name]="'silver' + i"
+                  [id]="'silver' + i"
+                  [value]="plan.id"
+                  (change)="setAll(plan.id)"
+                  [checked]="planName === plan.id"
+                />
+
+                <label [for]="'silver' + i">
+                  <div class="d-flex flex-row justify-content-between">
+                    <span class="label-plan-title">{{ plan.planName }}</span>
+
+                    <span class="text-medium-size"
+                      >USD {{ plan.price }} / month</span
+                    >
+                  </div>
+                  <div class="px-3">
+                    <ul class="planTags">
+                      <ng-container
+                        *ngFor="let tag of plan.tags; let i = index"
+                      >
+                        <ng-container *ngIf="i < 4">
+                          <li>{{ tag }}</li>
+                        </ng-container>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </label>
+              </div>
+            </ng-container>
+          </div>
+          <div class="row add">
+            <div class="col-md-4">
+              <p>Amount of license</p>
+            </div>
+            <div class="col-md-8">
+              <div class="number" *ngIf="planId !== ''">
+                <span
+                  class="minus"
+                  [hidden]="planName === 'Free'"
+                  (click)="des()"
+                  >-</span
+                >
+                <input
+                  type="text"
+                  id="license-text"
+                  class="text-center"
+                  [(ngModel)]="planMin"
+                  [value]="planMin"
+                  readonly
+                />
+                <span
+                  class="plus"
+                  [hidden]="planName === 'Free'"
+                  (click)="inc()"
+                  >+</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row btnpay">
+            <div class="col-md-12">
+              <div #paypal></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-1"></div>
+      </div>
+    </div>
+  </div>
+</div>

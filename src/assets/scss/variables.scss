@@ -1,0 +1,128 @@
+:root {
+  --ion-color-primary: #387ef5; //#85b1ff;
+  --ion-color-secondary: #32db64;
+  --ion-color-danger: #f53d3d;
+  --ion-color-dark: #222;
+  --ion-color-light: #f4f4f4;
+  --menuLinkHover: #e8e8e8;
+}
+
+$color-primary: #0f266a;
+$color-white: #ffffff;
+$color-yellow: #edf613;
+$color-ash: #cdcbcc;
+$color-accent: #e83a4f;
+$color-green: #3ec896;
+$color-sky: #18bcf2;
+$color-black: #292826;
+$color-deep_black: #000000;
+$color-gray: rgba(205, 203, 204, 0.27); //#cdcbcc45;
+$color-fab-btn: #488aff;
+$color-light-grey: #f2f2f2;
+$color-amber: #f6c513;
+$color-dark-grey: #737272;
+$color-aqua: #89ffd4; //#05ffa3;
+$color-brown: #8d6e63;
+$color-bright-blue: rgb(69, 202, 252); //rgb(120, 115, 245);
+$color-dark-blue: rgb(48, 63, 159);
+$color-primary-bg: linear-gradient(
+  40deg,
+  rgb(48, 63, 159),
+  rgb(69, 202, 252)
+); //linear-gradient(40deg, #0f266a, rgb(120, 115, 245)); //#0f266a;
+$color-secondary-bg: linear-gradient(
+  40deg,
+  rgb(32, 150, 255),
+  rgb(5, 255, 163)
+);
+$color-purple-bg: linear-gradient(
+  40deg,
+  rgb(255, 110, 196),
+  rgb(120, 115, 245)
+);
+$color-blue-bg: linear-gradient(
+  40deg,
+  rgb(48, 63, 159),
+  rgb(69, 202, 252)
+); //linear-gradient(40deg, rgb(69, 202, 252), rgb(48, 63, 159));
+$color-peach-bg: linear-gradient(40deg, rgb(255, 216, 111), rgb(252, 98, 98));
+$color-aqua-bg: linear-gradient(40deg, rgb(32, 150, 255), rgb(5, 255, 163));
+$color-green-bg: linear-gradient(40deg, #62b796, rgb(5, 255, 163));
+$color-accent-bg: linear-gradient(40deg, #e83a4f, rgb(252, 98, 98));
+$color-ash-bg: linear-gradient(40deg, #cdcbcc, #cdcbcc45);
+$color-brown-bg: linear-gradient(40deg, #8d6e63, #f6c513);
+$color-blue-bg-start: linear-gradient(
+  to right,
+  rgb(69, 202, 252),
+  rgb(32, 150, 255)
+);
+$color-blue-bg-body: rgb(32, 150, 255);
+$color-blue-bg-end: linear-gradient(
+  to right,
+  rgb(32, 150, 255),
+  rgb(69, 202, 252)
+);
+$color-light-purple-bg: linear-gradient(40deg, #b39ddb, #e98df5);
+$color-white-bg: linear-gradient(40deg, #ffffff, #ffffff);
+
+$color-accept: #62b796;
+$color-reject-dismiss: #fd7a70;
+$color-notification-border: #b6b4b5;
+
+$default-padding: 10px;
+$font-family: "Poppins", sans-serif;
+
+$child_font: 10px;
+$details_font: 12px;
+$input_font: 13px;
+$floating_font: 14px;
+$header_font: 15px;
+$title_font: 16px;
+$alert_title_font: 18px;
+$emphasis_font: 22px;
+
+$big_weight: 600;
+$small_weight: 500;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+}
+body {
+  font-family: $font-family;
+}
+.clear {
+  clear: both;
+}
+
+@media only screen and (min-width: 768px) and (min-height: 600px) {
+  .md .modal-wrapper {
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+}
+
+@import url("https://fonts.googleapis.com/css?family=Questrial&display=swap");
+// colors
+$primary-color: #10266b;
+$bold-text-color-code: #292826;
+$gradien_back: linear-gradient(to right, #10266b, #6a0ceb);
+$thin-text-color-code: #000000;
+$color-accent: #e91e63;
+$color-red: red;
+$color-green: #4caf50;
+$color-yellow: #ff9800;
+$my-color-white: #f5f5f5;
+$pure-white: #ffffff;
+$color-ass: #777777;
+$button-disable-color: #aaaaaa;
+// paddings
+$padding-default: 13px;
+// fonts
+// 'Questrial'
+$main-font: "Poppins", sans-serif;

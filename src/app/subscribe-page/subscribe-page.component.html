@@ -1,0 +1,587 @@
+<div class="body-register subscription-form">
+  <div class="containerr px-3 pb-2">
+    <div class="row">
+      <div class="col-12 formSection">
+        <div class="d-flex justify-content-between align-item-center px-4 pt-2">
+          <img
+            src="../../../assets/image/imgs/logo.png"
+            alt="occurens"
+            id="occurens-logo"
+          />
+          <ul class="d-flex justify-content-end mt-3">
+            <li class="mr-2">
+              <a class="" routerLink="/">
+                <button type="button" class="btn btn-home btn-sm">
+                  <i class="fas fa-home mr-1"></i>
+                  <span class="d-none d-lg-block">Go to home</span>
+                </button>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <div class="card-box ml-lg-3 mt-0">
+          <div class="card-body-box px-3">
+            <div class="d-flex justify-content-between">
+              <div>
+                <h5 class="card-title">Subscription form</h5>
+                <div class="straight-line"></div>
+              </div>
+              <div class="url-toggle-switch">
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    [checked]="navigatePage === navigateArray[0]"
+                    (change)="changeNavigate()"
+                  />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+            <!-- src="../../../assets/image/imgs/org_2.png" -->
+            <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+              <div class="form-group sub-special">
+                <label for="subid"
+                  ><img
+                    src="../../assets/image/imgs/sub.svg"
+                    alt="org icon"
+                    style="transform: scale(1.2)"
+                  />Choose Subscription ID
+                  <span
+                    data-title="Please provide an unique alphanumeric code for your organisation of 5 to 10 char long"
+                    ><i class="fas fa-info-circle ml-2"></i
+                  ></span>
+                </label>
+                <input
+                  id="subid"
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Example text with two button addons"
+                  aria-describedby="button-addon3"
+                  [ngClass]="
+                    f.subscriptionID.touched || f.subscriptionID.dirty
+                      ? f.subscriptionID.errors
+                        ? 'is-invalid'
+                        : ''
+                      : ''
+                  "
+                  formControlName="subscriptionID"
+                  (keyup)="checkSID($event)"
+                />
+
+                <div
+                  *ngIf="
+                    (f.subscriptionID.touched || f.subscriptionID.dirty) &&
+                    f.subscriptionID.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriptionID.errors.required">
+                    Subscription ID is required
+                  </div>
+                  <div *ngIf="f.subscriptionID.errors.pattern">
+                    Invalid Pattern
+                  </div>
+                </div>
+                <div [ngSwitch]="alert" class="mb-2">
+                  <small *ngSwitchCase="'exist'"
+                    ><span class="text-danger"
+                      >This Subscription ID Already Exist</span
+                    ></small
+                  >
+                  <small *ngSwitchCase="'notexist'"
+                    ><span class="text-success">Good Choice</span></small
+                  >
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="orgname"
+                  ><img
+                    src="../../assets/image/imgs/org.svg"
+                    alt="org icon"
+                    style="transform: scale(1.2)"
+                  />Organization Name</label
+                >
+
+                <input
+                  id="orgname"
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Example text with two button addons"
+                  aria-describedby="button-addon3"
+                  [ngClass]="{
+                    'is-invalid': submitted && f.subscriberOrgName.errors
+                  }"
+                  formControlName="subscriberOrgName"
+                />
+                <div
+                  *ngIf="submitted && f.subscriberOrgName.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberOrgName.errors.required">
+                    Organization name is required
+                  </div>
+                  <div *ngIf="f.subscriberOrgName.errors.minlength">
+                    Invalid Organization Name Please Enter Full Name (min 5
+                    character)
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name"
+                  ><img
+                    src="../../../assets/image/imgs/user.png"
+                    alt="user icon"
+                  />Contact Person</label
+                >
+                <input
+                  id="name"
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Example text with two button addons"
+                  aria-describedby="button-addon3"
+                  [ngClass]="{
+                    'is-invalid': submitted && f.subscriberName.errors
+                  }"
+                  formControlName="subscriberName"
+                />
+                <div
+                  *ngIf="submitted && f.subscriberName.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberName.errors.required">
+                    Name is required
+                  </div>
+                  <div *ngIf="f.subscriberName.errors.minlength">
+                    Invalid Name Please Enter Full Name (min 5 character)
+                  </div>
+                  <div *ngIf="f.subscriberName.errors.maxlength">
+                    Invalid Name Please Enter Full Name (max 20 character)
+                  </div>
+                  <div *ngIf="f.subscriberName.errors.pattern">
+                    Invalid Name Please Enter Full Name
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email"
+                  ><img
+                    src="../../../assets/image/imgs/msg.png"
+                    alt="email icon"
+                  />Organization Email Address</label
+                >
+
+                <input
+                  id="email"
+                  type="email"
+                  class="form-control"
+                  placeholder=""
+                  aria-label="Example text with two button addons"
+                  aria-describedby="button-addon3"
+                  [ngClass]="{
+                    'is-invalid': submitted && f.subscriberEmail.errors
+                  }"
+                  formControlName="subscriberEmail"
+                />
+                <div
+                  *ngIf="submitted && f.subscriberEmail.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberEmail.errors.required">
+                    Email address is required
+                  </div>
+                  <div *ngIf="f.subscriberEmail.errors.email">
+                    Invalid Email
+                  </div>
+                </div>
+              </div>
+
+              <label for="phoneNumber"
+                ><img
+                  src="../../../assets/image/imgs/call.png"
+                  alt="phone icon"
+                />Organization Contact Number</label
+              >
+              <div class="form-row">
+                <div class="col-3">
+                  <div class="form-group mb-1">
+                    <label for=""></label>
+
+                    <select
+                      class="custom-select"
+                      id="inputGroupSelect01"
+                      (change)="changeCountry($event)"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.subscriberCtc.errors
+                      }"
+                      formControlName="subscriberCtc"
+                    >
+                      <option value="null" disabled selected>Country</option>
+                      <ng-container *ngFor="let country of Cd; let i = index">
+                        <option [value]="country.Iso2">
+                          <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
+                        </option>
+                      </ng-container>
+                    </select>
+                    <div
+                      *ngIf="submitted && f.subscriberCtc.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberCtc.errors.required">
+                        Counrty is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-9 pt-1">
+                  <div class="form-group mb-1">
+                    <input
+                      id="phoneNumber"
+                      type="text"
+                      class="form-control"
+                      placeholder=""
+                      [ngClass]="{
+                        'is-invalid': submitted && f.subscriberPhone.errors
+                      }"
+                      formControlName="subscriberPhone"
+                      placeholder="Organization contact number"
+                    />
+
+                    <div
+                      *ngIf="submitted && f.subscriberPhone.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberPhone.errors.required">
+                        Phone number is required
+                      </div>
+                      <div *ngIf="f.subscriberPhone.errors.pattern">
+                        Invalid phone no
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-12">
+                  <div class="form-group mb-3">
+                    <label for="password"
+                      ><img
+                        src="../../../assets/image/imgs/password.png"
+                        alt="password icon"
+                      />Password</label
+                    >
+                    <input
+                      id="password"
+                      [type]="passshow ? 'text' : 'password'"
+                      class="form-control"
+                      placeholder=""
+                      aria-label="Example text with two button addons"
+                      aria-describedby="button-addon3"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submitted || f.password.value !== '') &&
+                          f.password.errors
+                      }"
+                      formControlName="password"
+                      (keyup)="paswStrength($event)"
+                    />
+                    <div
+                      *ngIf="
+                        (submitted || f.password.value !== '') &&
+                        f.password.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.password.errors.required">
+                        Password is required
+                      </div>
+                      <div *ngIf="f.password.errors.pattern">
+                        Password must be at least 8 characters containing
+                        symbol,number,capital & small letter
+                      </div>
+                    </div>
+                  </div>
+                  <!-- password strength checker -->
+                  <div class="passwordStrength">
+                    <span
+                      [ngStyle]="
+                        passwordStrength > 0
+                          ? {
+                              background:
+                                'linear-gradient(to right, #ed3746, #bc3af0)'
+                            }
+                          : { 'background-color': '#ffffff' }
+                      "
+                    ></span>
+                    <span
+                      [ngStyle]="
+                        passwordStrength > 20
+                          ? {
+                              background:
+                                'linear-gradient(to right, #bc3af0, #2d6ceb)'
+                            }
+                          : { 'background-color': '#ffffff' }
+                      "
+                    ></span>
+                    <span
+                      [ngStyle]="
+                        passwordStrength > 40
+                          ? {
+                              background:
+                                'linear-gradient(to right, #2d6ceb, #3d6ceb)'
+                            }
+                          : { 'background-color': '#ffffff' }
+                      "
+                    ></span>
+                    <span
+                      [ngStyle]="
+                        passwordStrength > 60
+                          ? {
+                              background:
+                                'linear-gradient(to right, #3d6ceb, #4fe397)'
+                            }
+                          : { 'background-color': '#ffffff' }
+                      "
+                    ></span>
+                    <span
+                      [ngStyle]="
+                        passwordStrength > 80
+                          ? {
+                              background:
+                                'linear-gradient(to right, #4fe397, #aee34b)'
+                            }
+                          : { 'background-color': '#ffffff' }
+                      "
+                    ></span>
+                  </div>
+                </div>
+                <div
+                  class="hideAndShow"
+                  style="cursor: pointer"
+                  (click)="passShow()"
+                >
+                  <span class="mt-0">
+                    <i
+                      class="fas"
+                      [ngClass]="{
+                        'fa-eye-slash': !passshow,
+                        'fa-eye': passshow
+                      }"
+                    ></i>
+                  </span>
+                </div>
+              </div>
+              <div class="form-row mt-1">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="confpass"
+                      ><img
+                        src="../../../assets/image/imgs/password.png"
+                        alt="password icon"
+                      />Confirm Password</label
+                    >
+
+                    <input
+                      id="confpass"
+                      [type]="passshowT ? 'text' : 'password'"
+                      class="form-control"
+                      placeholder=""
+                      aria-label="Example text with two button addons"
+                      aria-describedby="button-addon3"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submitted || f.confirmPassword.value !== '') &&
+                          f.confirmPassword.errors
+                      }"
+                      formControlName="confirmPassword"
+                    />
+                    <div
+                      *ngIf="
+                        (submitted || f.confirmPassword.value !== '') &&
+                        f.confirmPassword.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.confirmPassword.errors.required">
+                        Password is required
+                      </div>
+                      <div *ngIf="f.confirmPassword.errors.validatePass">
+                        Password Not Matched
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="hideAndShow"
+                  style="cursor: pointer"
+                  (click)="passShowT()"
+                >
+                  <span class="mt-0">
+                    <i
+                      class="fas"
+                      [ngClass]="{
+                        'fa-eye-slash': !passshowT,
+                        'fa-eye': passshowT
+                      }"
+                    ></i>
+                  </span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-start align-items-center">
+                <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="customControlInlineOwner1231"
+                    name="termandcondition"
+                    formControlName="termAndCondition"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="customControlInlineOwner1231"
+                  >
+                    I agree with
+                    <a [href]="termLink" class="text-primary font-weight-bold"
+                      >terms of services</a
+                    ></label
+                  >
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div
+                  class="col-sm-12 col-md-12 col-lg-8 order-sm-12 order-md-12 order-lg-1 mb-1"
+                >
+                  <div class="">
+                    <span class=""
+                      >Already have an account?
+                      <strong
+                        ><a routerLink="/login" class="text-primary">
+                          Login</a
+                        ></strong
+                      ></span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="col-sm-12 col-md-12 col-lg-4 order-sm-1 order-md-1 order-lg-12"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-sm custom_log_reg_btn"
+                    [disabled]="!this.subscriptionForm.valid"
+                  >
+                    SUBSCRIBE
+                  </button>
+                </div>
+              </div>
+              <!-- <div class="d-flex justify-content-between">
+                <div class="flex-grow-1">
+                  <span class="font-weight-bold"
+                    >Already have an account?
+                    <strong
+                      ><a routerLink="/login" class="text-primary">
+                        Login</a
+                      ></strong
+                    ></span
+                  >
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-sm custom_log_reg_btn"
+                    [disabled]="!this.subscriptionForm.valid"
+                  >
+                    SUBSCRIBE
+                  </button>
+                </div>
+              </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------   model open  ------------------------>
+<button
+  type="button"
+  class="btn btn-primary"
+  data-toggle="modal"
+  data-target="#exampleModal"
+  #content
+  hidden
+>
+  Launch demo modal
+</button>
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <h5 class="modal-title" id="exampleModalLabel">{{}}</h5> -->
+        <div
+          class="alert alert-warning alert-dismissible fade show"
+          role="alert"
+          *ngIf="authError"
+        >
+          <strong>Sorry!</strong> {{ authError }}.
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p class="text-center font-weight-bold reenter_pass_modal_title">
+          It seems the email id is registered with us. <br />
+          please validate to proceed
+        </p>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span
+              class="input-group-text font-weight-bold reenter_pass_modal_title"
+              id="inputGroup-sizing-default"
+              ><img
+                src="../../../assets/image/imgs/password.png"
+                alt="password icon"
+            /></span>
+          </div>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Re-enter password"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default"
+            [(ngModel)]="repassword"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="onSignIn()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------   model open  ------------------------>

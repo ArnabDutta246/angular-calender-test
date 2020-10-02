@@ -1,0 +1,135 @@
+.notification-icon {
+  position: relative;
+}
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  /* right: 93px; */
+  z-index: 2;
+  height: 10px;
+  width: 10px;
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  padding-top: 2px;
+}
+/*------------------------Ntification design-----------------------------*/
+/* The side navigation menu */
+.nav-links-custom {
+  cursor: pointer;
+}
+.sidenav {
+  height: 0%; /* 100% Full-height */
+  width: 40%; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 3; /* Stay on top */
+  top: -105px; /* Stay at the top */
+  right: 0;
+  background-color: rgba(17, 17, 17, 0.77); /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: all 0.4s ease-in-out; /* 0.5 second transition effect to slide in the sidenav */
+}
+.notification_container {
+  max-width: 600px;
+  min-width: 350px;
+  background-color: transparent;
+  height: auto;
+  margin: 0 auto;
+}
+.notification_card {
+  background: #fff;
+  border: 1px solid var(--navyColorOne);
+  border-radius: 10px;
+  margin: 0 2rem;
+  margin-bottom: 11px;
+  position: relative;
+  height: auto;
+  padding: 10px;
+}
+.custom_btn {
+  font-size: 0.55rem !important;
+  padding: 0.1rem 0.6rem;
+  height: 33px;
+}
+.custom_btn img {
+  height: 22px;
+}
+.accept_reject_btn {
+  filter: brightness(20);
+}
+.notification_card img,
+.notification_card i {
+  border: 1px solid #c0bebf;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+  padding: 5px;
+}
+
+.notification_card .title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.notification_card .msg {
+  font-size: 12px;
+  font-weight: 500;
+}
+.notification_date {
+  font-size: 11px;
+  font-weight: 200;
+  color: grey;
+}
+.notification_card .btn_section {
+  width: 100%;
+  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative;
+  height: 25px;
+}
+.notification_card .accept {
+  width: 100px;
+  height: 25px;
+  border-radius: 15px;
+  background: var(--green);
+  color: var(--colorWhite);
+}
+.notification_card .reject_dismiss {
+  width: 100px;
+  height: 25px;
+  border-radius: 15px;
+  background: var(--red);
+  color: var(--colorWhite);
+  position: absolute;
+  right: 5px;
+}
+
+.sidenav .closebtn {
+  position: fixed;
+  top: -100px;
+  right: 22px;
+  font-size: 44px;
+  margin-left: 50px;
+  color: var(--colorWhite);
+}
+
+#main {
+  transition: margin-left 0.5s;
+  padding: 20px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+/*----------------------------------------------------------------*/

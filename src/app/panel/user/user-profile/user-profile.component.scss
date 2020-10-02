@@ -1,0 +1,54 @@
+.profile-page-user-images {
+  position: relative;
+}
+.profile-page-user-images img {
+  height: 210px;
+  width: 100%;
+  object-fit: cover;
+}
+#image_upload_icon img {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+  cursor: pointer;
+}
+#signOut_btn {
+  background-color: navy;
+  color: white;
+}
+.self_profile_form label {
+  font-weight: 600;
+  font-size: 13px;
+}
+.self_profile_form .invalid-feedback {
+  font-size: 54%;
+  color: #dc3545;
+}
+.self_profile_form label img {
+  height: 19px;
+  margin-right: 10px;
+}
+.self_profile_form .custom-select {
+  height: calc(1.2em + 0.75rem + 3px);
+  font-size: 17px;
+}
+.user_info {
+  font-size: 14px;
+}
+.self_profile_form .form-row {
+  height: 66px;
+}
+.self_profile_form input {
+  font-size: 16px;
+}
+.self_profile_form input:read-only {
+  background-color: white;
+  cursor: not-allowed;
+}
+@media only screen and (max-width: 920px) {
+  .user_info {
+    font-size: 9px;
+  }
+}

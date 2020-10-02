@@ -1,0 +1,77 @@
+<div class="topbar">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="logo">
+          <a routerLink="/"
+            ><img src="../../assets/image/imgs/mm_logo.png"
+          /></a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="bkmnu">
+          <ul>
+            <li class="lg d-none">
+              <a routerLink="/login"
+                ><i class="fas fa-sign-in-alt"></i> Sign In</a
+              >
+            </li>
+            <li class="bk d-none">
+              <a routerLink="/"><i class="fas fa-arrow-left"></i> Go to home</a>
+            </li>
+            <li
+              class="bk"
+              [ngClass]="this.token === 'update' ? '' : 'd-none'"
+              (click)="navigateTo()"
+            >
+              <a routerLink="/panel/member-management"
+                ><i class="fas fa-arrow-left"></i> Go to home</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="plnarea">
+  <div class="container">
+    <div class="row equal">
+      <ng-container *ngFor="let plan of plans; let i = index">
+        <div [ngClass]="plans.length > 2 ? 'col-md-4' : 'col-md-6'">
+          <div
+            class="row"
+            [ngClass]="checkPlanCondition(plan) ? 'disabled' : ''"
+          >
+            <div class="col-md-12">
+              <div class="fullbox nclr">
+                <div class="hedarea" [ngStyle]="{ background: plan.color }">
+                  <h6>{{ plan?.planName }}</h6>
+                  <h5>
+                    <i class="fas fa-dollar-sign"></i> {{ plan?.price }}.00
+                    <span>per month</span>
+                  </h5>
+                </div>
+                <div class="listarea">
+                  <h4>subscription package</h4>
+                  <ul>
+                    <li *ngFor="let tag of plan.tags">
+                      {{ tag
+                      }}<span
+                        ><img src="../../assets/image/payment/right.png"
+                      /></span>
+                    </li>
+                  </ul>
+                  <a (click)="onNavigate(plan.planName, plan)" class="freesb">
+                    Subscribe
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
