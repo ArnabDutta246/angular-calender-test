@@ -60,7 +60,7 @@ export class PanelContainerComponent implements OnInit {
   @HostListener("window:resize", ["$event"])
   onResize(event?) {
     this.innerWidth = window.innerWidth;
-    if (this.innerWidth < 1299) this.sideNavOpen();
+    if (this.innerWidth < 1200) this.sideNavOpen();
   }
   collapse: boolean = true;
   ngOnInit() {
@@ -248,12 +248,10 @@ export class PanelContainerComponent implements OnInit {
     const sideNv = document.getElementById("sideNav");
     const allContent = document.getElementById("allContent");
     if (this.collapse) {
-      sideNv.classList.add("d-none");
-      sideNv.style.transition = "1s";
+      sideNv.style.left = -280 + "px";
       this.collapse = false;
     } else {
-      sideNv.classList.remove("d-none");
-      sideNv.style.transition = "1s";
+      sideNv.style.left = 0 + "px";
       this.collapse = true;
     }
   }

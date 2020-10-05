@@ -1,3 +1,17 @@
+.card-meeting-details-agenda-details textarea,
+.card-meeting-details-note-details textarea {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  overflow: hidden;
+  width: 100%;
+  padding: 16px 16px;
+  border: none;
+  outline: none;
+  background-color: #eaeaea;
+  resize: vertical !important;
+  min-height: 200px;
+  font-size: 13px;
+}
 .broadcast_textarea textarea {
   min-height: 50px !important;
 }

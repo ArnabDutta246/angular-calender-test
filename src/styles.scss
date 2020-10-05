@@ -398,27 +398,56 @@ ion-calendar {
 }
 
 .wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: space-between;
+  // align-items: stretch;
   width: 100%;
   height: 100vh;
+  position: relative;
 }
 .sideNav {
-  width: 255px;
   width: 255px;
   background: $color-white;
   color: $color-black;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   font-size: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
 }
 .all-content {
+  height: 100vh;
   width: calc(100% - 280px);
   transition: all 0.3s;
   overflow-y: scroll;
   background-color: #f0f2f6;
+  position: relative;
+  position: fixed;
+  top: 0;
+  left: 280px;
+}
+#openNav i,
+.close_button {
+  visibility: hidden;
+}
+@media only screen and (max-width: 1200px) {
+  #openNav i,
+  .close_button {
+    visibility: visible;
+  }
+  .all-content {
+    width: 100vw;
+    left: 0;
+  }
+  .sideNav {
+    z-index: 2;
+    box-shadow: 0 0 0 100em rgba(0, 0, 0, 0);
+    left: 280px;
+    transition: all 0.3s ease-in-out;
+  }
 }
 /*----------------------------Page outer layout----------------------*/
 .menu-link {
@@ -535,6 +564,7 @@ ion-calendar {
   font-size: 14px !important;
   padding: 0.25rem 0.9rem !important;
   width: 100%;
+  color: $color-white !important;
 }
 .body-login {
   background-image: url("../src/assets/image/bg.jpg");
