@@ -145,295 +145,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12 col-lg-4 order-lg-2 my-2">
-      <!------------ register new member --------------->
-      <div class="containerr px-0">
-        <div
-          class="card register-member-card"
-          *ngIf="allMemberdata.subscriptiondata; else loading"
-        >
-          <div class="card-header register-member-card-header-new">
-            Add New User
-          </div>
-          <div class="card-body mx-0 new-reg-form">
-            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-              <div class="form-group mb-3 d-none">
-                <label for="">Subscription Id</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  [ngClass]="{
-                    'is-invalid': submitted && f.subscriptionID.errors
-                  }"
-                  formControlName="subscriptionID"
-                  readonly
-                />
-              </div>
-              <label
-                ><img
-                  src="../../../../../assets/image/imgs/role.png"
-                  alt=""
-                  srcset=""
-                />User role</label
-              ><br />
-              <div class="row px-2">
-                <div class="col-4">
-                  <div
-                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
-                  >
-                    <input
-                      type="radio"
-                      name="radio"
-                      id="op35311"
-                      name="subscriberRole"
-                      value="USER"
-                      formControlName="subscriberRole"
-                      checked
-                    />
-                    <label for="op35311"><span>USER</span> </label>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div
-                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
-                  >
-                    <input
-                      type="radio"
-                      name="radio"
-                      id="op35312"
-                      name="subscriberRole"
-                      value="ADMIN"
-                      formControlName="subscriberRole"
-                    />
-                    <label for="op35312"><span>ADMIN</span> </label>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div
-                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
-                  >
-                    <input
-                      type="radio"
-                      name="radio"
-                      id="op35313"
-                      name="subscriberRole"
-                      value="EXTERNAL"
-                      formControlName="subscriberRole"
-                    />
-                    <label for="op35313"><span>EXTERNAL</span> </label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group mb-2 mt-1">
-                <label for="" class=""
-                  ><img
-                    src="../../../../../assets/image/imgs/user.png"
-                    alt=""
-                    srcset=""
-                  />Name of the user</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  [ngClass]="
-                    f.subscriberName.touched || f.subscriberName.dirty
-                      ? f.subscriberName.errors
-                        ? 'is-invalid'
-                        : 'is-valid'
-                      : ''
-                  "
-                  formControlName="subscriberName"
-                  style="text-transform: capitalize"
-                />
-                <div
-                  *ngIf="
-                    (f.subscriberName.touched || f.subscriberName.dirty) &&
-                    f.subscriberName.errors
-                  "
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f.subscriberName.errors.required">
-                    Name is required
-                  </div>
-                  <div *ngIf="f.subscriberName.errors.pattern">
-                    Invalid Name Please Enter Full Name
-                  </div>
-                </div>
-              </div>
-              <div class="form-group mb-2 mt-1">
-                <label for="" class=""
-                  ><img
-                    src="../../../../../assets/image/imgs/msg.png"
-                    alt=""
-                    srcset=""
-                  />Email</label
-                >
-                <input
-                  type="email"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  [ngClass]="
-                    f.subscriberEmail.touched || f.subscriberEmail.dirty
-                      ? f.subscriberEmail.errors
-                        ? 'is-invalid'
-                        : 'is-valid'
-                      : ''
-                  "
-                  formControlName="subscriberEmail"
-                  style="text-transform: lowercase"
-                />
-                <div
-                  *ngIf="
-                    (f.subscriberEmail.touched || f.subscriberEmail.dirty) &&
-                    f.subscriberEmail.errors
-                  "
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f.subscriberEmail.errors.required">
-                    Email address is required
-                  </div>
-                  <div *ngIf="f.subscriberEmail.errors.pattern">
-                    Invalid Email pattern
-                  </div>
-                </div>
-              </div>
-              <div class="form-group mb-3 mt-1">
-                <label for="" class=""
-                  ><img
-                    src="../../../../../assets/image/imgs/role.png"
-                    alt=""
-                    srcset=""
-                  />Position in the organisation
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  [ngClass]="
-                    f.subscriberJobTitle.touched || f.subscriberJobTitle.dirty
-                      ? f.subscriberJobTitle.errors
-                        ? 'is-invalid'
-                        : 'is-valid'
-                      : ''
-                  "
-                  formControlName="subscriberJobTitle"
-                />
-                <div
-                  *ngIf="
-                    (f.subscriberJobTitle.touched ||
-                      f.subscriberJobTitle.dirty) &&
-                    f.subscriberJobTitle.errors
-                  "
-                  class="invalid-feedback"
-                >
-                  <div *ngIf="f.subscriberJobTitle.errors.required">
-                    Users position is required
-                  </div>
-                </div>
-              </div>
-              <label
-                ><img
-                  src="../../../../../assets/image/imgs/call.png"
-                  alt=""
-                  srcset=""
-                />User phone number</label
-              >
-              <div class="form-row">
-                <div class="col-5">
-                  <div class="form-group mb-3">
-                    <label for=""></label>
-                    <select
-                      class="custom-select"
-                      id="inputGroupSelect01"
-                      (change)="changeCountry($event)"
-                      [ngClass]="
-                        f.subscriberCtc.touched || f.subscriberCtc.dirty
-                          ? f.subscriberCtc.errors
-                            ? 'is-invalid'
-                            : ''
-                          : ''
-                      "
-                      formControlName="subscriberCtc"
-                      required
-                    >
-                      <option value="null" disabled selected>
-                        <div>Country</div>
-                      </option>
-                      <option
-                        *ngFor="let country of Cd; let i = index"
-                        [value]="country.Iso2"
-                      >
-                        <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
-                      </option>
-                    </select>
-                    <div
-                      *ngIf="
-                        (f.subscriberCtc.touched || f.subscriberCtc.dirty) &&
-                        f.subscriberCtc.errors
-                      "
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.subscriberCtc.errors.required">
-                        Counrty is required
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-7 pt-1">
-                  <div class="form-group mb-3">
-                    <input
-                      type="tel"
-                      class="form-control"
-                      placeholder="Phone number"
-                      [ngClass]="
-                        f.subscriberPhone.touched || f.subscriberPhone.dirty
-                          ? f.subscriberPhone.errors
-                            ? 'is-invalid'
-                            : 'is-valid'
-                          : ''
-                      "
-                      formControlName="subscriberPhone"
-                    />
-
-                    <div
-                      *ngIf="
-                        (f.subscriberPhone.touched ||
-                          f.subscriberPhone.dirty) &&
-                        f.subscriberPhone.errors
-                      "
-                      class="invalid-feedback"
-                    >
-                      <div *ngIf="f.subscriberPhone.errors.required">
-                        Phone number is required
-                      </div>
-                      <div *ngIf="f.subscriberPhone.errors.pattern">
-                        Invalid phone no
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                class="btn btn-primary btn-sm float-right"
-                type="submit"
-                [disabled]="this.registerForm.invalid"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <!------------ register new member --------------->
-    </div>
-    <div class="col-md-12 col-lg-8 order-lg-1 member-list-col my-2">
+    <div class="col-md-7 col-lg-8 order-lg-1 member-list-col my-2">
       <div class="tab-content" id="v-pills-tabContent">
         <div
           class="tab-pane fade show active bg-white"
@@ -501,26 +213,39 @@
                 (keyup)="filterMember(selectedFilter)"
               />
             </div>
-            <div class="table-responsive-md">
-              <table class="table table-hover bg-white">
-                <tbody>
-                  <ng-container *ngIf="allMemberArray; else loading">
-                    <ng-container *ngFor="let member of allMemberArray">
-                      <tr class="">
-                        <td class="text-center align-middle">
-                          <img
-                            class="mr-2 member-list-pro-img"
-                            [src]="
-                              member.picUrl !== ''
-                                ? member.picUrl
-                                : '../../../../../assets/image/imgs/profile.png'
-                            "
-                            alt="member image"
-                            (error)="profileImgErrorHandler(member)"
-                          />
-                        </td>
-                        <td class="align-middle">
-                          <div class="text-wrap" style="width: 4.3rem">
+
+            <ng-container *ngIf="allMemberArray; else loading">
+              <ng-container *ngFor="let member of allMemberArray">
+                <div class="card">
+                  <div
+                    class="row"
+                    style="
+                      margin-right: 0px !important;
+                      margin-left: 0px !important;
+                    "
+                  >
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">
+                      <img
+                        class="mr-2 member-list-pro-img"
+                        [src]="
+                          member.picUrl !== ''
+                            ? member.picUrl
+                            : '../../../../../assets/image/imgs/profile.png'
+                        "
+                        alt="member image"
+                        (error)="profileImgErrorHandler(member)"
+                      />
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
+                      <div
+                        class="row pt-lg-2"
+                        style="
+                          margin-right: 0px !important;
+                          margin-left: 0px !important;
+                        "
+                      >
+                        <div class="col-md-12 col-lg-4">
+                          <div class="text-wrap">
                             <span class="text-capitalize font-weight-bold">{{
                               member.name
                             }}</span>
@@ -530,73 +255,77 @@
                               >Admin</span
                             >
                           </div>
-                        </td>
-                        <td class="align-middle">
-                          <div
-                            class="text-wrap text-muted"
-                            style="width: 10rem"
-                          >
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                          <div class="text-wrap text-muted">
                             {{ member.email }}
                           </div>
-                        </td>
-                        <td class="align-middle">
-                          <div class="text-wrap text-muted" style="width: 6rem">
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                          <div class="text-wrap text-muted">
                             {{ format_phone_no(member.phone) }}
                           </div>
-                        </td>
-                        <td [ngSwitch]="member.status" class="align-middle">
-                          <div
-                            *ngSwitchCase="allMemberdata.status[0]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-success text-center">
-                              {{ allMemberdata.status[0] }}
-                            </p>
-                          </div>
-                          <div
-                            *ngSwitchCase="allMemberdata.status[1]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-warning text-center">
-                              {{ allMemberdata.status[1] }}
-                            </p>
-                          </div>
-                          <div
-                            *ngSwitchCase="allMemberdata.status[2]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-danger text-center">
-                              {{ allMemberdata.status[2] }}
-                            </p>
-                          </div>
-                          <div
-                            *ngSwitchCase="allMemberdata.status[3]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-danger text-center">
-                              {{ allMemberdata.status[3] }}
-                            </p>
-                          </div>
-                          <div
-                            *ngSwitchCase="allMemberdata.status[4]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-danger text-center">
-                              {{ allMemberdata.status[4] }}
-                            </p>
-                          </div>
-                          <div
-                            *ngSwitchCase="allMemberdata.status[5]"
-                            class="text-center"
-                          >
-                            <p class="status-btn-primary text-center">
-                              {{ allMemberdata.status[5] }}
-                            </p>
-                          </div>
-                        </td>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                      <td [ngSwitch]="member.status" class="align-middle">
+                        <div
+                          *ngSwitchCase="allMemberdata.status[0]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-success text-center">
+                            {{ allMemberdata.status[0] }}
+                          </p>
+                        </div>
+                        <div
+                          *ngSwitchCase="allMemberdata.status[1]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-warning text-center">
+                            {{ allMemberdata.status[1] }}
+                          </p>
+                        </div>
+                        <div
+                          *ngSwitchCase="allMemberdata.status[2]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-danger text-center">
+                            {{ allMemberdata.status[2] }}
+                          </p>
+                        </div>
+                        <div
+                          *ngSwitchCase="allMemberdata.status[3]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-danger text-center">
+                            {{ allMemberdata.status[3] }}
+                          </p>
+                        </div>
+                        <div
+                          *ngSwitchCase="allMemberdata.status[4]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-danger text-center">
+                            {{ allMemberdata.status[4] }}
+                          </p>
+                        </div>
+                        <div
+                          *ngSwitchCase="allMemberdata.status[5]"
+                          class="text-center"
+                        >
+                          <p class="status-btn-primary text-center">
+                            {{ allMemberdata.status[5] }}
+                          </p>
+                        </div>
+                      </td>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">
+                      <div class="pt-2">
                         <td
                           [ngSwitch]="member.status"
-                          class="align-middle px-4 text-right"
+                          class="align-middle px-1 text-right"
                         >
                           <!-- ACTIVE -->
                           <div
@@ -1011,15 +740,303 @@
                           </div>
                           <!-- EXTERNAL user -->
                         </td>
-                      </tr>
-                    </ng-container>
-                  </ng-container>
-                </tbody>
-              </table>
-            </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
           </div>
         </div>
       </div>
+    </div>
+    <div class="col-md-5 col-lg-4 order-lg-2 my-2">
+      <!------------ register new member --------------->
+      <div class="containerr px-0">
+        <div
+          class="card register-member-card"
+          *ngIf="allMemberdata.subscriptiondata; else loading"
+        >
+          <div class="card-header register-member-card-header-new">
+            Add New User
+          </div>
+          <div class="card-body mx-0 new-reg-form">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <div class="form-group mb-3 d-none">
+                <label for="">Subscription Id</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  [ngClass]="{
+                    'is-invalid': submitted && f.subscriptionID.errors
+                  }"
+                  formControlName="subscriptionID"
+                  readonly
+                />
+              </div>
+              <label
+                ><img
+                  src="../../../../../assets/image/imgs/role.png"
+                  alt=""
+                  srcset=""
+                />User role</label
+              ><br />
+              <div class="row px-2">
+                <div class="col-4">
+                  <div
+                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
+                  >
+                    <input
+                      type="radio"
+                      name="radio"
+                      id="op35311"
+                      name="subscriberRole"
+                      value="USER"
+                      formControlName="subscriberRole"
+                      checked
+                    />
+                    <label for="op35311"><span>USER</span> </label>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div
+                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
+                  >
+                    <input
+                      type="radio"
+                      name="radio"
+                      id="op35312"
+                      name="subscriberRole"
+                      value="ADMIN"
+                      formControlName="subscriberRole"
+                    />
+                    <label for="op35312"><span>ADMIN</span> </label>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div
+                    class="risk-state-button-single mx-1 risk-state-button-single-red-resolve"
+                  >
+                    <input
+                      type="radio"
+                      name="radio"
+                      id="op35313"
+                      name="subscriberRole"
+                      value="EXTERNAL"
+                      formControlName="subscriberRole"
+                    />
+                    <label for="op35313"><span>EXTERNAL</span> </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-2 mt-1">
+                <label for="" class=""
+                  ><img
+                    src="../../../../../assets/image/imgs/user.png"
+                    alt=""
+                    srcset=""
+                  />Name of the user</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  [ngClass]="
+                    f.subscriberName.touched || f.subscriberName.dirty
+                      ? f.subscriberName.errors
+                        ? 'is-invalid'
+                        : 'is-valid'
+                      : ''
+                  "
+                  formControlName="subscriberName"
+                  style="text-transform: capitalize"
+                />
+                <div
+                  *ngIf="
+                    (f.subscriberName.touched || f.subscriberName.dirty) &&
+                    f.subscriberName.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberName.errors.required">
+                    Name is required
+                  </div>
+                  <div *ngIf="f.subscriberName.errors.pattern">
+                    Invalid Name Please Enter Full Name
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-2 mt-1">
+                <label for="" class=""
+                  ><img
+                    src="../../../../../assets/image/imgs/msg.png"
+                    alt=""
+                    srcset=""
+                  />Email</label
+                >
+                <input
+                  type="email"
+                  class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  [ngClass]="
+                    f.subscriberEmail.touched || f.subscriberEmail.dirty
+                      ? f.subscriberEmail.errors
+                        ? 'is-invalid'
+                        : 'is-valid'
+                      : ''
+                  "
+                  formControlName="subscriberEmail"
+                  style="text-transform: lowercase"
+                />
+                <div
+                  *ngIf="
+                    (f.subscriberEmail.touched || f.subscriberEmail.dirty) &&
+                    f.subscriberEmail.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberEmail.errors.required">
+                    Email address is required
+                  </div>
+                  <div *ngIf="f.subscriberEmail.errors.pattern">
+                    Invalid Email pattern
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-3 mt-1">
+                <label for="" class=""
+                  ><img
+                    src="../../../../../assets/image/imgs/role.png"
+                    alt=""
+                    srcset=""
+                  />Position in the organisation
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-default"
+                  [ngClass]="
+                    f.subscriberJobTitle.touched || f.subscriberJobTitle.dirty
+                      ? f.subscriberJobTitle.errors
+                        ? 'is-invalid'
+                        : 'is-valid'
+                      : ''
+                  "
+                  formControlName="subscriberJobTitle"
+                />
+                <div
+                  *ngIf="
+                    (f.subscriberJobTitle.touched ||
+                      f.subscriberJobTitle.dirty) &&
+                    f.subscriberJobTitle.errors
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.subscriberJobTitle.errors.required">
+                    Users position is required
+                  </div>
+                </div>
+              </div>
+              <label
+                ><img
+                  src="../../../../../assets/image/imgs/call.png"
+                  alt=""
+                  srcset=""
+                />User phone number</label
+              >
+              <div class="form-row">
+                <div class="col-5">
+                  <div class="form-group mb-3">
+                    <label for=""></label>
+                    <select
+                      class="custom-select"
+                      id="inputGroupSelect01"
+                      (change)="changeCountry($event)"
+                      [ngClass]="
+                        f.subscriberCtc.touched || f.subscriberCtc.dirty
+                          ? f.subscriberCtc.errors
+                            ? 'is-invalid'
+                            : ''
+                          : ''
+                      "
+                      formControlName="subscriberCtc"
+                      required
+                    >
+                      <option value="null" disabled selected>
+                        <div>Country</div>
+                      </option>
+                      <option
+                        *ngFor="let country of Cd; let i = index"
+                        [value]="country.Iso2"
+                      >
+                        <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        (f.subscriberCtc.touched || f.subscriberCtc.dirty) &&
+                        f.subscriberCtc.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberCtc.errors.required">
+                        Counrty is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 pt-1">
+                  <div class="form-group mb-3">
+                    <input
+                      type="tel"
+                      class="form-control"
+                      placeholder=""
+                      [ngClass]="
+                        f.subscriberPhone.touched || f.subscriberPhone.dirty
+                          ? f.subscriberPhone.errors
+                            ? 'is-invalid'
+                            : 'is-valid'
+                          : ''
+                      "
+                      formControlName="subscriberPhone"
+                    />
+
+                    <div
+                      *ngIf="
+                        (f.subscriberPhone.touched ||
+                          f.subscriberPhone.dirty) &&
+                        f.subscriberPhone.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberPhone.errors.required">
+                        Phone number is required
+                      </div>
+                      <div *ngIf="f.subscriberPhone.errors.pattern">
+                        Invalid phone no
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                class="btn btn-primary btn-sm float-right"
+                type="submit"
+                [disabled]="this.registerForm.invalid"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!------------ register new member --------------->
     </div>
   </div>
 </div>
