@@ -358,68 +358,68 @@ input {
   }
 }
 /*----------------------------payment page design---------------------*/
-.complex input[type="radio"],
-.complexx input[type="radio"] {
-  -webkit-appearance: none;
-  display: none;
-}
-.complex label,
-.complexx label {
-  height: 118px;
-  border: 1px solid #1962cb;
-  margin: 10px 3px;
-  padding: 10px 10px;
-  color: grey;
-  width: 100%;
-}
-.complexx label {
-  height: 118px;
-  width: 100%;
-}
-.complex label .label-plan-title,
-.complexx label .label-plan-title {
-  font-weight: bold;
-  text-transform: capitalize;
-}
-.complexx label .label-plan-title {
-  font-size: 25px;
-}
-.complex input[type="radio"]:checked + label {
-  background-color: #1962cb;
-  color: white;
-}
-.complexx input[type="radio"]:checked + label {
-  width: 100%;
-  background-color: #1962cb;
-  color: rgb(255, 255, 255);
-}
-.pay-card-input-box .input-group > .input-group-append > .btn,
-.pay-card-input-box .input-group > .input-group-append > .input-group-text,
-.pay-card-input-box
-  .input-group
-  > .input-group-prepend:first-child
-  > .btn:not(:first-child),
-.pay-card-input-box
-  .input-group
-  > .input-group-prepend:first-child
-  > .input-group-text:not(:first-child),
-.pay-card-input-box
-  .input-group
-  > .input-group-prepend:not(:first-child)
-  > .btn,
-.pay-card-input-box
-  .input-group
-  > .input-group-prepend:not(:first-child)
-  > .input-group-text {
-  border-radius: 50%;
-  padding: 10px 18px;
-  margin: 0px 8px;
-}
-/* paypal button design */
-/* .paypal-button .paypal-button-color-gold {
-  background: #cdccc8 !important;
-} */
-.disabled {
-  pointer-events: none;
-  opacity: 0.4;
-}
+// .complex input[type="radio"],
+// .complexx input[type="radio"] {
+//   -webkit-appearance: none;
+//   display: none;
+// }
+// .complex label,
+// .complexx label {
+//   height: 118px;
+//   border: 1px solid #1962cb;
+//   margin: 10px 3px;
+//   padding: 10px 10px;
+//   color: grey;
+//   width: 100%;
+// }
+// .complexx label {
+//   height: 118px;
+//   width: 100%;
+// }
+// .complex label .label-plan-title,
+// .complexx label .label-plan-title {
+//   font-weight: bold;
+//   text-transform: capitalize;
+// }
+// .complexx label .label-plan-title {
+//   font-size: 25px;
+// }
+// .complex input[type="radio"]:checked + label {
+//   background-color: #1962cb;
+//   color: white;
+// }
+// .complexx input[type="radio"]:checked + label {
+//   width: 100%;
+//   background-color: #1962cb;
+//   color: rgb(255, 255, 255);
+// }
+// .pay-card-input-box .input-group > .input-group-append > .btn,
+// .pay-card-input-box .input-group > .input-group-append > .input-group-text,
+// .pay-card-input-box
+//   .input-group
+//   > .input-group-prepend:first-child
+//   > .btn:not(:first-child),
+// .pay-card-input-box
+//   .input-group
+//   > .input-group-prepend:first-child
+//   > .input-group-text:not(:first-child),
+// .pay-card-input-box
+//   .input-group
+//   > .input-group-prepend:not(:first-child)
+//   > .btn,
+// .pay-card-input-box
+//   .input-group
+//   > .input-group-prepend:not(:first-child)
+//   > .input-group-text {
+//   border-radius: 50%;
+//   padding: 10px 18px;
+//   margin: 0px 8px;
+// }
+// /* paypal button design */
+// /* .paypal-button .paypal-button-color-gold {
+//   background: #cdccc8 !important;
+// } */
+// .disabled {
+//   pointer-events: none;
+//   opacity: 0.4;
+// }
