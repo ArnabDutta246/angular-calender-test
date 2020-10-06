@@ -28,6 +28,7 @@ import * as firebase from "firebase";
   encapsulation: ViewEncapsulation.None,
 })
 export class PanelContainerComponent implements OnInit {
+  showNavMenu: boolean = true;
   currentUser: any;
   userNotificationInfo: any;
   userDocId: string = "";
@@ -60,7 +61,7 @@ export class PanelContainerComponent implements OnInit {
   @HostListener("window:resize", ["$event"])
   onResize(event?) {
     this.innerWidth = window.innerWidth;
-    if (this.innerWidth < 1200) this.sideNavOpen();
+    // if (this.innerWidth < 1200) this.sideNavOpen();
   }
   collapse: boolean = true;
   ngOnInit() {
@@ -245,15 +246,16 @@ export class PanelContainerComponent implements OnInit {
   }
   // ---------------------side navbar on/off
   sideNavOpen() {
-    const sideNv = document.getElementById("sideNav");
-    const allContent = document.getElementById("allContent");
-    if (this.collapse) {
-      sideNv.style.left = -280 + "px";
-      this.collapse = false;
-    } else {
-      sideNv.style.left = 0 + "px";
-      this.collapse = true;
-    }
+    this.showNavMenu = !this.showNavMenu;
+    // const sideNv = document.getElementById("sideNav");
+    // const allContent = document.getElementById("allContent");
+    // if (this.collapse) {
+    //   sideNv.style.left = -280 + "px";
+    //   this.collapse = false;
+    // } else {
+    //   sideNv.style.left = 0 + "px";
+    //   this.collapse = true;
+    // }
   }
   // ---------------------side navbar on/off
   //----------------------open notification

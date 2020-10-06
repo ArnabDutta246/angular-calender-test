@@ -145,6 +145,65 @@
         </div>
       </div>
     </div>
+    <div class="col-md-7 col-lg-8 order-lg-1">
+      <div class="row p-1 bg-primary text-white">
+        <div class="col-6 col-md-6 col-lg-7 col-xl-8 p-2">
+          <h5>All members</h5>
+        </div>
+        <div class="col-1 p-2">
+            <i class="fas fa-bullhorn"></i>
+        </div>
+        <div class="col-1 p-2">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="col-4 col-md-4 col-lg-3 col-xl-2 p-1">
+          <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-light btn-small dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              All users
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <a class="dropdown-item" >New users</a>
+              <a class="dropdown-item" >All users</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngFor="let member of allMemberArray">
+        <div class="" style="width:100%;background: white;border-bottom:1px solid rgba(0,0,0,0.3)">
+          <div class="row card-body" style="padding-bottom:0px;padding-top: 0.5em;">
+            <div  class="col-3 col-lg-2">
+              <img
+                class="card-img-left p-1"
+                style="width:40px; height:40px; border-radius:50%;"
+                [src]="
+                  member.picUrl !== ''
+                    ? member.picUrl
+                    : '../../../../../assets/image/imgs/profile.png'
+                "
+                alt="member image"
+                (error)="profileImgErrorHandler(member)"
+              />
+              <span class="badge badge-primary" style="width: 100%;overflow:hidden;">
+                {{member.status.toLowerCase()}}
+                <span class="badge badge-light">{{member.role=='ADMIN'? 'A' : ''}}</span>
+              </span>
+            </div>
+            <div class="col-8 col-lg-9">
+              <!-- <div class=""> -->
+                <h5 class=""><small>{{member.name}}</small></h5>
+                <h6 class="text-muted"><small>{{member.email}}</small></h6>
+                <h6 class="text-muted"><small>{{format_phone_no(member.phone)}}</small></h6>
+              <!-- </div> -->
+            </div>
+            <div class="col-1 p-1">
+              <button type="button" class="btn btn-light btn-small"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <!-- <img class="card-img-left" src="..." alt="Card image cap"> -->
+        </div>
+        <div class="dropdown-divider"></div>
+      </div>
+    </div>
     <div class="col-md-7 col-lg-8 order-lg-1 member-list-col my-2">
       <div class="tab-content" id="v-pills-tabContent">
         <div
