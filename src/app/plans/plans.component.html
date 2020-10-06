@@ -3,9 +3,7 @@
     <div class="row">
       <div class="col-md-4">
         <div class="logo">
-          <a routerLink="/"
-            ><img src="../../assets/image/imgs/mm_logo.png"
-          /></a>
+          <a routerLink="/"><img src="../../assets/image/imgs/logo.png" /></a>
         </div>
       </div>
       <div class="col-md-8">
@@ -39,7 +37,11 @@
   <div class="container">
     <div class="row equal">
       <ng-container *ngFor="let plan of plans; let i = index">
-        <div [ngClass]="plans.length > 2 ? 'col-md-4' : 'col-md-6'">
+        <div
+          [ngClass]="
+            plans.length > 2 ? 'col-md-6 col-lg-4' : 'col-md-6 col-lg-6'
+          "
+        >
           <div
             class="row"
             [ngClass]="checkPlanCondition(plan) ? 'disabled' : ''"

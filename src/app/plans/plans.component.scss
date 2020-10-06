@@ -1,9 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap"); */
-/*font-family: 'Poppins', sans-serif;*/
-/* * {
-  margin: 0;
-  padding: 0;
-} */
+@import "../../assets/scss/variables.scss";
 a {
   text-decoration: none;
 }
@@ -14,6 +9,9 @@ ul {
 /* body {
   font-family: "Poppins", sans-serif;
 } */
+.logo img {
+  height: 60px;
+}
 .bkmnu ul li a {
   font-size: 14px;
   font-weight: 400;
@@ -41,7 +39,7 @@ li.bk a {
   text-decoration: none;
 }
 .bkmnu ul li.bk {
-  background: var(--color-blue-bg);
+  background: $color-blue-bg;
   /* background-color: #fafafb; */
   padding: 6px 25px;
   border-radius: 6px;
@@ -65,16 +63,7 @@ li.bk a {
   font-size: 16px;
   font-weight: 400;
 }
-/* .hedarea::before {
-  content: "";
-  height: 30px;
-  width: 30px;
-  background-color: #35c7cc;
-  background: white;
-  position: absolute;
-  bottom: -12px;
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-} */
+
 .listarea {
   padding: 20px 10px 15px 15px;
   background-color: #fff;
