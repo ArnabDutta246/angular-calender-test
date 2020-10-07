@@ -1,20 +1,8 @@
 <div class="wrapper">
-  <div [ngClass]="!showNavMenu ? 'navTestClose col-lg-12' : ' navTest col-lg-12'" (click)="sideNavOpen()">
+  <div [ngClass]="!showNavMenu ? 'navTestClose col-lg-12' : 'navTest col-lg-12'" (click)="sideNavOpen()">
     <div class="row">
       <div class="col-sm-12 col-md-4 col-lg-3">
         <div class="menu">
-          <!-- <div class="close_button float-right m-2">
-            <h5>&times;</h5>
-          </div>
-          <div class="clearfix"></div>
-
-          <div class="logo px-3">
-            <img
-              src="../../../assets/image/imgs/logo.png"
-              alt="occurens logo"
-              srcset=""
-            />
-          </div> -->
           <div class="" id="">
             <div class="p-0" id="">
               <div class="close_button float-right m-2">
@@ -87,6 +75,69 @@
       </div>
     </div>
   </div>
+<!--================ navbar fixed for extra large screen ============-->
+  <div class="nav_for_extra_large">
+            <div class="menu">
+              <div class="" id="">
+                <div class="p-0" id="">
+                  <div class="close_button float-right m-2">
+                    <h5>&times;</h5>
+                  </div>
+                  <div class="clearfix"></div>
+            
+                  <div class="logo px-3">
+                    <img src="../../../assets/image/imgs/logo.png" alt="occurens logo" srcset="" />
+                  </div>
+                  <br /><br /><br />
+                  <ng-container *ngIf="currentUser.role === 'ADMIN'">
+                    <!-- <span class="sideNav-sec-name">Admin section</span> -->
+                    <a routerLink="/panel/member-management">
+                      <div class="menu-link text-center" routerLinkActive="active-url">
+                        <i class="fas fa-users mr-3"></i>
+                        <span>Members</span>
+                      </div>
+                    </a>
+                    <!-- <a routerLink="/panel/subscription">
+                              <div class="menu-link text-center" routerLinkActive="active-url">
+                                <i class="far fa-credit-card mr-3"></i>
+                                <span>Subscription</span>
+                              </div>
+                            </a> -->
+                  </ng-container>
+                  <div [ngClass]="
+                              currentUser.role === 'ADMIN' &&
+                              currentUser.subscriberId === 'APPSOLZONE001'
+                                ? 'd-none'
+                                : ''
+                            ">
+                    <a routerLink="/panel/dashboard">
+                      <div class="menu-link text-center" routerLinkActive="active-url">
+                        <i class="fab fa-houzz mr-3"></i>
+                        <span>Dashboard</span>
+                      </div>
+                    </a>
+                  </div>
+                  <!---------------------- for supper admin------------>
+                  <div [ngClass]="
+                              currentUser.role === 'ADMIN' &&
+                              currentUser.subscriberId === 'APPSOLZONE001'
+                                ? ''
+                                : 'd-none'
+                            ">
+                    <a routerLink="/panel/maintenance">
+                      <div class="menu-link text-center" routerLinkActive="active-url">
+                        <!-- <i class="fas fa-tasks mr-3"></i> -->
+                        <img src="../../../assets/image/imgs/tasks.png" alt="dashboard icon" />
+                        <span>Maintenance</span>
+                      </div>
+                    </a>
+                  </div>
+            
+                </div>
+              </div>
+            </div>
+  </div>
+<!--================ navbar fixed for extra large screen =============-->
 
   <div class="all-content flex-fill" id="allContent">
     <!--------------------------- top panel bar ---------------->

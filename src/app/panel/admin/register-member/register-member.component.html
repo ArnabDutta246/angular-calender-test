@@ -10,22 +10,19 @@
     </li>
   </ol>
 </nav>
-<div class="innerebox-top-panel px-2 px-lg-4">
-  <div class="row"></div>
-</div>
 
 <!-- main container -->
-<div class="containerr px-2 px-lg-4 pb-4 pt-2">
+<div class="px-2 px-lg-4 pb-4 pt-2">
   <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-8">
+    <div class="col-sm-12 col-md-6 col-lg-8" style="padding: 0px;">
       <app-subscription #subscriptionContent></app-subscription>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-4 px-lg-2">
       <div class="row">
         <div class="col-12">
-          <div class="row mb-1" *ngIf="subscriptiondata">
+          <div class="row mb-2 px-2" *ngIf="subscriptiondata">
             <div
-              class="col-sm-12 col-md-6 col-lg-6 py-2 px-2 border-left licens-data-box-one"
+              class="col-sm-12 col-md-6 col-lg-6 py-2 px-2" style="border-left: 3px solid orange;"
             >
               <span class="licens-data-sub">
                 <i class="fas fa-dot-circle text-warning mr-1"></i>
@@ -34,7 +31,8 @@
               >
             </div>
             <div
-              class="col-sm-12 col-md-6 col-lg-6 py-2 px-2 border-left licens-data-box-two"
+              class="col-sm-12 col-md-6 col-lg-6 py-2 px-2 bg-light"
+              style="border-left: 3px solid orange;"
             >
               <span class="licens-data-sub">
                 <i class="far fa-dot-circle text-success mr-1"></i>
@@ -47,28 +45,27 @@
             </div>
           </div>
         </div>
-        <div class="col-12 px-1">
-          <div class="cardd">
+        <div class="col-12">
+          <div class="card">
             <div class="card-body card-body-plan-bg-img">
-              <div class="d-flex justify-content-around align-item-center">
+              <div class="row mt-1">
                 <div
-                  class="text-white font-weight-lighter pt-3 card-body-pay-duration"
+                  class="col-7"
                 >
-                  <p>
+                  <span style="font-size: 13px;margin-left: 5px;">
                     {{
                       subscriptiondata?.subscriptionType === "FREE"
                         ? "Duration for 15 days"
                         : "Duration for 30 days"
                     }}
-                  </p>
+                  </span>
                 </div>
-                <div class="card-body-pay-btn">
+                <div class="col-5">
                   <div
-                    class="font-weight-bold"
-                    style="font-weight: 900"
+                    class="btn btn-sm btn-primary"
                     *ngIf="subscriptiondata?.subscriptionType"
                   >
-                    <span
+                    <span style="font-size: 13px;"
                       ><i class="fas fa-circle mr-1 text-warning"></i>USD
                       {{
                         subPlanData?.price *
@@ -81,26 +78,36 @@
               </div>
               <div class="card-bodyyy text-white">
                 <div class="org-plan-details-boxx px-2 py-1">
-                  <h3 class="ml-1 text-uppercase font-weight-bold">
+                  <h5 class="ml-1 text-uppercase font-weight-bold">
                     {{ subscriptiondata?.subscriptionType }}
-                  </h3>
-                  <div class="d-flex justify-content-between">
-                    <span class="sideNav-sec-name">per license</span>
-                    <span class="sideNav-sec-name"
-                      >USD {{ subPlanData?.price }}/month</span
-                    >
+                  </h5>
+                  <div class="row">
+                    <!-- <div class="col-6">
+<span class="sideNav-sec-name">per license</span>
+                    </div>
+                    <div class="col-6">
+<span class="sideNav-sec-name">USD {{ subPlanData?.price }}/month</span>
+                    </div> -->
+                <div class="col-6">
+                  <span class="sideNav-sec-name text-white">Subscription start</span>
+                </div>
+                <div class="col-6">
+                  <span class="sideNav-sec-name font-weight-bold">{{
+                                      subscriptiondata?.subscriptionStart.toDate()
+                                        | date: "dd/MM/yyyy"
+                                    }}</span>
+                </div>
                   </div>
-                  <div class="d-flex justify-content-between text-white mt-1">
-                    <span class="sideNav-sec-name text-white"
-                      >Subscription start</span
-                    >
-                    <span class="sideNav-sec-name font-weight-bold">{{
-                      subscriptiondata?.subscriptionStart.toDate()
-                        | date: "dd/MM/yyyy"
-                    }}</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <div class="">
+
+                  <div class="row">
+                    <div class="col-8">
+                                            <span class="text-danger font-weight-bold" [ngClass]="
+                                                                                            subscriptiondata?.subscriptionType !== 'FREE' &&
+                                                                                            currPlanActiveOrNot === false
+                                                                                              ? ''
+                                                                                              : 'd-none'
+                                                                                          " style="font-size: 9px">You have canceled this subscription
+                                            </span>
                       <button
                         class="btn btn-waring btn-sm custom_btn design_btn ml-3 btn_color_amber"
                         [ngClass]="
@@ -117,25 +124,15 @@
                       >
                         Cancel this plan
                       </button>
-                      <span
-                        class="text-danger font-weight-bold"
-                        [ngClass]="
-                          subscriptiondata?.subscriptionType !== 'FREE' &&
-                          currPlanActiveOrNot === false
-                            ? ''
-                            : 'd-none'
-                        "
-                        style="font-size: 11px"
-                        >You have canceled this subscription
-                      </span>
+
                     </div>
-                    <div>
-                      <p
-                        class="pay-btn btn btn-sm text-white"
+                    <div class="col-4">
+                      <small
+                        class="text-white"
+                        style="font-size: 9px;"
                         (click)="changePlan()"
-                      >
-                        Change <i class="fas fa-arrow-right ml-1"></i>
-                      </p>
+                      >Change<i class="fas fa-arrow-right ml-1"></i>
+                    </small>
                     </div>
                   </div>
                 </div>
@@ -145,36 +142,72 @@
         </div>
       </div>
     </div>
-    <div class="col-md-7 col-lg-8 order-lg-1">
+    <div class="col-md-7 col-lg-8">
       <div class="row p-1 bg-primary text-white">
         <div class="col-6 col-md-6 col-lg-7 col-xl-8 p-2">
           <h5>All members</h5>
         </div>
         <div class="col-1 p-2">
-            <i class="fas fa-bullhorn"></i>
+          <i class="fas fa-bullhorn"></i>
         </div>
         <div class="col-1 p-2">
-            <i class="fas fa-search"></i>
+          <i
+            class="fas fa-search"
+            (click)="showSearchInput('inputsearchBox')"
+          ></i>
         </div>
         <div class="col-4 col-md-4 col-lg-3 col-xl-2 p-1">
           <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-light btn-small dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button
+              id="btnGroupDrop1"
+              type="button"
+              class="btn btn-light btn-small dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               All users
             </button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" >New users</a>
-              <a class="dropdown-item" >All users</a>
+              <div
+                class="dropdown-item"
+                *ngFor="let status of allMemberdata.status; let i = index"
+                (click)="filterMember(status)"
+              >
+                {{ status }}
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="input-searchBox d-none mb-2" id="inputsearchBox">
+        <input
+          type="text"
+          class="form-control mt-1"
+          placeholder="Search by member name"
+          [(ngModel)]="typesearch"
+          name="typesearch"
+          (keyup)="filterMember(selectedFilter)"
+        />
+      </div>
+
       <div class="row" *ngFor="let member of allMemberArray">
-        <div class="" style="width:100%;background: white;border-bottom:1px solid rgba(0,0,0,0.3)">
-          <div class="row card-body" style="padding-bottom:0px;padding-top: 0.5em;">
-            <div  class="col-3 col-lg-2">
+        <div
+          class=""
+          style="
+            width: 100%;
+            background: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+          "
+        >
+          <div
+            class="row card-body"
+            style="padding-bottom: 0px; padding-top: 0.5em"
+          >
+            <div class="col-3 col-lg-2">
               <img
                 class="mx-auto d-block p-1"
-                style="width:40px; height:40px; border-radius:50%;"
+                style="width: 40px; height: 40px; border-radius: 50%"
                 [src]="
                   member.picUrl !== ''
                     ? member.picUrl
@@ -183,20 +216,415 @@
                 alt="member image"
                 (error)="profileImgErrorHandler(member)"
               />
-              <span class="badge badge-primary" style="width: 100%;overflow:hidden;">
-                {{member.status.toLowerCase()}}
-                <span class="badge badge-light">{{member.role=='ADMIN'? 'A' : ''}}</span>
+              <span
+                class="badge"
+                style="width: 100%; overflow: hidden"
+                [ngClass]="
+                  member.status == allMemberdata.status[0]
+                    ? 'badge-primary'
+                    : member.status == allMemberdata.status[1]
+                    ? 'badge-warning'
+                    : member.status == allMemberdata.status[5]
+                    ? 'badge-success'
+                    : 'badge-danger'
+                "
+              >
+                {{ member.status.toLowerCase() }}
+                <span class="badge badge-light">{{
+                  member.role == "ADMIN" ? "A" : ""
+                }}</span>
               </span>
             </div>
             <div class="col-8 col-lg-9">
               <!-- <div class=""> -->
-                <h5 class=""><small>{{member.name}}</small></h5>
-                <h6 class="text-muted"><small>{{member.email}}</small></h6>
-                <h6 class="text-muted"><small>{{format_phone_no(member.phone)}}</small></h6>
+              <h5 class="">
+                <small>{{ member.name }}</small>
+              </h5>
+              <h6 class="text-muted">
+                <small>{{ member.email }}</small>
+              </h6>
+              <h6 class="text-muted">
+                <small>{{ format_phone_no(member.phone) }}</small>
+              </h6>
               <!-- </div> -->
             </div>
             <div class="col-1 p-1">
-              <button type="button" class="btn btn-light btn-small"><i class="fas fa-ellipsis-v"></i></button>
+              <!-- <button type="button" class="btn btn-light btn-small">
+                <i class="fas fa-ellipsis-v"></i>
+              </button> -->
+              <div [ngSwitch]="member.status">
+                <!-- ACTIVE -->
+                <div class="dropleft" *ngSwitchCase="allMemberdata.status[0]">
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                    type="button"
+                    class="btn btn-light btn-small"
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[0],
+                          allMemberdata.status[2],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Mark as leaver
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[0],
+                          allMemberdata.status[3],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Suspend access
+                    </button>
+                    <button
+                      *ngIf="
+                        member.role === 'ADMIN' &&
+                        member.uid === getUserData.uid
+                      "
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[0],
+                          allMemberdata.status[5],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Approve external access
+                    </button>
+                    <button
+                      *ngIf="member.role == 'USER'; else userAssign"
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        assignAdminOrUser(
+                          member.uid,
+                          member.subscriberId,
+                          member.picUrl,
+                          'ADMIN'
+                        )
+                      "
+                    >
+                      Assign admin role
+                    </button>
+                    <ng-template #userAssign>
+                      <button
+                        class="dropdown-item"
+                        type="button"
+                        (click)="
+                          assignAdminOrUser(
+                            member.uid,
+                            member.subscriberId,
+                            member.picUrl,
+                            'USER'
+                          )
+                        "
+                      >
+                        Assign user role
+                      </button>
+                    </ng-template>
+                  </div>
+                </div>
+                <!-- ACTIVE -->
+                <!-- REGISTERED -->
+                <div class="dropleft" *ngSwitchCase="allMemberdata.status[1]">
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRequestActive(
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Assign user role
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRejectRequest(
+                          allMemberdata.status[4],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Reject access
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[1],
+                          allMemberdata.status[5],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Approve external access
+                    </button>
+                  </div>
+                </div>
+                <!-- REGISTERED -->
+                <!-- LEAVED -->
+                <div
+                  class="btn-group dropleft"
+                  *ngSwitchCase="allMemberdata.status[2]"
+                >
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRequestActive(
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Reactivate user access
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[2],
+                          allMemberdata.status[5],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Approve external access
+                    </button>
+                  </div>
+                </div>
+                <!-- LEAVED -->
+                <!-- SUSPENDED -->
+                <div
+                  class="btn-group dropleft"
+                  *ngSwitchCase="allMemberdata.status[3]"
+                >
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRequestActive(
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Reactivate user access
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[3],
+                          allMemberdata.status[5],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Approve external access
+                    </button>
+                  </div>
+                </div>
+                <!-- SUSPENDED -->
+                <!-- REJECTED user -->
+                <div
+                  class="btn-group dropleft"
+                  *ngSwitchCase="allMemberdata.status[4]"
+                >
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRequestActive(
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Assign user role
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[4],
+                          allMemberdata.status[5],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Approve external access
+                    </button>
+                  </div>
+                </div>
+                <!-- REJECTED user -->
+                <!-- EXTERNAL user -->
+                <div
+                  class="btn-group dropleft"
+                  *ngSwitchCase="allMemberdata.status[5]"
+                >
+                  <div
+                    class="dropdown-togglee"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    [hidden]="
+                      member.role === 'ADMIN' && member.uid === getUserData.uid
+                    "
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <div class="dropdown-menu">
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendRequestActive(
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl
+                        )
+                      "
+                    >
+                      Assign user role
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      type="button"
+                      (click)="
+                        sendLeaveOrSuspandRequest(
+                          allMemberdata.status[5],
+                          allMemberdata.status[3],
+                          member.uid,
+                          allMemberdata.subscriptiondata.id,
+                          allMemberdata.subscriptiondata.noOfFreeLicense,
+                          member.picUrl,
+                          member.email
+                        )
+                      "
+                    >
+                      Suspend access
+                    </button>
+                  </div>
+                </div>
+                <!-- EXTERNAL user -->
+              </div>
             </div>
           </div>
           <!-- <img class="card-img-left" src="..." alt="Card image cap"> -->
@@ -204,620 +632,16 @@
         <div class="dropdown-divider"></div>
       </div>
     </div>
-    <div class="col-md-7 col-lg-8 order-lg-1 member-list-col my-2">
-      <div class="tab-content" id="v-pills-tabContent">
-        <div
-          class="tab-pane fade show active bg-white"
-          id="v-pills-home"
-          role="tabpanel"
-          aria-labelledby="v-pills-home-tab"
-        >
-          <div
-            class="d-flex justify-content-between align-items-center member-list-header py-1"
-          >
-            <div class="card-header">
-              <span class="ml-2">All Member(s)</span>
-            </div>
-            <div class="">
-              <form class="mb-0">
-                <div class="d-flex justify-content-end align-items-center px-2">
-                  <div
-                    class="mx-2 card-meeting-details-banner-icons-box"
-                    data-toggle="modal"
-                    data-target="#exampleModalCenterTwo"
-                  >
-                    <i class="fas fa-bullhorn" style="font-size: 22px"></i>
-                  </div>
-                  <div class="px-2 mr-1 searchButtonBox">
-                    <div
-                      class="searchButton text-white font-weight-bold"
-                      (click)="showSearchInput('inputsearchBox')"
-                    >
-                      <i class="fas fa-search"></i>
-                    </div>
-                  </div>
-                  <div class="">
-                    <select
-                      id="inputState"
-                      class="form-control custom-selecttt"
-                      [(ngModel)]="selectedFilter"
-                      name="selectedmember"
-                      (change)="filterMember(selectedFilter)"
-                    >
-                      <option selected value="ALL">All</option>
-                      <option
-                        *ngFor="
-                          let status of allMemberdata.status;
-                          let i = index
-                        "
-                        [value]="status"
-                      >
-                        {{ status }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
 
-          <div class="mx-0">
-            <div class="input-searchBox d-none mb-2" id="inputsearchBox">
-              <input
-                type="text"
-                class="form-control mt-1"
-                placeholder="Search by member name"
-                [(ngModel)]="typesearch"
-                name="typesearch"
-                (keyup)="filterMember(selectedFilter)"
-              />
-            </div>
-
-            <ng-container *ngIf="allMemberArray; else loading">
-              <ng-container *ngFor="let member of allMemberArray">
-                <div class="card">
-                  <div
-                    class="row"
-                    style="
-                      margin-right: 0px !important;
-                      margin-left: 0px !important;
-                    "
-                  >
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">
-                      <img
-                        class="mr-2 member-list-pro-img"
-                        [src]="
-                          member.picUrl !== ''
-                            ? member.picUrl
-                            : '../../../../../assets/image/imgs/profile.png'
-                        "
-                        alt="member image"
-                        (error)="profileImgErrorHandler(member)"
-                      />
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-8">
-                      <div
-                        class="row pt-lg-2"
-                        style="
-                          margin-right: 0px !important;
-                          margin-left: 0px !important;
-                        "
-                      >
-                        <div class="col-md-12 col-lg-4">
-                          <div class="text-wrap">
-                            <span class="text-capitalize font-weight-bold">{{
-                              member.name
-                            }}</span>
-                            <span
-                              class="badge badge-pill badge-warning px-2"
-                              *ngIf="member.role === 'ADMIN'"
-                              >Admin</span
-                            >
-                          </div>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                          <div class="text-wrap text-muted">
-                            {{ member.email }}
-                          </div>
-                        </div>
-                        <div class="col-md-12 col-lg-4">
-                          <div class="text-wrap text-muted">
-                            {{ format_phone_no(member.phone) }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                      <td [ngSwitch]="member.status" class="align-middle">
-                        <div
-                          *ngSwitchCase="allMemberdata.status[0]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-success text-center">
-                            {{ allMemberdata.status[0] }}
-                          </p>
-                        </div>
-                        <div
-                          *ngSwitchCase="allMemberdata.status[1]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-warning text-center">
-                            {{ allMemberdata.status[1] }}
-                          </p>
-                        </div>
-                        <div
-                          *ngSwitchCase="allMemberdata.status[2]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-danger text-center">
-                            {{ allMemberdata.status[2] }}
-                          </p>
-                        </div>
-                        <div
-                          *ngSwitchCase="allMemberdata.status[3]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-danger text-center">
-                            {{ allMemberdata.status[3] }}
-                          </p>
-                        </div>
-                        <div
-                          *ngSwitchCase="allMemberdata.status[4]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-danger text-center">
-                            {{ allMemberdata.status[4] }}
-                          </p>
-                        </div>
-                        <div
-                          *ngSwitchCase="allMemberdata.status[5]"
-                          class="text-center"
-                        >
-                          <p class="status-btn-primary text-center">
-                            {{ allMemberdata.status[5] }}
-                          </p>
-                        </div>
-                      </td>
-                    </div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1">
-                      <div class="pt-2">
-                        <td
-                          [ngSwitch]="member.status"
-                          class="align-middle px-1 text-right"
-                        >
-                          <!-- ACTIVE -->
-                          <div
-                            class="dropleft"
-                            *ngSwitchCase="allMemberdata.status[0]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[0],
-                                    allMemberdata.status[2],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Mark as leaver
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[0],
-                                    allMemberdata.status[3],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Suspend access
-                              </button>
-                              <button
-                                *ngIf="
-                                  member.role === 'ADMIN' &&
-                                  member.uid === getUserData.uid
-                                "
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[0],
-                                    allMemberdata.status[5],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Approve external access
-                              </button>
-                              <button
-                                *ngIf="member.role == 'USER'; else userAssign"
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  assignAdminOrUser(
-                                    member.uid,
-                                    member.subscriberId,
-                                    member.picUrl,
-                                    'ADMIN'
-                                  )
-                                "
-                              >
-                                Assign admin role
-                              </button>
-                              <ng-template #userAssign>
-                                <button
-                                  class="dropdown-item"
-                                  type="button"
-                                  (click)="
-                                    assignAdminOrUser(
-                                      member.uid,
-                                      member.subscriberId,
-                                      member.picUrl,
-                                      'USER'
-                                    )
-                                  "
-                                >
-                                  Assign user role
-                                </button>
-                              </ng-template>
-                            </div>
-                          </div>
-                          <!-- ACTIVE -->
-                          <!-- REGISTERED -->
-                          <div
-                            class="dropleft"
-                            *ngSwitchCase="allMemberdata.status[1]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRequestActive(
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Assign user role
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRejectRequest(
-                                    allMemberdata.status[4],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Reject access
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[1],
-                                    allMemberdata.status[5],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Approve external access
-                              </button>
-                            </div>
-                          </div>
-                          <!-- REGISTERED -->
-                          <!-- LEAVED -->
-                          <div
-                            class="btn-group dropleft"
-                            *ngSwitchCase="allMemberdata.status[2]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRequestActive(
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Reactivate user access
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[2],
-                                    allMemberdata.status[5],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Approve external access
-                              </button>
-                            </div>
-                          </div>
-                          <!-- LEAVED -->
-                          <!-- SUSPENDED -->
-                          <div
-                            class="btn-group dropleft"
-                            *ngSwitchCase="allMemberdata.status[3]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRequestActive(
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Reactivate user access
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[3],
-                                    allMemberdata.status[5],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Approve external access
-                              </button>
-                            </div>
-                          </div>
-                          <!-- SUSPENDED -->
-                          <!-- REJECTED user -->
-                          <div
-                            class="btn-group dropleft"
-                            *ngSwitchCase="allMemberdata.status[4]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRequestActive(
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Assign user role
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[4],
-                                    allMemberdata.status[5],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Approve external access
-                              </button>
-                            </div>
-                          </div>
-                          <!-- REJECTED user -->
-                          <!-- EXTERNAL user -->
-                          <div
-                            class="btn-group dropleft"
-                            *ngSwitchCase="allMemberdata.status[5]"
-                          >
-                            <div
-                              class="dropdown-togglee"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                              [hidden]="
-                                member.role === 'ADMIN' &&
-                                member.uid === getUserData.uid
-                              "
-                            >
-                              <img
-                                src="../../../../assets/image/imgs/moreOptions.png"
-                                class="menu-image"
-                              />
-                            </div>
-                            <div class="dropdown-menu">
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendRequestActive(
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl
-                                  )
-                                "
-                              >
-                                Assign user role
-                              </button>
-                              <button
-                                class="dropdown-item"
-                                type="button"
-                                (click)="
-                                  sendLeaveOrSuspandRequest(
-                                    allMemberdata.status[5],
-                                    allMemberdata.status[3],
-                                    member.uid,
-                                    allMemberdata.subscriptiondata.id,
-                                    allMemberdata.subscriptiondata
-                                      .noOfFreeLicense,
-                                    member.picUrl,
-                                    member.email
-                                  )
-                                "
-                              >
-                                Suspend access
-                              </button>
-                            </div>
-                          </div>
-                          <!-- EXTERNAL user -->
-                        </td>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-container>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-4 order-lg-2 my-2">
+    <div class="col-md-5 col-lg-4">
       <!------------ register new member --------------->
       <div class="containerr px-0">
         <div
           class="card register-member-card"
           *ngIf="allMemberdata.subscriptiondata; else loading"
         >
-          <div class="card-header register-member-card-header-new">
-            Add New User
+          <div class="card-header bg-light">
+            <h6>Add New User</h6>
           </div>
           <div class="card-body mx-0 new-reg-form">
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">

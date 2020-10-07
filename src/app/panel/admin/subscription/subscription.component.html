@@ -1,8 +1,8 @@
-<div class="containerr px-lg-2 mt-0 mb-2" *ngIf="subscriptionData">
+<div class="px-lg-0 mt-0 mb-2" *ngIf="subscriptionData">
   <div class="">
     <div class="">
-      <div class="card org-profile-box-card">
-        <div class="card-body org-profile-box">
+      <div class="card " style="height: 287px;">
+        <div class="card-body ">
           <div
             class="nav nav-tabs float-right custom-nav"
             id="nav-tab"
@@ -38,8 +38,6 @@
             </div>
           </div>
           <div class="box">
-            <div class="row">
-              <div class="col-12">
                 <div class="tab-content" id="myTabContent">
                   <div
                     class="tab-pane fade show active"
@@ -48,15 +46,15 @@
                     aria-labelledby="home-tab"
                   >
                     <div class="row">
-                      <div class="col-md-12 col-lg-5">
+                      <div class="col-md-12 col-lg-5 align-middle">
                         <img
-                          class="org-profile-box-image"
+                          class="org-profile-box-image m-lg-4"
                           src="../../../assets/image/imgs/logo.png"
                         />
                       </div>
                       <div class="col-md-12 col-lg-7 pt-lg-2">
-                        <div class="org-profile-box text-center">
-                          <div class="org-profile-box-info px-2">
+                        <div class="text-center">
+                          <div class=" px-2">
                             <!-- new -->
                             <div class="text-left pt-3">
                               <p class="font-weight-bold">
@@ -65,16 +63,16 @@
                               <i
                                 class="fas fa-envelope-open-text text-muted"
                               ></i
-                              ><span class="text-muted ml-3">{{
+                              ><small class="text-muted ml-3">{{
                                 subscriptionData.email
-                              }}</span
-                              ><br />
+                              }}</small
+                              >
                               <hr />
                               <i class="fas fa-phone-volume text-muted"></i>
-                              <span class="text-muted ml-3">
+                              <small class="text-muted ml-3">
                                 {{
                                   format_phone_no(subscriptionData.phoneNo)
-                                }}</span
+                                }}</small
                               ><br />
                             </div>
                             <!-- new  -->
@@ -92,7 +90,7 @@
                     <form
                       [formGroup]="orgForm"
                       (ngSubmit)="onSubmit()"
-                      class="px-3"
+                      class="px-lg-3"
                     >
                       <!-- <div class="form-row">
                         <div class="col-6"> -->
@@ -220,8 +218,6 @@
                     </form>
                   </div>
                 </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
