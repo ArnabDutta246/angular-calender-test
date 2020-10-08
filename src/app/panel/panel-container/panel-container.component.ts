@@ -28,7 +28,7 @@ import * as firebase from "firebase";
   encapsulation: ViewEncapsulation.None,
 })
 export class PanelContainerComponent implements OnInit {
-  showNavMenu: boolean = true;
+  showNavMenu: boolean = false;
   currentUser: any;
   userNotificationInfo: any;
   userDocId: string = "";

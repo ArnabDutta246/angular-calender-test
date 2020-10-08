@@ -26,6 +26,7 @@ export class AllMembersDataService {
     "SUSPENDED",
     "REJECTED",
     "EXTERNAL",
+    "ALL",
   ];
   getUserData: any = null;
   firebase: any;

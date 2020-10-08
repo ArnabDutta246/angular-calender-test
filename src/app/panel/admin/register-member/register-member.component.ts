@@ -128,8 +128,11 @@ export class RegisterMemberComponent implements OnInit {
       .onSnapshot(
         function (query) {
           let arr = [];
-          query.forEach(function (q) {
-            arr.push(q.data());
+          query.forEach((q)=>{
+            // lets add the actions for the user
+            let data = q.data();
+            data.actions = this.getActions(data);
+            arr.push(data);
           });
           // console.log(arr);
           this.allMemberArray = arr;
@@ -235,6 +238,7 @@ export class RegisterMemberComponent implements OnInit {
   filterMember(filsel: string) {
     const value = this.typesearch.toLowerCase();
     const filse = filsel;
+    this.selectedFilter = filsel.slice(0,1).toUpperCase() + filsel.slice(1).toLowerCase();
     if (value === "" && filse === "ALL") {
       this.allMemberArray = this.filterMemberArray;
     } else if (value === "" && filse !== "ALL") {
@@ -256,10 +260,12 @@ export class RegisterMemberComponent implements OnInit {
 
   //------------------------sendRequest for Active----------------
   sendRequestActive(
-    uid: string,
     subId: string,
     noOfFreeLicense: number,
-    img: any
+    currStatus: string,
+    uid: string,
+    img: any,
+    email: string,
   ) {
     let text = `want to activate this member`;
     this.allMemberdata
@@ -288,11 +294,11 @@ export class RegisterMemberComponent implements OnInit {
   //------------------------sendRequest for Leave / Suspand--------------
 
   sendLeaveOrSuspandRequest(
-    currStatus,
     status: string,
-    uid: string,
     subId: string,
     noOfFreeLicense: number,
+    currStatus: string,
+    uid: string,
     img: any,
     email: string
   ) {
@@ -325,7 +331,14 @@ export class RegisterMemberComponent implements OnInit {
       });
   }
   //--------------------------------sendRequest for reject-------------
-  sendRejectRequest(status: string, uid: string, subId: string, img: any) {
+  sendRejectRequest(
+    status: string,
+    subId: string,
+    currStatus: string,
+    uid: string,
+    img: any,
+    email: string
+  ) {
     this.sl
       .showAlertReturnTypeWithImage(``, img, `to reject this member request`)
       .then((res) => {
@@ -342,7 +355,14 @@ export class RegisterMemberComponent implements OnInit {
       });
   }
   //--------------------------assign member as admin ------------
-  assignAdminOrUser(uid, sid, img, role) {
+  assignAdminOrUser(
+    sid: string,
+    role: string,
+    currStatus: string,
+    uid: string,
+    img: any,
+    email: string
+    ) {
     this.sl
       .showAlertReturnTypeWithImage(``, img, `to assign this person as ${role}`)
       .then((res) => {
@@ -352,6 +372,87 @@ export class RegisterMemberComponent implements OnInit {
             : this.showNetworkIssue();
         }
       });
+  }
+  //--------------------------get user dropdown list action ------------
+  getActions(data) {
+    let actions = [
+      {
+        text: 'Assign user role',
+        parameters: [
+          this.allMemberdata.subscriptiondata.id,
+          this.allMemberdata.subscriptiondata.noOfFreeLicense,
+        ],
+        function: this.sendRequestActive.bind(this),
+        currStatus: ['EXTERNAL','REJECTED','SUSPENDED','LEAVED','REGISTERED']
+        },
+      {
+        text: 'Assign user role',
+        parameters: [
+          this.allMemberdata.subscriptiondata.id,
+          'USER',
+        ],
+        function: this.assignAdminOrUser.bind(this),
+        currStatus: ['ACTIVE'],
+        role: ['ADMIN']
+        },
+      {
+        text: 'Assign admin role',
+        parameters: [
+          this.allMemberdata.subscriptiondata.id,
+          'ADMIN',
+        ],
+        function: this.assignAdminOrUser.bind(this),
+        currStatus: ['ACTIVE'],
+        role: ['USER']
+        },
+      {
+        text: 'Reject request',
+        parameters: [
+          this.allMemberdata.status[4],
+          this.allMemberdata.subscriptiondata.id,
+        ],
+        function: this.sendRejectRequest.bind(this),
+        currStatus: ['REGISTERED']
+        },
+      {
+        text: 'Suspend access',
+        parameters: [
+          this.allMemberdata.status[3],
+          this.allMemberdata.subscriptiondata.id,
+          this.allMemberdata.subscriptiondata.noOfFreeLicense,
+        ],
+        function: this.sendLeaveOrSuspandRequest.bind(this),
+        currStatus: ['EXTERNAL','ACTIVE']
+        },
+        {
+          text: 'Approve external access',
+          parameters: [
+            this.allMemberdata.status[5],
+            this.allMemberdata.subscriptiondata.id,
+            this.allMemberdata.subscriptiondata.noOfFreeLicense,
+          ],
+          function: this.sendLeaveOrSuspandRequest.bind(this),
+          currStatus: ['REJECTED','SUSPENDED','LEAVED','REGISTERED','ACTIVE']
+          },
+        {
+          text: 'Mark as leaver',
+          parameters: [
+            this.allMemberdata.status[2],
+            this.allMemberdata.subscriptiondata.id,
+            this.allMemberdata.subscriptiondata.noOfFreeLicense,
+          ],
+          function: this.sendLeaveOrSuspandRequest.bind(this),
+          currStatus: ['ACTIVE']
+          },
+
+    ];
+
+    return actions.filter(a=>a.currStatus.includes(data.status) && (!a.role || a.role.includes(data.role)));
+  }
+
+  //--------------------------run user dropdown list action ------------
+  onClickActionFunction(action, status,uid,picUrl,email){
+    action.function(...action.parameters,status,uid,picUrl,email);
   }
   //-----------------------show or remove search input------------
   showSearchInput(id: string) {
