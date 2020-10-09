@@ -28,7 +28,7 @@ import * as firebase from "firebase";
   encapsulation: ViewEncapsulation.None,
 })
 export class PanelContainerComponent implements OnInit {
-  showNavMenu: boolean = true;
+  showNavMenu: boolean = false;
   currentUser: any;
   userNotificationInfo: any;
   userDocId: string = "";
@@ -164,80 +164,80 @@ export class PanelContainerComponent implements OnInit {
     this.onResize();
   }
 
-  accept_meeting(meetingData, i) {
-    if (this.status === "ONLINE") {
-      // console.log("whole meeting data", meetingData.refValues.meetingId);
-      let data;
-      let users$ = this.afs
-        .collection(this.allCol.meetings)
-        .doc(`${meetingData.refValues.meetingId}`)
-        .snapshotChanges();
-      users$
-        .pipe(
-          map((a) => {
-            data = a.payload.data();
-          })
-        )
-        .subscribe(() => {
-          this.userAttendeeList = data.attendeeList;
-          //  console.log(this.userAttendeeList);
-          this.update_attendeeList(
-            meetingData.refValues.meetingId,
-            i,
-            meetingData
-          );
-        });
-    } else {
-      this.showNetworkIssue();
-    }
-  }
-  update_attendeeList(docId: string, index, data) {
-    var i;
-    // console.log("get DocId", docId);
-    for (i = 0; i < this.userAttendeeList.length; i++) {
-      if (this.userAttendeeList[i].uid == this.currentUser.uid) {
-        let obj = {
-          attendance: false,
-          email: this.userAttendeeList[i].email,
-          name: this.userAttendeeList[i].name,
-          picUrl: this.userAttendeeList[i].picUrl,
-          uid: this.userAttendeeList[i].uid,
-          accepted: "accept",
-        };
+  // accept_meeting(meetingData, i) {
+  //   if (this.status === "ONLINE") {
+  //     // console.log("whole meeting data", meetingData.refValues.meetingId);
+  //     let data;
+  //     let users$ = this.afs
+  //       .collection(this.allCol.meetings)
+  //       .doc(`${meetingData.refValues.meetingId}`)
+  //       .snapshotChanges();
+  //     users$
+  //       .pipe(
+  //         map((a) => {
+  //           data = a.payload.data();
+  //         })
+  //       )
+  //       .subscribe(() => {
+  //         this.userAttendeeList = data.attendeeList;
+  //         //  console.log(this.userAttendeeList);
+  //         this.update_attendeeList(
+  //           meetingData.refValues.meetingId,
+  //           i,
+  //           meetingData
+  //         );
+  //       });
+  //   } else {
+  //     this.showNetworkIssue();
+  //   }
+  // }
+  // update_attendeeList(docId: string, index, data) {
+  //   var i;
+  //   // console.log("get DocId", docId);
+  //   for (i = 0; i < this.userAttendeeList.length; i++) {
+  //     if (this.userAttendeeList[i].uid == this.currentUser.uid) {
+  //       let obj = {
+  //         attendance: false,
+  //         email: this.userAttendeeList[i].email,
+  //         name: this.userAttendeeList[i].name,
+  //         picUrl: this.userAttendeeList[i].picUrl,
+  //         uid: this.userAttendeeList[i].uid,
+  //         accepted: "accept",
+  //       };
 
-        this.userAttendeeList.splice(i, 1);
-        this.userAttendeeList.splice(i, 0, obj);
-      }
-    }
+  //       this.userAttendeeList.splice(i, 1);
+  //       this.userAttendeeList.splice(i, 0, obj);
+  //     }
+  //   }
 
-    this.allCol
-      .updateData(this.allCol.meetings, docId, {
-        attendeeList: this.userAttendeeList,
-      })
-      .then(() => {
-        this.allNotification.splice(index, 1);
-        this.notification.clearNotification(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  //   this.allCol
+  //     .updateData(this.allCol.meetings, docId, {
+  //       attendeeList: this.userAttendeeList,
+  //     })
+  //     .then(() => {
+  //       this.allNotification.splice(index, 1);
+  //       this.notification.clearNotification(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
-  reject_dismiss(data, i) {
-    if (this.status === "ONLINE") {
-      this.allNotification.splice(i, 1);
-      //  console.log("Notification id", data);
-      data.Origin === "meetings" && data.Actions.Action1 === "Decline"
-        ? this.notification.recordMeetingResponse(
-            data,
-            this.getUserData,
-            "decline"
-          )
-        : this.notification.clearNotification(data);
-    } else {
-      this.showNetworkIssue();
-    }
-  }
+  // reject_dismiss(data, i) {
+  //   if (this.status === "ONLINE") {
+  //     this.allNotification.splice(i, 1);
+  //     //  console.log("Notification id", data);
+  //     data.Origin === "meetings" && data.Actions.Action1 === "Decline"
+  //       ? this.notification.recordMeetingResponse(
+  //           data,
+  //           this.getUserData,
+  //           "decline"
+  //         )
+  //       : this.notification.clearNotification(data);
+  //   } else {
+  //     this.showNetworkIssue();
+  //   }
+  // }
 
   //-------------------------
   //logout

@@ -196,4 +196,32 @@ export class SweetAlertService {
       }
     });
   }
+  //------------------poor network error-------------------
+  public poorNetwork() {
+    this.showAlert(
+      "error",
+      "Your network is too poor or your in offline.Please check your internet connection",
+      "Poor Network"
+    );
+  }
+  //----------- Confirm Alert
+  //----------- show alert with return type
+  confirmAlert(text: string, ques?: string) {
+    return Swal.fire({
+      title: `${ques}`,
+      text: text,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.value) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
 }

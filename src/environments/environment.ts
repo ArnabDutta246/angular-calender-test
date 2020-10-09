@@ -12,15 +12,26 @@ export const environment = {
   // },
 
   //--------------------------My own--------------------------
+  // firebaseConfig: {
+  //   apiKey: "AIzaSyCeN8pzW6OU7wNRG5LCdfLvHqM3i9S3_eU",
+  //   authDomain: "ionic-firebase-test-7d6f1.firebaseapp.com",
+  //   databaseURL: "https://ionic-firebase-test-7d6f1.firebaseio.com",
+  //   projectId: "ionic-firebase-test-7d6f1",
+  //   storageBucket: "ionic-firebase-test-7d6f1.appspot.com",
+  //   messagingSenderId: "479980265024",
+  //   appId: "1:479980265024:web:f14950916cce201c4ec9a5",
+  //   measurementId: "G-N0JL3JV17G",
+  // },
+  //-------------------------my own two-----------------------
   firebaseConfig: {
-    apiKey: "AIzaSyCeN8pzW6OU7wNRG5LCdfLvHqM3i9S3_eU",
-    authDomain: "ionic-firebase-test-7d6f1.firebaseapp.com",
-    databaseURL: "https://ionic-firebase-test-7d6f1.firebaseio.com",
-    projectId: "ionic-firebase-test-7d6f1",
-    storageBucket: "ionic-firebase-test-7d6f1.appspot.com",
-    messagingSenderId: "479980265024",
-    appId: "1:479980265024:web:f14950916cce201c4ec9a5",
-    measurementId: "G-N0JL3JV17G",
+    apiKey: "AIzaSyD_XV23xloumZKsnY6T6iod_JV34dlE5so",
+    authDomain: "angular-hub.firebaseapp.com",
+    databaseURL: "https://angular-hub.firebaseio.com",
+    projectId: "angular-hub",
+    storageBucket: "angular-hub.appspot.com",
+    messagingSenderId: "481177104315",
+    appId: "1:481177104315:web:09bcc953d6e7d468c49e9e",
+    measurementId: "G-8BNS0YP0NE",
   },
   //--------------------------old--------------------------
   paypalBasicUrl:

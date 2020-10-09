@@ -10,17 +10,17 @@ import { HttpClient } from "@angular/common/http";
 export class AllCollectionsService {
   notification: string;
   latestAlert: string;
-  meetings: string;
-  risks: string;
-  issues: string;
-  tasks: string;
   users: string;
   subscribers: string;
   kpi: string;
   noti: string;
+
+  //------------------------------no need----------------------------
+  meetings: string;
+  risks: string;
+  issues: string;
+  tasks: string;
   //-----------all email path--------------
-  adminUserRes: any = "https://appsolzone.com/mail/addUser.php";
-  userRes: any = "https://appsolzone.com/mail/register.php";
   meetingInvite: any = "https://appsolzone.com/mail/meetingInvite.php";
   meetingUpdate: any = "https://appsolzone.com/mail/updateMeeting.php";
   taskInit: any = "https://appsolzone.com/mail/task.php";
@@ -34,17 +34,25 @@ export class AllCollectionsService {
   shareIssuePath: any = "https://appsolzone.com/mail/issueShare.php";
   shareTaskPath: any = "https://appsolzone.com/mail/taskShare.php";
   shareRiskPath: any = "https://appsolzone.com/mail/riskShare.php";
+  //------------------------------no need----------------------------
+
+  //========================
+  _REGIONS: string;
+  //-----------all email path--------------
+  adminUserRes: any = "https://appsolzone.com/mail/addUser.php";
+  userRes: any = "https://appsolzone.com/mail/register.php";
 
   constructor(
-    private afs: AngularFirestore,
-    private afAuth: AngularFireAuth,
-    private httpClient: HttpClient
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
+    public httpClient: HttpClient
   ) {
     this.notification = "/notifications/";
     this.latestAlert = "/latestAlerts/";
     this.users = "users";
     this.subscribers = "subscribers";
     this.noti = "notifications";
+    this._REGIONS = "regions";
   }
 
   getSubscriptionplans() {
@@ -74,7 +82,20 @@ export class AllCollectionsService {
   getTransactionCollectionColOnly() {
     return this.afs.collection("transactions");
   }
-
+  //---------------- add data in a collection
+  adddata(collectionName: string, collectionObject: any): Promise<any> {
+    return new Promise((resolve: any, reject: any) => {
+      this.afs
+        .collection(collectionName)
+        .add(collectionObject)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
   //-------------------------------
   updateData(collectionName: string, documentId: string, data: any) {
     return new Promise((resolve: any, reject: any) => {

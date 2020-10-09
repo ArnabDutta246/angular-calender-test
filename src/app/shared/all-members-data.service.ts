@@ -26,6 +26,7 @@ export class AllMembersDataService {
     "SUSPENDED",
     "REJECTED",
     "EXTERNAL",
+    "ALL",
   ];
   getUserData: any = null;
   firebase: any;
@@ -48,6 +49,13 @@ export class AllMembersDataService {
     this.getUserData = decryptedData;
     // this.getUserData = obj;
     this.getSubscriptionData(this.getUserData.subscriberId);
+  }
+
+  public getCurrLogUserData() {
+    const data = sessionStorage.getItem("user");
+    var bytes = CryptoJS.AES.decrypt(data, sKey);
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return decryptedData;
   }
 
   //----------------------- org sub data -----------------

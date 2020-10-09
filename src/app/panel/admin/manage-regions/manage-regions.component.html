@@ -1,0 +1,206 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/panel/dashboard"
+        ><i class="fab fa-houzz mr-1"></i>Dashboard</a
+      >
+    </li>
+    <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
+      <i class="fas fa-globe-americas mr-1"></i> Manage Regions
+    </li>
+  </ol>
+</nav>
+<div class="p-lg-3">
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-lg-7">
+      <!-- ============== globe card=============== -->
+      <div class="card bg-white">
+        <div class="card-header">
+          <div class="row mb-1">
+            <div class="col-1">
+              <i class="fas fa-globe-americas text-danger"></i>
+            </div>
+            <div class="col-8">Country</div>
+            <div class="col-3 text-right cursor_pointer">
+              <button
+                class="btn btn-sm btn-light"
+                [ngClass]="select_country === false ? '' : 'd-none'"
+                (click)="showHideSelectCountry()"
+              >
+                <i class="far fa-plus-square text-secondary"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============== country select card=============== -->
+        <div class="p-1" [ngClass]="select_country === true ? '' : 'd-none'">
+          <div class="col-12 bg-light" id="select_country_box">
+            <form>
+              <div class="form-row">
+                <div class="col-10">
+                  <select
+                    class="form-control"
+                    [(ngModel)]="pageObj.newCountry"
+                    name="newCountry"
+                    aria-placeholder="Select country"
+                  >
+                    <option
+                      *ngFor="let country of country; let i = index"
+                      [value]="i"
+                    >
+                      {{ country.Name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-1 text-right">
+                  <div
+                    class="btn btn-sm btn-success"
+                    (click)="saveNewCountry()"
+                  >
+                    <i class="fas fa-plus"></i>
+                  </div>
+                </div>
+                <div class="col-1 text-right">
+                  <div
+                    class="btn btn-sm btn-light"
+                    (click)="showHideSelectCountry()"
+                  >
+                    <i class="far fa-times-circle"></i>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- ============== country select card end=============== -->
+      </div>
+      <!-- ============== globe card end =============== -->
+      <!-- ============== added countries ================ -->
+      <div *ngFor="let data of pageObj.haveCountries">
+        <div class="card mt-2">
+          <div class="card-header bg-primary text-white">
+            <div class="row">
+              <div class="col-8">{{ data.countryName }}</div>
+              <div class="col-3 text-right">
+                <i
+                  class="fas fa-plus cursor_pointer"
+                  *ngIf="
+                    pageObj.newRegionData.addRegionOf !== data.id &&
+                    getUserData.role == 'ADMIN'
+                  "
+                  (click)="pageObj.newRegionData.addRegionOf = data.id"
+                ></i>
+                <div
+                  class=""
+                  *ngIf="pageObj.newRegionData.addRegionOf == data.id"
+                >
+                  <i
+                    class="far fa-times-circle mr-2 cursor_pointer"
+                    (click)="pageObj.newRegionData.addRegionOf = ''"
+                  ></i>
+                  <i
+                    class="fas fa-check-circle cursor_pointer"
+                    (click)="addnewRegionFnc()"
+                  ></i>
+                </div>
+              </div>
+              <div class="col-1">
+                <i
+                  class="fas fa-trash cursor_pointer"
+                  *ngIf="getUserData.role == 'ADMIN'"
+                  (click)="deleteCoutryData(data.id, data.countryName)"
+                ></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- new region add field -->
+            <div
+              class="new_country_region_add mb-2"
+              *ngIf="pageObj.newRegionData.addRegionOf == data.id"
+            >
+              <form>
+                <div class="row">
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Region*"
+                    />
+                  </div>
+                  <div class="col">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Description*"
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- new region add field -->
+            <!-- empty region text -->
+            <div class="country_empty_region_text">
+              <i class="fas fa-crosshairs ml-1 text-primary fa-1x"></i
+              ><span>
+                No region added for Bangladesh. Let's add one by clicking add
+                region
+              </span>
+            </div>
+            <!-- empty region text -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ============== added countries ================ -->
+    </div>
+    <!-- ================= side summery card ================= -->
+    <div class="col-sm-12 col-md-4 col-lg-5">
+      <div class="row">
+        <div
+          class="col-xs-6 col-sm-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0"
+        >
+          <div class="card bg-light">
+            <div class="card-body">
+              <i class="fas fa-home"></i
+              ><small class="text-muted ml-1">added +</small>
+              <div class="text-right">
+                <h2>3</h2>
+                <h6>Total Country</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xs-6 col-sm-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0"
+        >
+          <div class="card bg-primary">
+            <div class="card-body text-white">
+              <i class="fas fa-flag"></i><small class="ml-1">added +</small>
+              <div class="text-right">
+                <h2>11</h2>
+                <h6>Total Regions</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ================= side summery card ================= -->
+  </div>
+</div>
+<!-- ============== empty country  card=============== -->
+<div
+  class="container p-5 empty-region-text text-center"
+  *ngIf="pageObj.haveCountries.length == 0"
+>
+  <p>
+    There is no country added into the system.Lets's start adding a country and
+    define it's regions by clicking the add country button.
+  </p>
+  <img
+    src="../../../../assets/image/imgs/splash_scr2.png"
+    alt="empty-region-text"
+  />
+</div>

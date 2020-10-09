@@ -18,6 +18,7 @@ import { AuthGuardPaymentUpdateService } from "./shared/auth-guard-payment-updat
 import { UserProfileComponent } from "./panel/user/user-profile/user-profile.component";
 
 import { UpdatePlansComponent } from "./allPayments/update-plans/update-plans.component";
+import { ManageRegionsComponent } from "./panel/admin/manage-regions/manage-regions.component";
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "/", pathMatch: "full" },
@@ -47,6 +48,11 @@ const appRoutes: Routes = [
         path: "member-management",
         canActivateChild: [AuthGuardAdminService],
         component: RegisterMemberComponent,
+      },
+      {
+        path: "regions",
+        canActivateChild: [AuthGuardAdminService],
+        component: ManageRegionsComponent,
       },
     ],
   },

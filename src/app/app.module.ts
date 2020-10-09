@@ -36,6 +36,7 @@ import { BroadcastComponent } from "./panel/admin/broadcast/broadcast.component"
 
 import { UpdatePlansComponent } from "./allPayments/update-plans/update-plans.component";
 import { PaymentComponent } from "./allPayments/payment/payment.component";
+import { ManageRegionsComponent } from './panel/admin/manage-regions/manage-regions.component';
 
 //.......................................................................
 
@@ -60,6 +61,7 @@ import { PaymentComponent } from "./allPayments/payment/payment.component";
     SubscribePageComponent,
     UpdatePlansComponent,
     PaymentComponent,
+    ManageRegionsComponent,
   ],
   imports: [
     BrowserModule,
