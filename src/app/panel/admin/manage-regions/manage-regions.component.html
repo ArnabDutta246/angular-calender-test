@@ -76,6 +76,38 @@
         <!-- ============== country select card end=============== -->
       </div>
       <!-- ============== globe card end =============== -->
+      <!-- ============== empty country  card start =============== -->
+      <div *ngIf="pageObj.haveCountries.length == 0">
+        <div class="card mt-2">
+          <div class="card-header bg-primary text-white">
+            <div class="row">
+              <div class="col-12">No countries</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="">
+              <div class="row">
+                <div class="col-1">
+                  <i class="fas fa-crosshairs ml-1 text-primary fa-1x"></i>
+                </div>
+                <div class="col-11">
+                  <p>
+                    There is no country added into the system.Lets's start adding a country and
+                    define it's regions by clicking the add country button.
+                  </p>
+                </div>
+                <div class="col-12">
+                  <img
+                    src="../../../../assets/image/imgs/splash_scr2.png"
+                    alt="empty-region-text"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============== empty country  card end =============== -->
       <!-- ============== added countries ================ -->
       <div *ngFor="let data of pageObj.haveCountries">
         <div class="card mt-2">
@@ -216,18 +248,4 @@
     </div>
     <!-- ================= side summery card ================= -->
   </div>
-</div>
-<!-- ============== empty country  card=============== -->
-<div
-  class="container p-5 empty-region-text text-center"
-  *ngIf="pageObj.haveCountries.length == 0"
->
-  <p>
-    There is no country added into the system.Lets's start adding a country and
-    define it's regions by clicking the add country button.
-  </p>
-  <img
-    src="../../../../assets/image/imgs/splash_scr2.png"
-    alt="empty-region-text"
-  />
 </div>
