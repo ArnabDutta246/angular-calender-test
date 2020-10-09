@@ -12,7 +12,7 @@
 </nav>
 <div class="p-lg-3">
   <div class="row">
-    <div class="col-sm-12 col-md-8 col-lg-7">
+    <div class="col-sm-12 col-md-8 col-lg-7 order-md-1 order-2 mb-2">
       <!-- ============== globe card=============== -->
       <div class="card bg-white">
         <div class="card-header">
@@ -63,10 +63,10 @@
                 </div>
                 <div class="col-1 text-right">
                   <div
-                    class="btn btn-sm btn-light"
+                    class="btn btn-sm btn-outline-danger"
                     (click)="showHideSelectCountry()"
                   >
-                    <i class="far fa-times-circle"></i>
+                    <i class="fas fa-times"></i>
                   </div>
                 </div>
               </div>
@@ -142,11 +142,17 @@
             <!-- new region add field -->
             <!-- empty region text -->
             <div class="country_empty_region_text">
-              <i class="fas fa-crosshairs ml-1 text-primary fa-1x"></i
-              ><span>
-                No region added for Bangladesh. Let's add one by clicking add
-                region
-              </span>
+              <div class="row">
+                <div class="col-1">
+                  <i class="fas fa-crosshairs ml-1 text-primary fa-1x"></i>
+                </div>
+                <div class="col-11">
+                  <p>
+                    No region added for Bangladesh. Let's add one by clicking add
+                    region button.
+                  </p>
+                </div>
+              </div>
             </div>
             <!-- empty region text -->
           </div>
@@ -156,7 +162,7 @@
       <!-- ============== added countries ================ -->
     </div>
     <!-- ================= side summery card ================= -->
-    <div class="col-sm-12 col-md-4 col-lg-5">
+    <div class="col-sm-12 col-md-4 col-lg-5 order-md-2 order-1 mb-2">
       <div class="row">
         <div
           class="col-xs-6 col-sm-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0"
@@ -167,7 +173,7 @@
               ><small class="text-muted ml-1">added +</small>
               <div class="text-right">
                 <h2>3</h2>
-                <h6>Total Country</h6>
+                <h6>Countries</h6>
               </div>
             </div>
           </div>
@@ -180,7 +186,7 @@
               <i class="fas fa-flag"></i><small class="ml-1">added +</small>
               <div class="text-right">
                 <h2>11</h2>
-                <h6>Total Regions</h6>
+                <h6>Regions</h6>
               </div>
             </div>
           </div>
