@@ -113,36 +113,56 @@
         <div class="card mt-2">
           <div class="card-header bg-primary text-white">
             <div class="row">
-              <div class="col-8">{{ data.countryName }}</div>
-              <div class="col-3 text-right">
-                <i
-                  class="fas fa-plus cursor_pointer"
-                  *ngIf="
-                    pageObj.newRegionData.addRegionOf !== data.id &&
-                    getUserData.role == 'ADMIN'
-                  "
-                  (click)="pageObj.newRegionData.addRegionOf = data.id"
-                ></i>
-                <div
-                  class=""
-                  *ngIf="pageObj.newRegionData.addRegionOf == data.id"
+              <div class="col-7 col-sm-8 col-md-8">{{ data.countryName }}</div>
+              <div
+                [class]="pageObj.newRegionData.addRegionOf == data.id ? 'col-1' : 'col-2'"
+              >
+              </div>
+              <div class="col-1"
+              *ngIf="pageObj.newRegionData.addRegionOf == data.id"
+              >
+                <button class="btn btn-primary btn-sm"
+                (click)="pageObj.newRegionData.addRegionOf = ''"
                 >
                   <i
-                    class="far fa-times-circle mr-2 cursor_pointer"
-                    (click)="pageObj.newRegionData.addRegionOf = ''"
+                  class="far fa-times-circle"
                   ></i>
+                </button>
+              </div>
+              <div class="col-1"
+              *ngIf="pageObj.newRegionData.addRegionOf == data.id"
+              >
+                <button class="btn btn-primary btn-sm"
+                (click)="addnewRegionFnc()"
+                >
                   <i
-                    class="fas fa-check-circle cursor_pointer"
-                    (click)="addnewRegionFnc()"
+                    class="fas fa-check-circle"
                   ></i>
-                </div>
+                </button>
+              </div>
+              <div class="col-1"
+              *ngIf="
+                pageObj.newRegionData.addRegionOf !== data.id &&
+                getUserData.role == 'ADMIN'
+              "
+              >
+                <button class="btn btn-primary btn-sm"
+                (click)="pageObj.newRegionData.addRegionOf = data.id"
+                >
+                  <i
+                    class="fas fa-plus"
+                  ></i>
+                </button>
               </div>
               <div class="col-1">
-                <i
-                  class="fas fa-trash cursor_pointer"
-                  *ngIf="getUserData.role == 'ADMIN'"
-                  (click)="deleteCoutryData(data.id, data.countryName)"
-                ></i>
+                <button class="btn btn-primary btn-sm"
+                (click)="deleteCoutryData(data.id, data.countryName)"
+                >
+                  <i
+                    class="fas fa-trash"
+                    *ngIf="getUserData.role == 'ADMIN'"
+                  ></i>
+                </button>
               </div>
             </div>
           </div>
@@ -154,7 +174,7 @@
             >
               <form>
                 <div class="row">
-                  <div class="col">
+                  <div class="col-5 col-md-3">
                     <input
                       type="text"
                       class="form-control"
@@ -163,7 +183,7 @@
                       name="region"
                     />
                   </div>
-                  <div class="col">
+                  <div class="col-7 col-md-9">
                     <input
                       type="text"
                       class="form-control"
@@ -177,12 +197,14 @@
             </div>
             <!-- new region add field -->
             <!-- each region data -->
-            <div class="eachRegion" *ngFor="let reg of data.region">
+            <ul class="eachRegion list-group list-group-flush">
+
+            <li class=" list-group-item" *ngFor="let reg of data.region">
               <div class="row">
-                <div class="col-3">
+                <div class="col-5 col-md-3">
                   <p>{{ reg.code }}</p>
                 </div>
-                <div class="col-8">
+                <div class="col-6 col-md-8">
                   <p class="text-muted">{{ reg.desc }}</p>
                 </div>
                 <div class="col-1">
@@ -191,7 +213,8 @@
                   </button>
                 </div>
               </div>
-            </div>
+            </li>
+            </ul>
             <!-- each region data -->
             <!-- empty region text -->
             <div class="country_empty_region_text" *ngIf="data.region.length == 0">
@@ -218,7 +241,7 @@
     <div class="col-sm-12 col-md-4 col-lg-5 order-md-2 order-1 mb-2">
       <div class="row">
         <div
-          class="col-xs-6 col-sm-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0"
+          class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1"
         >
           <div class="card bg-light">
             <div class="card-body">
@@ -232,7 +255,7 @@
           </div>
         </div>
         <div
-          class="col-xs-6 col-sm-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0"
+          class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0 p-1"
         >
           <div class="card bg-primary">
             <div class="card-body text-white">
