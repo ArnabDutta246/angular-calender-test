@@ -221,7 +221,7 @@
                     </div>
                     <div class="col-1">
                       <button class="btn btn-sm"
-                      (click)="visitToYearCalenderSet()"
+                      (click)="visitToYearCalenderSet(data.id, data.country, data.countryName, reg.code, reg.desc)"
                       >
                         <i class="fas fa-arrow-right text-primary"></i>
                       </button>
@@ -316,7 +316,7 @@
     </div>
     <!-- manage yearly calender component start -->
 
-    <app-manage-yearly-calender></app-manage-yearly-calender>
+    <app-manage-yearly-calender [data]='forYearlyCalender'></app-manage-yearly-calender>
     <!-- manage yearly calender component end -->
 
 

@@ -34,6 +34,7 @@ export class ManageRegionsComponent implements OnInit {
     },
     haveCountries: [],
   };
+  forYearlyCalender=null;
   constructor(
     private allMemberDataService: AllMembersDataService,
     private connectionService: ConnectionService,
@@ -314,13 +315,35 @@ export class ManageRegionsComponent implements OnInit {
       this.alertMessage.poorNetwork();
     }
   }
-  visitToYearCalenderSet() {
+  visitToYearCalenderSet(id, cCode, cName, regCode, regdesc) {
     let b: HTMLElement = this.manageYearCalenderPanel
       .nativeElement as HTMLElement;
     b.click();
+    if(this.getUserData.role == "ADMIN"){
+      this.forYearlyCalender= {
+        data: this.getUserData,
+        countryData: {
+          region: regCode,
+          regDesc: regdesc,
+          documentId: id,
+          countryCode: cCode,
+          countryName: cName
+        }
+      }
+    }else{
+     this.forYearlyCalender= {
+        data: this.getUserData,
+        countryData: {
+          region: regCode,
+          regDesc: regdesc,
+          countryCode: cCode,
+          countryName: cName
+        }
+      }
+    }
   }
   backToManageRegion() {
-    let b: HTMLElement = this.manageRegionPanel.nativeElement as HTMLElement;
+let b: HTMLElement = this.manageRegionPanel.nativeElement as HTMLElement;
     b.click();
   }
   //-------------------show network issue-------------

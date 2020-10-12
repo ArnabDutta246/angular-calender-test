@@ -1,14 +1,162 @@
+<div class="col-12">
+
+
 <div class="row">
   <div class="col-sm-12 col-md-6 col-lg-6">
-      <div class="form-group">
-        <label for="year"><i class="far fa-calendar-alt"></i> Years</label>
-      <select class="form-control form-control-sm" [(ngModel)]="pageObj.yearSelected" (ngModelChange)="getHolidayCalendar()">
-        <option *ngFor="let date of years" [value]="date">{{date}}</option>
-      </select>
+    <!-- Year form -->
+      <div class="form-group my-2">
+        <label for="year"><i class="far fa-calendar-alt text-danger mr-2"></i> Years</label>
+        <div class="row">
+          <div class="col-4">
+        <select class="form-control form-control-sm bg-white my-1" [(ngModel)]="pageObj.yearSelected"
+          (ngModelChange)="getHolidayCalendar()" id="year" name="year">
+          <option *ngFor="let date of years" [value]="date">{{date}}</option>
+        </select>
+          </div>
+          <div class="col-8">
+          <select class="form-control form-control-sm bg-white my-1"
+            (change)="calendarMonth($event)" id="months" name="months">
+            <option *ngFor="let date of months; let i=index;" [selected]="(date.startMonth == pageObj.session.calendarStartMonth) ? true : false" [value]="i">{{date.content}}</option>
+          </select>
+          </div>
+        </div>
+    <!-- Year form -->
       </div>
-    <div class="single-form">
+      <!-- regions  -->
+      <div class="region_card my-2">
+        <label for="regions"><i class="fas fa-crosshairs mr-1 text-danger fa-1x"></i> Region</label>
+        <div class="card" *ngIf="forCountryData !== null">
+          <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <span>{{forCountryData.countryData.region}}</span>
+            </div>
+            <div class="col-8">
+              <span class="text-muted">{{forCountryData.countryData.regDesc}}</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <!-- expance categories -->
+      <div class="expense-categories my-2">
+      <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Expense Categories</label>
+    
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+      <div class="card-header bg-white" >
+        <div class="row">
+          <div class="col-2 text-left">
+            <span>{{regionexpenseTypes.length}}</span>
+          </div>
+          <div class="col-8 text-center">
+            <span class="text-muted">Types of expenses</span>
+          </div>
+          <div class="col-2 text-right">
+            <button class="btn btn-sm" *ngIf="!showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes">
+    <i class="far fa-edit"></i></button>
+            <button class="btn btn-sm" *ngIf="showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes"><i class="fas fa-chevron-down"></i></button>
+          </div>
+        </div>
+         </div>
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <p class="text-danger border-bottom-danger">
+                Select an icon for new expense type
+              </p>
+              <div class="row">
+                <div class="col-1" *ngFor="let icon of expenseIcons; let i=index;">
+                 <div class="btn btn-sm" (click)="onSelectIcon(i)">
+                  <i [class]="icon" [ngClass]="i==pageObj.newexpenseTypes.selectedIcon ? 'text-primary' : ''"></i>
+                 </div>
+
+                </div>
+              </div>
+              <div class="row my-1">
+                <div class="col-10">
+                  <div class="row" *ngIf="pageObj!==null">
+                    <div class="col-1 pt-1">
+                    <i [ngClass]="pageObj.newexpenseTypes.icon "></i>
+                    </div>
+                    <div class="col-11">
+                      <input type="text" class="form-control" [(ngModel)]="pageObj.newexpenseTypes.type" placeholder="Description*" name="type">
+                      </div>
+                    </div>
+                  </div>
+                <div class="col-2">
+                  <button class="btn btn-sm btn-success"(click)="expensetypeAdd()">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                </div>
+                <div class="row">
+                  <div class="col-10">
+                  
+                  <div class="row" *ngFor="let leave of regionexpenseTypes; let i=index;">
+                    <div class="col-1">
+                      <i [ngClass]="pageObj.expenseTypes[leave].icon"></i>
+                    </div>
+                    <div class="col-11" >
+                    <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.expenseTypes[leave].type"
+                    name="type">
+                    </div>
+                  </div>
+                    
+                  </div>
+                  <div class="col-2">
+                
+                    <button class="btn btn-sm btn-warning" (click)="expensetypeSave()">
+                      <i class="fas fa-check"></i>
+                    </button>
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- expanse manager -->
+      <div class="expanse-manager my-2">
+      <label for="regions"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Expense Managers</label>
       
-    </div>
+      <div class="accordion" id="accordionExampleTwo">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="row">
+              <div class="col-2 text-left">
+                <span>{{expenseAdmins.length}}</span>
+              </div>
+              <div class="col-8 text-center">
+                <span class="text-muted">Expense manager{{expenseAdmins.length >1 ? 's' : ''}}</span>
+              </div>
+              <div class="col-2 text-right">
+                <button class="btn btn-sm" *ngIf="!showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers">
+                  <i class="far fa-edit"></i></button>
+                <button class="btn btn-sm" *ngIf="showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers"><i
+                    class="fas fa-chevron-down"></i></button>
+              </div>
+            </div>
+          </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-11">
+                    <h6>Manage expense admins</h6>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-sm">
+                      <i class="far fa-edit"></i></button>
+                  </div>
+                </div>
+              </div></div>
+        </div>
+      </div>
   </div>
   <div class="col-sm-12 col-md-6 col-lg-6"></div>
+</div>
 </div>
