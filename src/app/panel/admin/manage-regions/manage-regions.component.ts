@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ConnectionService } from "ng-connection-service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { map } from "rxjs/operators";
@@ -14,7 +14,11 @@ import { SweetAlertService } from "src/app/shared/sweet-alert.service";
   styleUrls: ["./manage-regions.component.scss"],
 })
 export class ManageRegionsComponent implements OnInit {
-  select_country: boolean = false;
+  @ViewChild("manageRegionPanel", { static: false })
+  manageRegionPanel: ElementRef;
+  @ViewChild("manageYearCalenderPanel", { static: false })
+  manageYearCalenderPanel: ElementRef;
+  //variables
   country: any = CountryCode;
   getUserData: any;
   status = "ONLINE"; //initializing as online by default
@@ -156,6 +160,7 @@ export class ManageRegionsComponent implements OnInit {
                   .then(() => {
                     // update successful
                     this.pageObj.addCountryMode = false; // hide country adding field
+
                     this.spinner.hide(); // loader off
                   })
                   .catch((err) => {
@@ -309,9 +314,14 @@ export class ManageRegionsComponent implements OnInit {
       this.alertMessage.poorNetwork();
     }
   }
-  //------------------ toggle country form------------
-  showHideSelectCountry() {
-    this.select_country = !this.select_country;
+  visitToYearCalenderSet() {
+    let b: HTMLElement = this.manageYearCalenderPanel
+      .nativeElement as HTMLElement;
+    b.click();
+  }
+  backToManageRegion() {
+    let b: HTMLElement = this.manageRegionPanel.nativeElement as HTMLElement;
+    b.click();
   }
   //-------------------show network issue-------------
   showNetworkIssue() {
