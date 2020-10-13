@@ -218,6 +218,46 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     this.pageObj.newexpenseTypes.selectedIcon=index;
     this.pageObj.newexpenseTypes.icon=this.expenseIcons[index];
   }
+  leavetypeSave(){
+    this.leavetypeAdd('save');
+  }
+
+  //add new leave type
+  leavetypeAdd(mode: any = 'add'){
+    let {type, allowed} = this.pageObj.newleaveTypes;
+    if(type || mode=='save'){
+      let leaveTypes = mode=='add' ?
+            {
+              ...this.pageObj.leaveTypes,
+              [type.replace(/[^A-Za-z]/g,'')] : {type, allowed},
+            }
+            :
+            {
+              ...this.pageObj.leaveTypes,
+            };
+      this.allCol.updateData(this.allCol._LEAVE_CALENDER, this.pageObj.documentId,{
+        leaveTypes: leaveTypes,
+      }).then(()=>{
+        this.pageObj.newleaveTypes.type='';
+        this.pageObj.newleaveTypes.allowed=0;
+        let msg = mode == 'add' ?
+                  "Leave type added successfully."
+                  :
+                  "Leave types saved successfully."
+        this.alertMessage.showAlert("success", msg,"Added Successfully");
+        this.propagationRequired = true;
+        this.session.user.loader = false;
+      }).catch(err=>{
+        this.session.user.loader = false;
+      })
+    } else {
+      this.alertMessage.showAlert("Warning", "Leave type description is required to add new leave type. Please check and try again","Please try again");
+    }
+  }
+
+  expensetypeSave(){
+    this.expensetypeAdd('save');
+  }
 
     //add new expense type
   expensetypeAdd(mode: any = 'add'){
@@ -243,7 +283,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
                   "Expense type added successfully."
                   :
                   "Expense types saved successfully."
-        this.alertMessage.showAlert("info", msg,"Added");
+        this.alertMessage.showAlert("success", msg,"Added");
         this.propagationRequired = true;
         this.spinner.hide();
       }).catch(()=>{

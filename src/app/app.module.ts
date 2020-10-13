@@ -38,6 +38,7 @@ import { UpdatePlansComponent } from "./allPayments/update-plans/update-plans.co
 import { PaymentComponent } from "./allPayments/payment/payment.component";
 import { ManageRegionsComponent } from './panel/admin/manage-regions/manage-regions.component';
 import { ManageYearlyCalenderComponent } from './panel/admin/manage-yearly-calender/manage-yearly-calender.component';
+import { SelectMembersComponent } from './panel/admin/select-members/select-members.component';
 
 //.......................................................................
 
@@ -64,6 +65,7 @@ import { ManageYearlyCalenderComponent } from './panel/admin/manage-yearly-calen
     PaymentComponent,
     ManageRegionsComponent,
     ManageYearlyCalenderComponent,
+    SelectMembersComponent,
   ],
   imports: [
     BrowserModule,

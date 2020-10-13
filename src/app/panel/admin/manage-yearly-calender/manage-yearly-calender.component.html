@@ -142,14 +142,14 @@
               </div>
             </div>
           </div>
-                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
+           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-11">
+                  <div class="col-10">
                     <h6>Manage expense admins</h6>
                   </div>
-                  <div class="col-1">
-                    <button class="btn btn-sm">
+                  <div class="col-2 text-right">
+                    <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal">
                       <i class="far fa-edit"></i></button>
                   </div>
                 </div>
@@ -157,6 +157,128 @@
         </div>
       </div>
   </div>
-  <div class="col-sm-12 col-md-6 col-lg-6"></div>
 </div>
+  <div class="col-sm-12 col-md-6 col-lg-6">
+          <!-- leaves categories -->
+          <div class="expense-categories my-2">
+            <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Leaves Categories</label>
+          
+            <div class="accordion" id="accordionExampleFour">
+              <div class="card">
+                <div class="card-header bg-white">
+                  <div class="row">
+                    <div class="col-2 text-left">
+                      <span>{{regionleaveTypes.length}}</span>
+                    </div>
+                    <div class="col-8 text-center">
+                      <span class="text-muted">Types of leaves</span>
+                    </div>
+                    <div class="col-2 text-right">
+                      <button class="btn btn-sm" *ngIf="!showLeaveTypes" data-toggle="collapse" data-target="#collapseFour"
+                        aria-expanded="true" aria-controls="collapseFour" (click)="showLeaveTypes=!showLeaveTypes">
+                        <i class="far fa-edit"></i></button>
+                      <button class="btn btn-sm" *ngIf="showLeaveTypes" data-toggle="collapse" data-target="#collapseFour"
+                        aria-expanded="true" aria-controls="collapseFour" (click)="showLeaveTypes=!showLeaveTypes"><i
+                          class="fas fa-chevron-down"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExampleFour">
+                  <div class="card-body">
+
+                    <div class="row my-1">
+                      <div class="col-10">
+                        <div class="row" *ngIf="pageObj!==null">
+
+                          <div class="col-9">
+                            <input type="text" class="form-control" [(ngModel)]="pageObj.newleaveTypes.type"
+                              placeholder="Description*" name="leave_type">
+                          </div>
+                          <div class="col-3">
+                          <input class="form-control" type="number" placeholder="" [(ngModel)]="pageObj.newleaveTypes.allowed" name="leave_amount">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-2">
+                        <button class="btn btn-sm btn-success"(click)="leavetypeAdd()">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-10">
+          
+                        <div class="row" *ngFor="let leave of regionleaveTypes; let i=index;">
+                          <div class="col-9">
+                            <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].type"
+                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_types"/>
+                            
+                          </div>
+                          <div class="col-3">
+                            <input type="number" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].allowed"
+                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount"/>
+                          </div>
+                        </div>
+          
+                      </div>
+                      <div class="col-2" *ngIf="i==0 && (session.role == 'ADMIN' || session.leaveAdmin)">
+          
+                        <button class="btn btn-sm btn-warning" click)="leavetypeSave()">
+                          <i class="fas fa-check"></i>
+                        </button>
+          
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    <!-- leave manager -->
+    <div class="leave-manager my-2">
+      <label for="leave"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Leave Managers </label>
+  
+      <div class="accordion" id="accordionExampleThree">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="row">
+              <div class="col-2 text-left">
+                <span>{{leaveAdmins.length}}</span>
+              </div>
+              <div class="col-8 text-center">
+                <span class="text-muted">Leave manager{{leaveAdmins.length >1 ? 's' : ''}}</span>
+              </div>
+              <div class="col-2 text-right">
+                <button class="btn btn-sm" *ngIf="!showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers">
+                  <i class="far fa-edit"></i></button>
+                <button class="btn btn-sm" *ngIf="showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers"><i
+                    class="fas fa-chevron-down"></i></button>
+              </div>
+            </div>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExampleThree">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-10">
+                  <h6>Manage leave admins</h6>
+                </div>
+                <div class="col-2 text-right">
+                  <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal">
+                    <i class="far fa-edit"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ================= select all member modal ============ -->
+<div class="modal fade" id="selectMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<app-select-members></app-select-members>
 </div>

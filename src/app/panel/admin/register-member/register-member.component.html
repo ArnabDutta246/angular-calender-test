@@ -61,14 +61,6 @@
                       }}</b></small
                     >
                   </p>
-                  <!-- <span style="font-size: 13px;margin-left: 5px;">
-                    {{
-                      subscriptiondata?.subscriptionType === "FREE"
-                        ? "Duration for 15 days"
-                        : "VALID TILL " + (subscriptiondata?.subscriptionEnd.toDate()
-                          | date: "dd/MM/yyyy")
-                    }}
-                  </span> -->
                 </div>
                 <div class="col-4 p-1 text-white">
                   <p>
@@ -82,16 +74,6 @@
                       }}</small
                     >
                   </p>
-
-                  <!-- <div
-                    class="border border-light"
-                    *ngIf="subscriptiondata?.subscriptionType"
-                  >
-                    <span>
-                      <i class="fas fa-circle pr-1 text-warning"></i>
-
-                    </span>
-                  </div> -->
                 </div>
                 <div class="col-12 pb-2 text-white">
                   <div class="">
@@ -99,12 +81,6 @@
                       {{ subscriptiondata?.subscriptionType }}
                     </h5>
                     <div class="row">
-                      <!-- <div class="col-6">
-    <span class="sideNav-sec-name">per license</span>
-                      </div>
-                      <div class="col-6">
-    <span class="sideNav-sec-name">USD {{ subPlanData?.price }}/month</span>
-                      </div> -->
                       <div class="col-6">
                         <span class="sideNav-sec-name text-white"
                           >Subscription start</span
@@ -166,12 +142,6 @@
                             }}<i class="fas fa-arrow-right ml-1"></i
                           ></small>
                         </button>
-                        <!-- <small
-                          class="text-white"
-                          style="font-size: 9px;"
-                          (click)="changePlan()"
-                        >Change<i class="fas fa-arrow-right ml-1"></i>
-                      </small> -->
                       </div>
                     </div>
                   </div>
