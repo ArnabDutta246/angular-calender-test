@@ -53,6 +53,7 @@ export class AllMembersDataService {
     this.getSubscriptionData(this.getUserData.subscriberId);
   }
   public fetchAllMember(id) {
+    let allMemberArr = [];
     let users = this.allCol.afs
       .collection(this.allCol.users, (ref) =>
         ref
@@ -60,7 +61,7 @@ export class AllMembersDataService {
           .where("status", "in", ["ACTIVE", "EXTERNAL"])
       )
       .snapshotChanges();
-    users
+   return users
       .pipe(
         map((actions: any[]) =>
           actions.map((a: any) => {
@@ -72,7 +73,6 @@ export class AllMembersDataService {
           })
         )
       )
-      .subscribe((arr) => { return arr;});
   }
   public getCurrLogUserData() {
     const data = sessionStorage.getItem("user");

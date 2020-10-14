@@ -3,169 +3,285 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <!-- Year form -->
-      <div class="form-group my-2">
-        <label for="year"><i class="far fa-calendar-alt text-danger mr-2"></i> Years</label>
-        <div class="row">
-          <div class="col-4">
-        <select class="form-control form-control-sm bg-white my-1" [(ngModel)]="pageObj.yearSelected"
-          (ngModelChange)="getHolidayCalendar()" id="year" name="year">
-          <option *ngFor="let date of years" [value]="date">{{date}}</option>
-        </select>
-          </div>
-          <div class="col-8">
-          <select class="form-control form-control-sm bg-white my-1"
-            (change)="calendarMonth($event)" id="months" name="months">
-            <option *ngFor="let date of months; let i=index;" [selected]="(date.startMonth == pageObj.session.calendarStartMonth) ? true : false" [value]="i">{{date.content}}</option>
-          </select>
-          </div>
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header">
+          <div class="col-12">Region</div>
         </div>
-    <!-- Year form -->
-      </div>
-      <!-- regions  -->
-      <div class="region_card my-2">
-        <label for="regions"><i class="fas fa-crosshairs mr-1 text-danger fa-1x"></i> Region</label>
-        <div class="card" *ngIf="forCountryData !== null">
-          <div class="card-body">
-          <div class="row">
-            <div class="col-4">
-              <span>{{forCountryData.countryData.region}}</span>
-            </div>
-            <div class="col-8">
-              <span class="text-muted">{{forCountryData.countryData.regDesc}}</span>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-      <!-- expance categories -->
-      <div class="expense-categories my-2">
-      <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Expense Categories</label>
-    
-      <div class="accordion" id="accordionExample">
-        <div class="card">
-      <div class="card-header bg-white" >
-        <div class="row">
-          <div class="col-2 text-left">
-            <span>{{regionexpenseTypes.length}}</span>
-          </div>
-          <div class="col-8 text-center">
-            <span class="text-muted">Types of expenses</span>
-          </div>
-          <div class="col-2 text-right">
-            <button class="btn btn-sm" *ngIf="!showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
-            aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes">
-    <i class="far fa-edit"></i></button>
-            <button class="btn btn-sm" *ngIf="showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
-            aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes"><i class="fas fa-chevron-down"></i></button>
-          </div>
-        </div>
-         </div>
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-              <p class="text-danger border-bottom-danger">
-                Select an icon for new expense type
-              </p>
+        <div class="card-body">
+          <!-- Year form -->
+            <div class="form-group my-2">
+              <label for="year"><i class="far fa-calendar-alt text-danger mr-2"></i> Years</label>
               <div class="row">
-                <div class="col-1" *ngFor="let icon of expenseIcons; let i=index;">
-                 <div class="btn btn-sm" (click)="onSelectIcon(i)">
-                  <i [class]="icon" [ngClass]="i==pageObj.newexpenseTypes.selectedIcon ? 'text-primary' : ''"></i>
-                 </div>
-
+                <div class="col-4">
+              <select class="form-control form-control-sm bg-white my-1" [(ngModel)]="pageObj.yearSelected"
+                (ngModelChange)="getHolidayCalendar()" id="year" name="year">
+                <option *ngFor="let date of years" [value]="date">{{date}}</option>
+              </select>
+                </div>
+                <div class="col-8">
+                <select class="form-control form-control-sm bg-white my-1"
+                  (change)="calendarMonth($event)" id="months" name="months">
+                  <option *ngFor="let date of months; let i=index;" [selected]="(date.startMonth == pageObj.session.calendarStartMonth) ? true : false" [value]="i">{{date.content}}</option>
+                </select>
                 </div>
               </div>
-              <div class="row my-1">
-                <div class="col-10">
-                  <div class="row" *ngIf="pageObj!==null">
-                    <div class="col-1 pt-1">
-                    <i [ngClass]="pageObj.newexpenseTypes.icon "></i>
+          <!-- Year form -->
+            </div>
+            <!-- regions  -->
+            <div class="region_card my-2">
+              <label for="regions"><i class="fas fa-crosshairs mr-1 text-danger fa-1x"></i> Region</label>
+              <div class="row" *ngIf="forCountryData !== null">
+                <div class="card-body">
+                <div class="row">
+                  <div class="col-4">
+                    <span>{{forCountryData.countryData.region}}</span>
+                  </div>
+                  <div class="col-8">
+                    <span class="text-muted">{{forCountryData.countryData.regDesc}}</span>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header">
+          <div class="col-12">Expense Mangement</div>
+        </div>
+        <div class="card-body">
+          <!-- expance categories -->
+          <div class="expense-categories my-2">
+          <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Expense Categories</label>
+
+          <div class="accordion" id="accordionExample">
+            <div class="row">
+          <div class="card-header col-12 bg-white" >
+            <div class="row">
+              <div class="col-2 text-left">
+                <span>{{regionexpenseTypes.length}}</span>
+              </div>
+              <div class="col-8 text-center">
+                <span class="text-muted">Types of expenses</span>
+              </div>
+              <div class="col-2 text-right">
+                <button class="btn btn-sm" *ngIf="!showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes">
+        <i class="far fa-edit"></i></button>
+                <button class="btn btn-sm" *ngIf="showExpenseTypes" data-toggle="collapse" data-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne" (click)="showExpenseTypes=!showExpenseTypes"><i class="fas fa-chevron-down"></i></button>
+              </div>
+            </div>
+             </div>
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                  <p class="text-danger border-bottom-danger">
+                    Select an icon for new expense type
+                  </p>
+                  <div class="row">
+                    <div class="col-1" *ngFor="let icon of expenseIcons; let i=index;">
+                     <div class="btn btn-sm" (click)="onSelectIcon(i)">
+                      <i [class]="icon" [ngClass]="i==pageObj.newexpenseTypes.selectedIcon ? 'text-primary' : ''"></i>
+                     </div>
+
                     </div>
-                    <div class="col-11">
-                      <input type="text" class="form-control" [(ngModel)]="pageObj.newexpenseTypes.type" placeholder="Description*" name="type">
+                  </div>
+                  <div class="row my-1">
+                    <div class="col-10">
+                      <div class="row" *ngIf="pageObj!==null">
+                        <div class="col-2">
+                        <i [ngClass]="pageObj.newexpenseTypes.icon " class=" pt-1"></i>
+                        </div>
+                        <div class="col-10">
+                          <input type="text" class="form-control" [(ngModel)]="pageObj.newexpenseTypes.type" placeholder="Description*" name="type">
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-2">
+                      <button class="btn btn-sm btn-success"(click)="expensetypeAdd()">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-10">
+
+                      <div class="row" *ngFor="let leave of regionexpenseTypes; let i=index;">
+                        <div class="col-2">
+                          <i [ngClass]="pageObj.expenseTypes[leave].icon" class="text-muted  pt-1"></i>
+                        </div>
+                        <div class="col-10" >
+                        <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.expenseTypes[leave].type"
+                        name="type">
+                        </div>
+                      </div>
+
+                      </div>
+                      <div class="col-2">
+
+                        <button class="btn btn-sm btn-warning" (click)="expensetypeSave()">
+                          <i class="fas fa-check"></i>
+                        </button>
+
                       </div>
                     </div>
                   </div>
-                <div class="col-2">
-                  <button class="btn btn-sm btn-success"(click)="expensetypeAdd()">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-                </div>
-                <div class="row">
-                  <div class="col-10">
-                  
-                  <div class="row" *ngFor="let leave of regionexpenseTypes; let i=index;">
-                    <div class="col-1">
-                      <i [ngClass]="pageObj.expenseTypes[leave].icon"></i>
-                    </div>
-                    <div class="col-11" >
-                    <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.expenseTypes[leave].type"
-                    name="type">
-                    </div>
-                  </div>
-                    
-                  </div>
-                  <div class="col-2">
-                
-                    <button class="btn btn-sm btn-warning" (click)="expensetypeSave()">
-                      <i class="fas fa-check"></i>
-                    </button>
-                 
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- expanse manager -->
-      <div class="expanse-manager my-2">
-      <label for="regions"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Expense Managers</label>
-      
-      <div class="accordion" id="accordionExampleTwo">
-        <div class="card">
-          <div class="card-header bg-white">
+          <!-- expanse manager -->
+          <div class="expanse-manager my-2">
+          <label for="regions"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Expense Managers</label>
+
+          <div class="accordion" id="accordionExampleTwo">
             <div class="row">
-              <div class="col-2 text-left">
-                <span>{{expenseAdmins.length}}</span>
-              </div>
-              <div class="col-8 text-center">
-                <span class="text-muted">Expense manager{{expenseAdmins.length >1 ? 's' : ''}}</span>
-              </div>
-              <div class="col-2 text-right">
-                <button class="btn btn-sm" *ngIf="!showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers">
-                  <i class="far fa-edit"></i></button>
-                <button class="btn btn-sm" *ngIf="showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers"><i
-                    class="fas fa-chevron-down"></i></button>
-              </div>
-            </div>
-          </div>
-           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
-              <div class="card-body">
+              <div class="card-header col-12 bg-white">
                 <div class="row">
-                  <div class="col-10">
-                    <h6>Manage expense admins</h6>
+                  <div class="col-2 text-left">
+                    <span>{{expenseAdmins.length}}</span>
+                  </div>
+                  <div class="col-8 text-center">
+                    <span class="text-muted">Expense manager{{expenseAdmins.length >1 ? 's' : ''}}</span>
                   </div>
                   <div class="col-2 text-right">
-                    <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal">
+                    <button class="btn btn-sm" *ngIf="!showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
+                      aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers">
                       <i class="far fa-edit"></i></button>
+                    <button class="btn btn-sm" *ngIf="showExpenseMangers" data-toggle="collapse" data-target="#collapseTwo"
+                      aria-expanded="true" aria-controls="collapseTwo" (click)="showExpenseMangers=!showExpenseMangers"><i
+                        class="fas fa-chevron-down"></i></button>
                   </div>
                 </div>
-              </div></div>
+              </div>
+              <div class="col-12">
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-10">
+                      <h6>Manage expense admins</h6>
+                    </div>
+                    <div class="col-2 text-right">
+                      <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal"
+                        (click)="setAllMemberSelectObject('propagateExpenseAdmin','Select expense manager')">
+                        <i class="far fa-edit"></i></button>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="expenseAdmins">
+                    <ng-container *ngFor="let data of expenseAdmins;let i= index">
+                      <div class="row border-bottom">
+                        <div class="col-3">
+                          <img class="member-list-pro-img"
+                            [src]=" data.picUrl !== ''? data.picUrl : '../../../../../assets/image/imgs/profile.png'"
+                            alt="member image" (error)="profileImgErrorHandler(data)" />
+                        </div>
+                        <div class="col-9">
+                          <span>{{ data.name }}</span><br>
+                          <small class="text-muted">{{ data.email }}</small>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
         </div>
       </div>
-  </div>
+    </div>
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header">
+          <div class="col-12">Team Members</div>
+        </div>
+        <div class="card-body">
+          <!-- team  -->
+          <div class="team-manager my-2">
+            <label for="regions"><i class="fas fa-users mr-1 text-danger fa-1x"></i> Team Memebers</label>
+    
+            <div class="accordion" id="accordionExampleFive">
+              <div class="row">
+                <div class="card-header col-12 bg-white">
+                  <div class="row">
+                    <div class="col-2 text-left">
+                      <span>{{team.length}}</span>
+                    </div>
+                    <div class="col-8 text-center">
+                      <span class="text-muted">Team member{{expenseAdmins.length >1 ? 's' : ''}}</span>
+                    </div>
+                    <div class="col-2 text-right">
+                      <button class="btn btn-sm" *ngIf="!showTeam" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"
+                        (click)="showTeam=!showTeam">
+                        <i class="far fa-edit"></i></button>
+                      <button class="btn btn-sm" *ngIf="showTeam" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"
+                        (click)="showTeam=!showTeam"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExampleFive">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-10">
+                          <h6>Manage team members</h6>
+                        </div>
+                        <div class="col-2 text-right">
+                          <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal"
+                            (click)="setAllMemberSelectObject('propagateCalendar','Select users to associate leave calender')">
+                            <i class="far fa-edit"></i></button>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="team">
+                        <ng-container *ngFor="let data of team;let i= index">
+                          <div class="row border-bottom">
+                            <div class="col-3">
+                              <img class="member-list-pro-img"
+                                [src]=" data.picUrl !== ''? data.picUrl : '../../../../../assets/image/imgs/profile.png'"
+                                alt="member image" (error)="profileImgErrorHandler(data)" />
+                            </div>
+                            <div class="col-9">
+                              <span>{{ data.name }}</span><br>
+                              <small class="text-muted">{{ data.email }}</small>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+    
+        </div>
+      </div>
+    </div>
+
 </div>
   <div class="col-sm-12 col-md-6 col-lg-6">
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header">
+          <div class="col-12">Leave Management</div>
+        </div>
+        <div class="card-body">
           <!-- leaves categories -->
           <div class="expense-categories my-2">
-            <label for="regions"><i class="fas fa-coffee mr-1 text-danger fa-1x"></i> Leaves Types</label>
-          
+            <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Leaves Categories</label>
+
             <div class="accordion" id="accordionExampleFour">
-              <div class="card">
-                <div class="card-header bg-white">
+              <div class="row">
+                <div class="card-header col-12 bg-white">
                   <div class="row">
                     <div class="col-2 text-left">
                       <span>{{regionleaveTypes.length}}</span>
@@ -213,21 +329,21 @@
                           <div class="col-8">
                             <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].type"
                               [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_types"/>
-                            
+
                           </div>
                           <div class="col-2">
                             <input type="number" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].allowed"
                               [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount"/>
                           </div>
                           <div class="col-2" *ngIf="i==0 && (session.role == 'ADMIN' || session.leaveAdmin)">
-                          
+
                             <button class="btn btn-sm btn-warning" (click)="leavetypeSave()">
                               <i class="fas fa-check"></i>
                             </button>
-                          
+
                           </div>
                         </div>
-          
+
                       </div>
 
                     </div>
@@ -236,51 +352,98 @@
               </div>
             </div>
           </div>
-    <!-- leave manager -->
-    <div class="leave-manager my-2">
-      <label for="leave"><i class="fas fa-user mr-1 text-danger fa-1x"></i> Leave Managers </label>
-  
-      <div class="accordion" id="accordionExampleThree">
-        <div class="card">
-          <div class="card-header bg-white">
-            <div class="row">
-              <div class="col-2 text-left">
-                <span>{{leaveAdmins.length}}</span>
-              </div>
-              <div class="col-8 text-center">
-                <span class="text-muted">Leave manager{{leaveAdmins.length >1 ? 's' : ''}}</span>
-              </div>
-              <div class="col-2 text-right">
-                <button class="btn btn-sm" *ngIf="!showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
-                  aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers">
-                  <i class="far fa-edit"></i></button>
-                <button class="btn btn-sm" *ngIf="showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
-                  aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers"><i
-                    class="fas fa-chevron-down"></i></button>
-              </div>
-            </div>
-          </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExampleThree">
-            <div class="card-body">
+          <!-- leave manager -->
+          <div class="leave-manager my-2">
+            <label for="leave"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Leave Managers </label>
+
+            <div class="accordion" id="accordionExampleThree">
               <div class="row">
-                <div class="col-10">
-                  <h6>Manage leave admins</h6>
+                <div class="card-header col-12 bg-white">
+                  <div class="row">
+                    <div class="col-2 text-left">
+                      <span>{{leaveAdmins.length}}</span>
+                    </div>
+                    <div class="col-8 text-center">
+                      <span class="text-muted">Leave manager{{leaveAdmins.length >1 ? 's' : ''}}</span>
+                    </div>
+                    <div class="col-2 text-right">
+                      <button class="btn btn-sm" *ngIf="!showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers">
+                        <i class="far fa-edit"></i></button>
+                      <button class="btn btn-sm" *ngIf="showLeaveMangers" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="true" aria-controls="collapseThree" (click)="showLeaveMangers=!showLeaveMangers"><i
+                          class="fas fa-chevron-down"></i></button>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-2 text-right">
-                  <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal">
-                    <i class="far fa-edit"></i></button>
+                <div class="col-12">
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExampleThree">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-10">
+                        <h6>Manage leave admins</h6>
+                      </div>
+                      <div class="col-2 text-right">
+                        <button class="btn btn-sm" data-toggle="modal" data-target="#selectMemberModal"
+                          (click)="setAllMemberSelectObject('propagateLeaveAdmin','Select leave admin')">
+                          <i class="far fa-edit"></i></button>
+                      </div>
+                    </div>
+                    <div class="list-leave-admin">
+                      <ng-container *ngIf="leaveAdmins">
+                        <ng-container *ngFor="let data of leaveAdmins;let i= index">
+                          <div class="row border-bottom">
+                            <div class="col-3">
+                              <img class="member-list-pro-img"
+                                [src]=" data.picUrl !== ''? data.picUrl : '../../../../../assets/image/imgs/profile.png'"
+                                alt="member image" (error)="profileImgErrorHandler(data)" />
+                            </div>
+                            <div class="col-9">
+                              <span>{{ data.name }}</span><br>
+                              <small class="text-muted">{{ data.email }}</small>
+                            </div>
+                          </div>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
                 </div>
+                </div>
+
               </div>
             </div>
           </div>
+
+          <div class="leave-manager my-2">
+            <label for="leave"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Calendar </label>
+            <div class="row">
+              <ion-calendar
+
+              >
+              <!-- [options]="options"
+              (select)="onSelect($event)"
+              (selectStart)="onSelectStart($event)"
+              (selectEnd)="onSelectEnd($event)"
+              (monthChange)="onMonthChange($event)" -->
+              </ion-calendar>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
     </div>
+
+
+
   </div>
 </div>
 
 
 <!-- ================= select all member modal ============ -->
 <div class="modal fade" id="selectMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<app-select-members [data]="allMemberSelectObject"></app-select-members>
+  <app-select-members [allMemberSelectObject]="allMemberSelectObject" (defineExpenseAdmin)="defineExpenseAdmin($event)"
+  (defineLeaveAdmin)="defineLeaveAdmin($event)"
+  ></app-select-members>
 </div>

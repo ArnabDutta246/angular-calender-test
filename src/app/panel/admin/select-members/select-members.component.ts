@@ -5,6 +5,8 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  Output,
+  EventEmitter,
 } from "@angular/core";
 import { AllMembersDataService } from "src/app/shared/all-members-data.service";
 import { ProfileImageService } from "src/app/shared/profile-image.service";
@@ -26,12 +28,16 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './select-members.component.html',
   styleUrls: ['./select-members.component.scss']
 })
-export class SelectMembersComponent implements OnInit {
+export class SelectMembersComponent implements OnInit,OnChanges {
   @ViewChild("contentSendMail", { static: true }) contentSendMail: ElementRef;
   @ViewChild("contentTwoSendMail", { static: true })
   contentTwoSendMail: ElementRef;
   @ViewChild("closeModalButton", { static: true }) closeModalButton: ElementRef;
-  @Input() data:any;
+  @Input() allMemberSelectObject:any;
+  @Output() defineExpenseAdmin = new EventEmitter<any>();
+  @Output() defineLeaveAdmin = new EventEmitter<any>();
+
+
   modalDismis: ElementRef;
   getUserData: any;
   isConnected: any;
@@ -56,7 +62,7 @@ export class SelectMembersComponent implements OnInit {
   copyMeetingMembers: any;
   backfromAttendees: any;
   sendMail: any;
-  attendeeList: any;
+  attendeeList: any=[];
   // which country or region is in progress
   countryData: any;
   // data form database
@@ -68,7 +74,7 @@ export class SelectMembersComponent implements OnInit {
   // other variables
   loader: boolean;
   showMessageInputBox: boolean = false;
-  heading: any;
+  getNavData:any = null;
   shareIcon: any;
 
   private checkboxValue:any;
@@ -82,10 +88,12 @@ export class SelectMembersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sl: SweetAlertService,
     private spinner:NgxSpinnerService
-  ) {}
+  ) {
+    this.getUserData = this.allMemberdata.getCurrLogUserData();
+  }
 
   ngOnInit() {
-    this.getUserData = this.allMemberdata.getCurrLogUserData();
+    this.allMemberSelectObject = null;
     //----------------------network check function------------------
     this.connectionService.monitor().subscribe((isConnected) => {
       this.isConnected = isConnected;
@@ -133,18 +141,22 @@ export class SelectMembersComponent implements OnInit {
         validator: [],
       }
     );
-    this.fetchAllMember(this.getUserData.subscriberId);
+    //this.fetchAllMember(this.getUserData.subscriberId);
     this.setValue();
   }
   ngOnChanges() {
-    this.data = this.data;
-    console.log(this.data);
+    this.getNavData = null;
+    if(this.allMemberSelectObject !== null){
+    this.getNavData = this.allMemberSelectObject;
+     this.fetchAllM();
+   }
   }
   setValue() {
     this.registerForm.patchValue({
       subscriptionID: this.getUserData.subscriberId,
       subscriberRole: this.getUserData.role === "ADMIN" ? "USER" : "EXTERNAL",
     });
+
   }
   get f() {
     return this.registerForm.controls;
@@ -160,9 +172,9 @@ export class SelectMembersComponent implements OnInit {
           let checked = false;
           let presentStatus = null;
           let disabled = (data.uid == this.getUserData) && this.getUserData.role != 'ADMIN';
-          switch(this.data.eventType){
+          switch(this.allMemberSelectObject.eventType){
             case 'propagateCalendar':
-              if(data.countryServe == this.data.countryData.countryCode && data.regionServe == this.data.countryData.region){
+              if(data.countryServe == this.allMemberSelectObject.countryData.countryCode && data.regionServe == this.allMemberSelectObject.countryData.region){
                 checked = true;
                 presentStatus = 'EXISTING';
               } else if(data.countryServe || data.regionServe){
@@ -172,7 +184,7 @@ export class SelectMembersComponent implements OnInit {
             case 'propagateLeaveAdmin':
               data.leaveAdmin &&
               Object.keys(data.leaveAdmin).forEach(l=>{
-                if(data.leaveAdmin[l].country == this.data.countryData.countryCode && data.leaveAdmin[l].region == this.data.countryData.region){
+                if(data.leaveAdmin[l].country == this.allMemberSelectObject.countryData.countryCode && data.leaveAdmin[l].region == this.allMemberSelectObject.countryData.region){
                   checked = true;
                   presentStatus = 'EXISTING';
                 }
@@ -181,7 +193,7 @@ export class SelectMembersComponent implements OnInit {
             case 'propagateExpenseAdmin':
               data.expenseAdmin &&
               Object.keys(data.expenseAdmin).forEach(e=>{
-                if(data.expenseAdmin[e].country == this.data.countryData.countryCode && data.expenseAdmin[e].region == this.data.countryData.region){
+                if(data.expenseAdmin[e].country == this.allMemberSelectObject.countryData.countryCode && data.expenseAdmin[e].region == this.allMemberSelectObject.countryData.region){
                   checked = true;
                   presentStatus = 'EXISTING';
                 }
@@ -245,79 +257,22 @@ export class SelectMembersComponent implements OnInit {
     }
   } 
 
-  fetchAllMember(id) {
-    let users = this.allCol.afs
-      .collection(this.allCol.users, (ref) =>
-        ref
-          .where("subscriberId", "==", this.getUserData.subscriberId)
-          .where("status", "in", ["ACTIVE", "EXTERNAL"])
-      )
-      .snapshotChanges();
-    users
-      .pipe(
-        map((actions: any[]) =>
-          actions.map((a: any) => {
-            let user = {
-              ...a.payload.doc.data(),
-              checked: true,
-            };
-            let checked = this.allrecipientArr.findIndex((u, i) => {
-              return u.email == user.email;
-            }, user);
-            if (checked == -1) {
-              user.checked = false;
-            }
-            return { ...user };
-          })
-        )
-      )
-      .subscribe((arr) => {
-        //  console.log(arr);
-        this.allMemberArray = arr;
-        this.filterMemberArray = arr;
-      });
+sendMemberListToParents(){
+  switch (this.allMemberSelectObject.eventType) {
+    case 'propagateExpenseAdmin':
+      this.defineExpenseAdmin.emit(this.attendeeList);
+      break;
+    case 'propagateLeaveAdmin':
+      this.defineLeaveAdmin.emit(this.attendeeList);
+      break;
+    default:
+      break;
   }
-  //--------------------filter member (search)------------------------
-  filterUser(e) {
-    let v = e.target.value;
-    let value = v.toLowerCase();
-    this.allMemberArray = this.filterMemberArray.filter((member) => {
-      let name = member.name.toLowerCase();
-      return !name.indexOf(value);
-    });
-  }
-  showSearchInput(id: string) {
-    const i = document.getElementById(`${id}`);
-    if (this.toggleSearch === false) {
-      i.classList.remove("d-none");
-      this.toggleSearch = true;
-    } else {
-      i.classList.add("d-none");
-      this.toggleSearch = false;
-    }
-  }
-  //----------------------select or remove member-------------
-  //-------------------add or remove attendee------------------------
-  addOrRemoveRecipient(member) {
-    let data = {
-      uid: member.uid,
-      email: member.email,
-      name: member.name,
-    };
-    if (
-      this.allrecipientArr.filter((n) => {
-        return n.uid === member.uid;
-      }).length > 0
-    ) {
-      this.allrecipientArr = this.allrecipientArr.filter((n) => {
-        return n.uid !== member.uid;
-      });
-      member.checked = false;
-    } else {
-      this.allrecipientArr.push(data);
-    }
-    // console.log(this.allrecipientArr);
-  }
+  this.attendeeList = [];
+}
+
+
+
   //-----------------------caching image----------------------
   profileImgErrorHandler(user: any) {
     console.log("profile image", user);

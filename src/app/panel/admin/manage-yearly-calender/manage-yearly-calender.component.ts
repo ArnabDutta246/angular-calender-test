@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 import { ConnectionService } from 'ng-connection-service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -14,6 +14,7 @@ import { SweetAlertService } from 'src/app/shared/sweet-alert.service';
 })
 export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   @Input() data: any;
+
   //@Output() taskUpdateParent = new EventEmitter<any>();
   forCountryData:any;
   allMemberSelectObject:any;
@@ -116,7 +117,8 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     private spinner: NgxSpinnerService
   ) {
     this.session = this.allMemberDataService.getCurrLogUserData();
-    this.users = this.allMemberDataService.fetchAllMember(this.session.subscriberId);
+    this.allMemberDataService.fetchAllMember(this.session.subscriberId).subscribe((arr) => {  this.users = arr});
+    console.log(this.users);
     this.regionleaveTypes = Object.keys(this.pageObj.leaveTypes).sort();
     this.regionexpenseTypes = Object.keys(this.pageObj.expenseTypes).sort();
     let usedIcons = this.regionexpenseTypes.map(e=>this.pageObj.expenseTypes[e].icon);
@@ -133,11 +135,15 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   }
   ngOnChanges(){
     this.forCountryData = null;
-    if(this.data !== null) this.forCountryData = this.data;
-    // this.getTeam();
-    // this.getLeaveAdmin();
-    // this.getExpenseAdmin();
-    this.getHolidayCalendar();
+    if(this.data !== null){
+     this.forCountryData = this.data;
+     this.getHolidayCalendar();
+    this.getTeam();
+    this.getLeaveAdmin();
+    this.getExpenseAdmin();
+    } 
+
+  
   }
   getHolidayCalendar(){
     this.pageObj.documentId = this.session.subscriberId+
@@ -375,18 +381,19 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   //                           };
   //   }, 100);
   // }
-    getLeaveAdmin(){
-    let {region, countryCode} = this.countryData;
+  getLeaveAdmin(){
+    // console.log(this.users);
+    let {region, countryCode} = this.forCountryData.countryData;
     this.leaveAdmins = this.users.filter(u=>u.leaveAdmin && Object.keys(u.leaveAdmin).includes(countryCode+"_"+region.replace(/[^A-Za-z]/g,'')));
   }
 
   getExpenseAdmin(){
-    let {region, countryCode} = this.countryData;
+    let {region, countryCode} = this.forCountryData.countryData;
     this.expenseAdmins = this.users.filter(u=>u.expenseAdmin && Object.keys(u.expenseAdmin).includes(countryCode+"_"+region.replace(/[^A-Za-z]/g,'')));
   }
 
   getTeam(){
-    let {region, countryCode} = this.countryData;
+    let {region, countryCode} = this.forCountryData.countryData;
     this.team = this.users.filter(u=>u.countryServe && u.regionServe && u.countryServe == countryCode && u.regionServe == region);
   }
   setAllMemberSelectObject(eventType:string,heading:string){
@@ -397,5 +404,102 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       heading:heading
      //eventType: 'propagateExpenseAdmin',
     }
+  }
+  //================= define expense admin===========
+  defineExpenseAdmin(recipientList: any =[])
+  {
+    let batch = this.allCol.afs.firestore.batch();
+    this.spinner.show();
+    let adminregion = {};
+    let regionCode = this.forCountryData.countryData.countryCode + "_" + this.forCountryData.countryData.region.replace(/[^A-Za-z]/g,'');
+    adminregion[regionCode] = {country: this.forCountryData.countryData.countryCode, region: this.forCountryData.countryData.region};
+    this.expenseAdmins = recipientList.filter(r=>r.checked);
+
+    for (let data of recipientList)
+    {
+      if( data.checked && data.presentStatus != 'EXISTING'){
+        if(data.expenseAdmin){
+          Object.assign(data.expenseAdmin,adminregion);
+        } else {
+          Object.assign(data,{expenseAdmin: adminregion});
+        }
+      } else if (!data.checked && data.presentStatus == 'EXISTING'){
+        delete data.expenseAdmin[regionCode];
+      }
+
+      if(
+        ( data.checked && data.presentStatus != 'EXISTING') ||
+        (!data.checked && data.presentStatus == 'EXISTING')
+       ){
+
+        let userDoc = data.uid + "_" + this.session.subscriberId;
+        let userDocRef = this.allCol.afs.collection(this.allCol.users).doc(userDoc).ref;
+        batch.set(userDocRef,{expenseAdmin: data.expenseAdmin}, {merge: true});
+      }
+    }
+
+    batch.commit().then(()=>{
+      this.spinner.hide();
+    }).catch(err=>{
+      this.spinner.hide();
+      this.alertMessage.showAlert('error',err,'Please Try Again');
+    });
+    // Logic to send broadcust message for notifications
+    // we can even provide option to share this using email for external users
+    // Loop through the selected members and
+    this.alertMessage.showAlert("success","Expense admin for the region " + this.forCountryData.countryData.countryCode +
+    " - " + this.forCountryData.countryData.region +
+    " updated successfully.","Rgeion Expense Admin",);
+  } 
+
+  //========================= define leave admin=========
+  defineLeaveAdmin(recipientList: any =[])
+  {
+    let batch = this.allCol.afs.firestore.batch();
+    this.spinner.show();
+    let adminregion = {};
+    let regionCode = this.forCountryData.countryData.countryCode + "_" + this.forCountryData.countryData.region.replace(/[^A-Za-z]/g,'');
+    adminregion[regionCode] = {country: this.forCountryData.countryData.countryCode, region: this.forCountryData.countryData.region};
+    this.leaveAdmins = recipientList.filter(r=>r.checked);
+    for (let data of recipientList)
+    {
+      if( data.checked && data.presentStatus != 'EXISTING'){
+        if(data.leaveAdmin){
+          Object.assign(data.leaveAdmin,adminregion);
+        } else {
+          Object.assign(data,{leaveAdmin: adminregion});
+        }
+      } else if (!data.checked && data.presentStatus == 'EXISTING'){
+        delete data.leaveAdmin[regionCode];
+      }
+
+      if(
+        ( data.checked && data.presentStatus != 'EXISTING') ||
+        (!data.checked && data.presentStatus == 'EXISTING')
+       ){
+           let userDoc = data.uid + "_" + this.session.subscriberId;
+           let userDocRef = this.allCol.afs.collection(this.allCol.users).doc(userDoc).ref;
+           batch.set(userDocRef,{leaveAdmin: data.leaveAdmin}, {merge: true});
+       }
+
+    }
+
+    batch.commit().then(()=>{
+      this.spinner.hide();
+    }).catch(err=>{
+      this.spinner.hide();
+      this.alertMessage.showAlert("error",err,"Please Try Again");
+    });
+    // Logic to send broadcust message for notifications
+    // we can even provide option to share this using email for external users
+    // Loop through the selected members and
+    this.alertMessage.showAlert("success","Leave admin for the region " + this.forCountryData.countryData.countryCode +
+    " - " + this.forCountryData.countryData.region +
+    " updated successfully.","Rgeion Leave Admin");
+  }
+    //-----------------------caching image----------------------
+  profileImgErrorHandler(user: any) {
+    console.log("profile image", user);
+    user.picUrl = "../../../../assets/image/imgs/profile.png";
   }
 }
