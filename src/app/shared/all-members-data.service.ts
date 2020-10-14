@@ -8,6 +8,7 @@ import { sKey } from "../extra/sKey";
 import * as firebase from "firebase/app";
 import { AllErrorMsgService } from "./all-error-msg.service";
 import * as CryptoJS from "crypto-js";
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: "root",
 })
@@ -18,6 +19,7 @@ export class AllMembersDataService {
   newUser: any;
   newUserDataArr: any;
   phone: any;
+  countryServe:any;
   isRoleStatusExtarnal: string = "EXTERNAL";
   status = [
     "ACTIVE",
@@ -50,7 +52,28 @@ export class AllMembersDataService {
     // this.getUserData = obj;
     this.getSubscriptionData(this.getUserData.subscriberId);
   }
-
+  public fetchAllMember(id) {
+    let users = this.allCol.afs
+      .collection(this.allCol.users, (ref) =>
+        ref
+          .where("subscriberId", "==", this.getUserData.subscriberId)
+          .where("status", "in", ["ACTIVE", "EXTERNAL"])
+      )
+      .snapshotChanges();
+    users
+      .pipe(
+        map((actions: any[]) =>
+          actions.map((a: any) => {
+            let user = {
+              ...a.payload.doc.data(),
+              id: a.payload.id,
+            };
+            return { ...user };
+          })
+        )
+      )
+      .subscribe((arr) => { return arr;});
+  }
   public getCurrLogUserData() {
     const data = sessionStorage.getItem("user");
     var bytes = CryptoJS.AES.decrypt(data, sKey);
@@ -233,6 +256,7 @@ export class AllMembersDataService {
   public addNewMember(frm, dial) {
     this.newUser = frm;
     this.phone = dial + this.newUser.subscriberPhone;
+    this.countryServe = dial;
 
     if (this.newUser.subscriberRole === "USER") {
       return this.noOfFreeLicenseHas().then((res) => {
@@ -431,6 +455,9 @@ export class AllMembersDataService {
         email: this.newUser.subscriberEmail,
         jobTitle: this.newUser.subscriberJobTitle,
         phone: this.phone,
+        // countryServe:this.countryServe,
+        // leaveAdmin:{},
+        // expanseAdmin:{},
         role:
           this.newUser.subscriberRole === this.isRoleStatusExtarnal
             ? "USER"

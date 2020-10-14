@@ -161,7 +161,7 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
           <!-- leaves categories -->
           <div class="expense-categories my-2">
-            <label for="regions"><i class="fas fa-calculator mr-1 text-danger fa-1x"></i> Leaves Categories</label>
+            <label for="regions"><i class="fas fa-coffee mr-1 text-danger fa-1x"></i> Leaves Types</label>
           
             <div class="accordion" id="accordionExampleFour">
               <div class="card">
@@ -238,7 +238,7 @@
           </div>
     <!-- leave manager -->
     <div class="leave-manager my-2">
-      <label for="leave"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Leave Managers </label>
+      <label for="leave"><i class="fas fa-user mr-1 text-danger fa-1x"></i> Leave Managers </label>
   
       <div class="accordion" id="accordionExampleThree">
         <div class="card">
@@ -282,5 +282,5 @@
 
 <!-- ================= select all member modal ============ -->
 <div class="modal fade" id="selectMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<app-select-members></app-select-members>
+<app-select-members [data]="allMemberSelectObject"></app-select-members>
 </div>

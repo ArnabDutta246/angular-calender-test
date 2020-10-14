@@ -17,12 +17,9 @@ import {
 } from "@angular/forms";
 import { SweetAlertService } from "src/app/shared/sweet-alert.service";
 import { map } from "rxjs/operators";
-import * as moment from "moment";
-import { UserLoginService } from "src/app/shared/user-login.service";
-import * as CryptoJS from "crypto-js";
 import { AllCollectionsService } from 'src/app/shared/all-collections.service';
 import { ConnectionService } from 'ng-connection-service';
-import { sKey } from 'src/app/extra/sKey';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-select-members',
@@ -30,13 +27,11 @@ import { sKey } from 'src/app/extra/sKey';
   styleUrls: ['./select-members.component.scss']
 })
 export class SelectMembersComponent implements OnInit {
- @ViewChild("contentSendMail", { static: true }) contentSendMail: ElementRef;
+  @ViewChild("contentSendMail", { static: true }) contentSendMail: ElementRef;
   @ViewChild("contentTwoSendMail", { static: true })
   contentTwoSendMail: ElementRef;
   @ViewChild("closeModalButton", { static: true }) closeModalButton: ElementRef;
-  @Input()
-  data: any;
-  @Input() type: any;
+  @Input() data:any;
   modalDismis: ElementRef;
   getUserData: any;
   isConnected: any;
@@ -44,15 +39,41 @@ export class SelectMembersComponent implements OnInit {
   allMemberArray: any;
   filterMemberArray: any;
   toggleSearch: Boolean = false;
+   linkData: any = null;
   allrecipientArr: any[] = [];
   addPanel: boolean = false;
-  linkData: any = null;
+ 
   //-------form group
   registerForm: FormGroup;
   Cd: any = CountryCode;
   dialCode = CountryCode[0].Dial;
   submitted: any;
   headerText = ["Select recipients", "Add new member"];
+  // navigation data
+  nav: any;
+  copyMeetingDetails: any;
+  meetingMembers: any;
+  copyMeetingMembers: any;
+  backfromAttendees: any;
+  sendMail: any;
+  attendeeList: any;
+  // which country or region is in progress
+  countryData: any;
+  // data form database
+  users$: any;
+  activeMembers: any=[];
+  externalMembers: any=[];
+  allMembers: any;
+  eventType: string = null;
+  // other variables
+  loader: boolean;
+  showMessageInputBox: boolean = false;
+  heading: any;
+  shareIcon: any;
+
+  private checkboxValue:any;
+  private broadcastMsg:any;
+  //===============================
   constructor(
     private connectionService: ConnectionService,
     private allCol: AllCollectionsService,
@@ -60,6 +81,7 @@ export class SelectMembersComponent implements OnInit {
     private proImg: ProfileImageService,
     private formBuilder: FormBuilder,
     private sl: SweetAlertService,
+    private spinner:NgxSpinnerService
   ) {}
 
   ngOnInit() {
@@ -115,8 +137,8 @@ export class SelectMembersComponent implements OnInit {
     this.setValue();
   }
   ngOnChanges() {
-    this.type = this.type;
     this.data = this.data;
+    console.log(this.data);
   }
   setValue() {
     this.registerForm.patchValue({
@@ -127,6 +149,102 @@ export class SelectMembersComponent implements OnInit {
   get f() {
     return this.registerForm.controls;
   }
+  fetchAllM(){
+    this.spinner.show();
+    this.users$ = this.allCol.afs.collection(this.allCol.users, ref=>ref
+      .where('subscriberId','==',this.getUserData.subscriberId)
+      .where('status','in',['ACTIVE','EXTERNAL'])).snapshotChanges().pipe(
+        map((actions: any[]) => actions.map((a:any)=>{
+          const data = a.payload.doc.data();
+          // bring me into user
+          let checked = false;
+          let presentStatus = null;
+          let disabled = (data.uid == this.getUserData) && this.getUserData.role != 'ADMIN';
+          switch(this.data.eventType){
+            case 'propagateCalendar':
+              if(data.countryServe == this.data.countryData.countryCode && data.regionServe == this.data.countryData.region){
+                checked = true;
+                presentStatus = 'EXISTING';
+              } else if(data.countryServe || data.regionServe){
+                disabled = true;
+              }
+              break;
+            case 'propagateLeaveAdmin':
+              data.leaveAdmin &&
+              Object.keys(data.leaveAdmin).forEach(l=>{
+                if(data.leaveAdmin[l].country == this.data.countryData.countryCode && data.leaveAdmin[l].region == this.data.countryData.region){
+                  checked = true;
+                  presentStatus = 'EXISTING';
+                }
+              });
+              break;
+            case 'propagateExpenseAdmin':
+              data.expenseAdmin &&
+              Object.keys(data.expenseAdmin).forEach(e=>{
+                if(data.expenseAdmin[e].country == this.data.countryData.countryCode && data.expenseAdmin[e].region == this.data.countryData.region){
+                  checked = true;
+                  presentStatus = 'EXISTING';
+                }
+              });
+              break;
+          }
+          let user = {...data, checked, presentStatus, disabled };
+          if(checked){
+            this.attendeeList.push({...user});
+          }
+          return { ...user };
+        }))
+      ).subscribe((data)=>{
+        this.spinner.hide();
+        this.allMembers = data;
+      });
+  }
+
+
+ checkboxOnChange()
+  {
+    if(this.checkboxValue)
+    {
+      this.attendeeList =[];
+      this.allMembers.forEach((data,i)=>{
+        // which is not disabled
+        if(!data.disabled){
+          data.checked = true;
+          this.attendeeList.push({...data});
+        }
+      });
+    }
+    else
+    {
+      this.attendeeList =[];
+      this.allMembers.forEach((data,i)=>{
+        data.checked = false;
+      });
+    }
+  }
+ // making list of selected users
+  makeaList(e, data)
+  {
+    if(e.target.checked){
+      data.checked = true;
+      let dataIdToAdd = this.attendeeList.findIndex((u,i)=>{ return u.email == data.email}, data);
+      if(this.eventType && dataIdToAdd !=-1){
+        this.attendeeList[dataIdToAdd].checked = true;
+      } else {
+        this.attendeeList.push({...data});
+      }
+    } else {
+      let dataIdTodelete = this.attendeeList.findIndex((u,i)=>{ return u.email == data.email}, data);
+      if(this.eventType && this.attendeeList[dataIdTodelete].presentStatus=='EXISTING'){
+        this.attendeeList[dataIdTodelete].checked = false;
+      }
+      else {
+        this.attendeeList.splice(dataIdTodelete, 1);
+      }
+      data.checked = false;
+    }
+  } 
+
   fetchAllMember(id) {
     let users = this.allCol.afs
       .collection(this.allCol.users, (ref) =>

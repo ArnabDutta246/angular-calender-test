@@ -16,6 +16,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   @Input() data: any;
   //@Output() taskUpdateParent = new EventEmitter<any>();
   forCountryData:any;
+  allMemberSelectObject:any;
   session: any;
   countryData: any;
   users: any = [];
@@ -64,7 +65,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   public years=[];
   public months=[
     {content:"Jan to Dec",month:1, startMonth: 1, endMonth: 12},
-    {content:"fas Fab to Jan",month:2, startMonth: 2, endMonth: 1},
+    {content:"Fab to Jan",month:2, startMonth: 2, endMonth: 1},
     {content:"Mar to Feb",month:3, startMonth: 3, endMonth: 2},
     {content:"Apr to Mar",month:4, startMonth: 4, endMonth: 3},
     {content:"May to apr",month:5, startMonth: 5, endMonth: 4},
@@ -97,6 +98,16 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
                           'fas fa-tags',
                           'fas fa-share',
                         ];
+
+//  optionsRange: CalendarComponentOptions = {
+//     pickMode: 'range',
+//     weekStart: 1,
+//   };
+
+//   optionsSingle: CalendarComponentOptions = {
+//     pickMode: 'single',
+//     weekStart: 1,
+//   };
   constructor(
     private allMemberDataService: AllMembersDataService,
     private connectionService: ConnectionService,
@@ -105,6 +116,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     private spinner: NgxSpinnerService
   ) {
     this.session = this.allMemberDataService.getCurrLogUserData();
+    this.users = this.allMemberDataService.fetchAllMember(this.session.subscriberId);
     this.regionleaveTypes = Object.keys(this.pageObj.leaveTypes).sort();
     this.regionexpenseTypes = Object.keys(this.pageObj.expenseTypes).sort();
     let usedIcons = this.regionexpenseTypes.map(e=>this.pageObj.expenseTypes[e].icon);
@@ -112,6 +124,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
    }
 
   ngOnInit() {
+
     // first add a year previous to the current calendar date
     this.years.push(moment().subtract('years', 1).format("YYYY"));
     for(var i=0;i<10;i++){
@@ -121,20 +134,24 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   ngOnChanges(){
     this.forCountryData = null;
     if(this.data !== null) this.forCountryData = this.data;
+    // this.getTeam();
+    // this.getLeaveAdmin();
+    // this.getExpenseAdmin();
+    this.getHolidayCalendar();
   }
   getHolidayCalendar(){
-    this.pageObj.documentId = this.session.admin.subscriberId+
-                              "_"+this.countryData.countryCode+
-                              "_"+this.countryData.region.replace(/[^A-Za-z]/g,'').toUpperCase()+
+    this.pageObj.documentId = this.session.subscriberId+
+                              "_"+this.forCountryData.countryData.countryCode+
+                              "_"+this.forCountryData.countryData.region.replace(/[^A-Za-z]/g,'').toUpperCase()+
                               "_"+this.pageObj.yearSelected;
     if(navigator.onLine){
-      this.session.user.loader = true;
+      this.spinner.show();
       let cotage = this.allCol.afs.collection(this.allCol._LEAVE_CALENDER).doc(this.pageObj.documentId).snapshotChanges();
       cotage.pipe(
         map(a => {
           return a.payload.data();
         })).subscribe((data: any)=>{
-          this.session.user.loader = false;
+          this.spinner.hide();
           if(data){
             this.pageObj.generalHoliday = data.weeklyOffDays;
             this.pageObj.holidayList = data.holidays;
@@ -147,7 +164,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
             this.regionexpenseTypes = Object.keys(this.pageObj.expenseTypes).sort();
             let usedIcons = this.regionexpenseTypes.map(e=>this.pageObj.expenseTypes[e].icon);
             this.expenseIcons = this.expenseIcons.filter(i=>!usedIcons.includes(i));
-            //this.extratHolidays();
+            this.extratHolidays();
           }else{
             this.createDocumentOnThisRegion();
           }
@@ -171,12 +188,12 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
           delete leaveTypes[lt].taken;
         });
       this.allCol.addDataInSpecificId(this.allCol._LEAVE_CALENDER, this.pageObj.documentId,{
-        subscriberId: this.session.admin.subscriberId,
+        subscriberId: this.session.subscriberId,
         year: this.pageObj.yearSelected,
         calendarStartMonth: this.pageObj.session.calendarStartMonth ? this.pageObj.session.calendarStartMonth : 1,
         calendarEndMonth: this.pageObj.session.calendarEndMonth ? this.pageObj.session.calendarEndMonth : 12,
-        country: this.countryData.countryCode,
-        region: this.countryData.region,
+        country: this.forCountryData.countryData.countryCode,
+        region: this.forCountryData.countryData.region,
         weeklyOffDays: this.pageObj.generalHoliday,
         holidays: {},
         noOfUsers: 0,
@@ -212,7 +229,30 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
        this.alertMessage.poorNetwork();
     }
   }
-
+  // view mentioned holiday list
+  // given year
+  giveMentionYearHoliday(){
+    let h = this.pageObj.holidayList;
+    return Object.keys(this.pageObj.holidayList).sort((a,b)=>h[a].startDate.seconds-h[b].startDate.seconds);
+  }
+  // set calendar session
+  calendarMonth(e){
+    if(navigator.onLine){
+      let data = this.months[e];
+      this.spinner.show();
+      this.allCol.updateData(this.allCol._LEAVE_CALENDER, this.pageObj.documentId,{
+        calendarEndMonth: data.endMonth,
+        calendarStartMonth: data.startMonth,
+      }).then(()=>{
+        this.calendarMonths = this.months[e].content;
+        this.spinner.hide();
+      }).catch(()=>{
+        this.spinner.hide();
+      })
+    }else{
+      this.alertMessage.poorNetwork();
+    }
+  }
 
   onSelectIcon(index){
     this.pageObj.newexpenseTypes.selectedIcon=index;
@@ -246,9 +286,9 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
                   "Leave types saved successfully."
         this.alertMessage.showAlert("success", msg,"Added Successfully");
         this.propagationRequired = true;
-        this.session.user.loader = false;
+        this.spinner.hide();
       }).catch(err=>{
-        this.session.user.loader = false;
+        this.spinner.hide();
       })
     } else {
       this.alertMessage.showAlert("Warning", "Leave type description is required to add new leave type. Please check and try again","Please try again");
@@ -291,6 +331,71 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       })
     } else {
       this.alertMessage.showAlert("info", "Expense type description is required to add new expense type. Please check and try again","Please try again");
+    }
+  }
+
+    // extract holidays for calendar daysConfig
+  // extract the all applied leaves
+  extratHolidays(){
+    this.newObj = [];
+    let holidays = this.pageObj.holidayList;
+    Object.keys(holidays).forEach(h=>{
+      let style = 'holiday';
+      let startDate = moment(holidays[h].startDate.seconds*1000);
+      let endDate = moment(holidays[h].endDate.seconds*1000);
+      if(startDate==endDate){
+        this.newObj.push({date: new Date(moment(startDate).format("YYYY-MM-DD")), cssClass: style});
+      } else {
+
+        while(startDate <= endDate){
+          this.newObj.push({date: new Date(moment(startDate).format("YYYY-MM-DD")), cssClass: style});
+          startDate = moment(startDate).add(1, 'days');
+        }
+      }
+
+    });
+    //this.renderDataSet();
+    // this.monthChanges({newMonth: {months: parseInt(moment().format("MM")), years: parseInt(moment().format("YYYY"))}});
+  }
+
+  // render whole data in the array
+  // only use this and send parameters
+  // renderDataSet(){
+  //   setTimeout(()=>{
+  //     const newOptions = {
+  //                             daysConfig: [...this.newObj]
+  //                         };
+  //     this.optionsRange = {
+  //                               ...this.optionsRange,
+  //                               ...newOptions
+  //                           };
+  //     this.optionsSingle = {
+  //                               ...this.optionsSingle,
+  //                               ...newOptions
+  //                           };
+  //   }, 100);
+  // }
+    getLeaveAdmin(){
+    let {region, countryCode} = this.countryData;
+    this.leaveAdmins = this.users.filter(u=>u.leaveAdmin && Object.keys(u.leaveAdmin).includes(countryCode+"_"+region.replace(/[^A-Za-z]/g,'')));
+  }
+
+  getExpenseAdmin(){
+    let {region, countryCode} = this.countryData;
+    this.expenseAdmins = this.users.filter(u=>u.expenseAdmin && Object.keys(u.expenseAdmin).includes(countryCode+"_"+region.replace(/[^A-Za-z]/g,'')));
+  }
+
+  getTeam(){
+    let {region, countryCode} = this.countryData;
+    this.team = this.users.filter(u=>u.countryServe && u.regionServe && u.countryServe == countryCode && u.regionServe == region);
+  }
+  setAllMemberSelectObject(eventType:string,heading:string){
+    this.allMemberSelectObject = {
+      nav: this.session,
+      countryData: this.data,
+      eventType:eventType,
+      heading:heading
+     //eventType: 'propagateExpenseAdmin',
     }
   }
 }
