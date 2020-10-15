@@ -446,5 +446,6 @@
 <div class="modal fade" id="selectMemberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <app-select-members [allMemberSelectObject]="allMemberSelectObject" (defineExpenseAdmin)="defineExpenseAdmin($event)"
   (defineLeaveAdmin)="defineLeaveAdmin($event)"
+  (propagateLeaveforUser)="propagateLeaveforUser($event)"
   ></app-select-members>
 </div>

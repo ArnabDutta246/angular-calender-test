@@ -497,6 +497,77 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     " - " + this.forCountryData.countryData.region +
     " updated successfully.","Rgeion Leave Admin");
   }
+
+propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: boolean = true)
+  {
+    let batch = this.allCol.afs.firestore.batch();
+    this.spinner.show();
+    this.team = recipientList.filter(r=>r.checked);
+
+    let expenseTypes = {};
+    let leaveTypes = {};
+    this.pageObj.expenseTypes &&
+    Object.keys(this.pageObj.expenseTypes).forEach(et=>{
+        Object.assign(expenseTypes,{[et]:{...this.pageObj.expenseTypes[et],spent:0}});
+        delete expenseTypes[et].spent;
+      });
+    this.pageObj.leaveTypes &&
+    Object.keys(this.pageObj.leaveTypes).forEach(lt=>{
+        Object.assign(leaveTypes,{[lt]:{...this.pageObj.leaveTypes[lt],taken:0}});
+        delete leaveTypes[lt].taken;
+      });
+
+    for (let data of recipientList)
+    {
+      if(data.checked && (data.presentStatus != 'EXISTING' || this.propagationRequired)){
+        let leaveCalendarObj=
+        {
+          subscriberId: this.session.subscriberId,
+          year: this.pageObj.yearSelected,
+          uid: data.uid,
+          user:{
+                  name: data.name,
+                  email: data.email,
+                  picUrl: data.picUrl,
+                  uid: data.uid,
+                },
+          calendarStartMonth: this.pageObj.session.calendarStartMonth,
+          calendarEndMonth: this.pageObj.session.calendarEndMonth,
+          country: this.forCountryData.countryData.countryCode,
+          region: this.forCountryData.countryData.region,
+          weeklyOffDays: this.pageObj.generalHoliday,
+          leaveTypes: leaveTypes,
+          expenseTypes: expenseTypes,
+        };
+        let leaveDocId = data.uid + this.session.subscriberId + this.forCountryData.countryData.countryCode + this.forCountryData.countryData.region.replace(/[^A-Za-z]/g,'').toUpperCase() + this.pageObj.yearSelected;
+        let userLeaveDoc = this.allCol.afs.collection(this.allCol._USER_LEAVE_CALENDAR).doc(leaveDocId).ref;
+        batch.set(userLeaveDoc,leaveCalendarObj,{merge: true});
+        let userDoc = data.uid + "_" + this.session.subscriberId;
+        let userDocRef = this.allCol.afs.collection(this.allCol.users).doc(userDoc).ref;
+        batch.set(userDocRef,{countryServe: this.forCountryData.countryData.countryCode, regionServe: this.forCountryData.countryData.region,}, {merge: true});
+      } else if(!data.checked && data.presentStatus=='EXISTING'){
+        let userDocDel = data.uid + "_" + this.session.subscriberId;
+        let userDocRefDel = this.allCol.afs.collection(this.allCol.users).doc(userDocDel).ref;
+        batch.set(userDocRefDel,{countryServe: null, regionServe: null,}, {merge: true});
+      }
+
+
+    }
+    // No of people for the region to be updated as well
+    let regLeaveDocref = this.allCol.afs.collection(this.allCol._LEAVE_CALENDER).doc(this.pageObj.documentId).ref;
+    batch.set(regLeaveDocref,{noOfUsers: recipientList.filter(r=>r.checked).length},{merge: true});
+
+    batch.commit().then(()=>{
+      this.propagationRequired = false;
+      this.spinner.hide();
+    }).catch(err=>{
+  this.spinner.hide();
+      this.alertMessage.showAlert("error",err,"Please Try Again");
+    });
+    if(showAlert){
+      this.alertMessage.showAlert("success","Region and related leave calendar applied successfully for the selected users.","User Rgeion");
+    }
+  }
     //-----------------------caching image----------------------
   profileImgErrorHandler(user: any) {
     console.log("profile image", user);

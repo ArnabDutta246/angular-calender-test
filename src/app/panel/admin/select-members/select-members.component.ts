@@ -36,6 +36,7 @@ export class SelectMembersComponent implements OnInit,OnChanges {
   @Input() allMemberSelectObject:any;
   @Output() defineExpenseAdmin = new EventEmitter<any>();
   @Output() defineLeaveAdmin = new EventEmitter<any>();
+  @Output() propagateLeaveforUser = new EventEmitter<any>();
 
 
   modalDismis: ElementRef;
@@ -268,6 +269,9 @@ sendMemberListToParents(){
       break;
     case 'propagateLeaveAdmin':
       this.defineLeaveAdmin.emit(this.attendeeList);
+      break;
+    case 'propagateCalendar':
+      this.propagateLeaveforUser.emit(this.attendeeList);
       break;
     default:
       break;
