@@ -109,6 +109,26 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
 //     pickMode: 'single',
 //     weekStart: 1,
 //   };
+
+  // =================== calender functions =================
+    options: any = {
+    pickMode: "range",
+    weekStart: 1,
+    from: new Date("2019-01-01"),
+    disableWeeks: [0, 6],
+    daysConfig: [
+      { date: new Date("2020-09-01"), cssClass: "attendance" },
+      { date: new Date("2020-09-02"), cssClass: "attendance" },
+      { date: new Date("2020-09-03"), cssClass: "attendance" },
+      { date: new Date("2020-09-04"), cssClass: "attendance" },
+      { date: new Date("2020-09-16"), cssClass: "approvedDate" },
+      { date: new Date("2020-09-17"), cssClass: "approvedDate" },
+      { date: new Date("2020-09-24"), cssClass: "pendingDate" },
+      { date: new Date("2020-09-25"), cssClass: "holiday" },
+    ],
+  };
+  singleDaysEvents: boolean = false;
+
   constructor(
     private allMemberDataService: AllMembersDataService,
     private connectionService: ConnectionService,
@@ -573,4 +593,79 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
     console.log("profile image", user);
     user.picUrl = "../../../../assets/image/imgs/profile.png";
   }
+
+
+  onChange($event) {
+    console.log($event);
+  }
+  onSelect($event) {
+    console.log("onSelect", $event);
+    this.singleDaysEvents = true;
+  }
+  onSelectStart($event) {
+    console.log("onSelectStart", $event);
+  }
+  onSelectEnd($event) {
+    console.log("onSelectEnd", $event);
+  }
+  onMonthChange($event) {
+    console.log("onMonthChange", $event);
+  }
+
+  getArmDates(e, day){
+    if(this.session.role == 'ADMIN' || this.session.leaveAdmin){
+      if(e.target.checked){
+        if(this.pageObj.generalHoliday.length >= 1){ // two or more weekly holiday already exsts
+          this.alertMessage.confirmAlert("Are you sure you want "+(this.pageObj.generalHoliday.length + 1)+" weekly holidays? It could effect on previous day counts.","Confirmation").then(()=>{
+            this.pageObj.generalHoliday.push(day);
+            this.updateWeekends();
+          }).catch(()=>{
+            e.target.checked = false;
+          });
+        }else{
+          this.pageObj.generalHoliday.push(day);
+          this.updateWeekends();
+        }
+      }else{
+        var index = this.pageObj.generalHoliday.indexOf(day);
+        if(this.pageObj.generalHoliday.length == 1){ // last holiday left
+          this.alertMessage.confirmAlert("Are you sure you do not want any weekly holidays in this region?","Confirmation").then(res =>{
+            if(index !== -1){ // exists
+              this.pageObj.generalHoliday.splice(index, 1);
+              this.updateWeekends();
+            }
+          }).catch(() =>{ // confirmation failed
+            e.target.checked = true;
+          });
+        }else{ // few more exists
+          if(index !== -1){ // exists
+            this.pageObj.generalHoliday.splice(index, 1);
+            this.updateWeekends();
+          }
+        }
+      }
+    } else {
+      this.alertMessage.showAlert("Info", "Please note that only leave admin can set the weekly holidays, liase with the leave admin to define weekly holidays for the region","Please note this");
+      e.target.checked=!e.target.checked;
+    }
+  }
+    // update weekends in database
+  updateWeekends(){
+    this.spinner.show();
+    // start updating new holiday
+    // batch process for future reference
+    // somthing need to update/set/delete can be place here
+    let batch = this.allCol.afs.firestore.batch();
+
+    let newGenHoliday = this.allCol.afs.collection(this.allCol._LEAVE_CALENDER).doc(this.pageObj.documentId).ref;
+    batch.update(newGenHoliday,{
+      weeklyOffDays: this.pageObj.generalHoliday
+    });
+    batch.commit().then(res=>{
+      this.spinner.hide();
+    }).catch(err=>{
+      this.spinner.hide();
+    })
+  }
+
 }

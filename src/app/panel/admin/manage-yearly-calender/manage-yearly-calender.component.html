@@ -414,18 +414,56 @@
               </div>
             </div>
           </div>
+          <div class="genaral-holiday my-2">
+            <div class="generalHoliday">
+              <div class="buttons genaralHoliday_buttons">
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 1)" [checked]="pageObj.generalHoliday.includes(1)" class="genaralHoliday_input"/>
+                  <div>Mon</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 2)" [checked]="pageObj.generalHoliday.includes(2)" class="genaralHoliday_input"/>
+                  <div>Tue</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 3)" [checked]="pageObj.generalHoliday.includes(3)" class="genaralHoliday_input"/>
+                  <div>Wed</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 4)" [checked]="pageObj.generalHoliday.includes(4)" class="genaralHoliday_input"/>
+                  <div>Thr</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 5)" [checked]="pageObj.generalHoliday.includes(5)" class="genaralHoliday_input"/>
+                  <div>Fri</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 6)" [checked]="pageObj.generalHoliday.includes(6)" class="genaralHoliday_input"/>
+                  <div>Sat</div>
+                </label>
+                <label class="genaralHoliday_label"><input type="checkbox" (change)="getArmDates($event, 0)" [checked]="pageObj.generalHoliday.includes(0)" class="genaralHoliday_input"/>
+                  <div>Sun</div>
+                </label>
+              </div>
+            </div>
+          </div> 
+          <div class="leave-calender my-2">
+            <div class="row">
+              <div class="col-6 text-left">
+            <label for="leave"><i class="far fa-calendar-alt mr-1 text-danger fa-1x"></i> Calendar </label>
+              </div>
+              <div class="col-6 text-right">
+                <div class="calender-toggle-switch">
+                  <label class="switch">
+                    <input type="checkbox" checked />
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
 
-          <div class="leave-manager my-2">
-            <label for="leave"><i class="fas fa-user-circle mr-1 text-danger fa-1x"></i> Calendar </label>
             <div class="row">
               <ion-calendar
-
               >
-              <!-- [options]="options"
+              [options]="options"
               (select)="onSelect($event)"
               (selectStart)="onSelectStart($event)"
               (selectEnd)="onSelectEnd($event)"
-              (monthChange)="onMonthChange($event)" -->
+              (monthChange)="onMonthChange($event)"
               </ion-calendar>
             </div>
           </div>
