@@ -1,10 +1,10 @@
 <!-----------------------all member add--------------------->
 
 <div class="modal-dialog" role="document">
-  <div class="modal-content pb-3">
+  <div class="modal-content">
     <div class="card">
       <div class="card-header bg-primary" *ngIf="getNavData !== null">
-            <!-- model header -->
+        <!-- model header -->
             <div class="row">
               <div class="col-1" *ngIf="addPanel === true">
                 <!-- back button -->
@@ -26,7 +26,7 @@
               </div>
               <div class="col-1" *ngIf="addPanel !== true">
                 <!-- search button -->
-                <div class="btn btn-sm text-white" (click)="showSearchInput('inputsearchBox111')">
+                <div class="btn btn-sm text-white" (click)="showSearchInput = !showSearchInput">
                   <i class="fas fa-search"></i>
                 </div>
               </div>
@@ -49,8 +49,8 @@
                   aria-labelledby="home-send-mail-tab">
                   <div>
                     <!-- search box input -->
-                    <div class="input-searchBox d-none mb-2" id="inputsearchBox111">
-                      <input type="text" class="form-control mt-1" placeholder="Search member..." (keyup)="filterUser($event)" />
+                    <div class="input-searchBox mb-2" id="inputsearchBox111" *ngIf="showSearchInput == true">
+                      <input type="text" class="form-control mt-1" placeholder="Search member..." [(ngModel)]="searchByName" name="searchByName" (keyup)="filterMember($event)" />
                     </div>
                     <!-- members list -->
                     <div>
@@ -58,37 +58,48 @@
 
 
         <ng-container *ngIf="allMembers">
-          <ng-container *ngFor="let data of allMembers;let i= index">
-            <div  [ngClass]="data.disabled ? 'disabled':''">
-              <div class="row">
-                <div class="col-3 text-center">
-                  <img class="member-list-pro-img" [src]="
-                  data.picUrl !== ''
-                    ? data.picUrl
-                    : '../../../../../assets/image/imgs/profile.png'
-                " alt="member image" (error)="profileImgErrorHandler(data)" />
-                  <span class="col-12 badge" [ngClass]="
-                    data.status == allMemberdata.status[0]
-                      ? 'badge-primary'
-                      : data.status == allMemberdata.status[1]
-                      ? 'badge-warning'
-                      : data.status == allMemberdata.status[5]
-                      ? 'badge-success'
-                      : 'badge-danger'
-                  ">
-                    {{ data.status.toLowerCase() }}
-                    <span class="badge badge-light">{{data.role == "ADMIN" ? "A" : ""}}</span>
-                  </span>
-                </div>
-                <div class="col-8">
-                  <span>{{ data.name }}</span><br>
-                  <small class="text-muted">{{ data.email }}</small>
-                </div>
+          <ng-container *ngFor="let member of allMembers;let i= index">
+            <div  [ngClass]="member.disabled ? 'disabled':''">
+              <div class="row border-bottom" style="padding-bottom: 0px; padding-top: 0.5em">
+              <div class="col-3 col-lg-2">
+                <img class="mx-auto d-block p-1 rounded-circle" style="width: 40px; height: 40px" [src]="
+                member.picUrl !== ''
+                  ? member.picUrl
+                  : '../../../../../assets/image/imgs/profile.png'
+              " alt="member image" (error)="profileImgErrorHandler(member)" />
+                <span class="col-12 badge" [ngClass]="
+                member.status == allMemberdata.status[0]
+                  ? 'badge-primary'
+                  : member.status == allMemberdata.status[1]
+                  ? 'badge-warning'
+                  : member.status == allMemberdata.status[5]
+                  ? 'badge-success'
+                  : 'badge-danger'">
+                  {{ member.status.toLowerCase() }}
+                  <span class="badge badge-light">{{
+                                  member.role == "ADMIN" ? "A" : ""
+                                }}</span>
+                </span>
+              </div>
+              <div class="col-8 col-lg-9">
+                <!-- <div class=""> -->
+                <h5 class="">
+                  <small>{{ member.name }}</small>
+                </h5>
+                <h6 class="text-muted">
+                  <small>{{ member.email }}</small>
+                </h6>
+                <h6 class="text-muted">
+                  <small>{{ format_phone_no(member.phone) }}</small>
+                </h6>
+                <!-- </div> -->
+              </div>
+
                 <div class="col-1">
                   <div class="custom-control custom-checkbox my-1 mr-sm-2">
                     <input type="checkbox" class="custom-control-input" [id]="'customControlInlineOwner12' + i"
                      name="memberUid"
-                      [checked]="data.checked" [disabled]="data.disabled" (change)="makeaList($event, data)"
+                      [checked]="member.checked" [disabled]="member.disabled" (change)="makeaList($event, member)"
 />
                     <label class="custom-control-label" [for]="'customControlInlineOwner12' + i"></label>
                   </div>
@@ -295,7 +306,7 @@
             <div class="confirm-button" [ngClass]="addPanel === true ? 'd-none' : ''">
               <button class="btn btn-sm btn-primary float-right mr-3 mt-1" (click)="sendMemberListToParents()" #modalDismis
                 [disabled]="attendeeList.length === 0">
-                send
+                Confirm
               </button>
             </div>
   </div>

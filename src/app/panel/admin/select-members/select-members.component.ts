@@ -48,7 +48,8 @@ export class SelectMembersComponent implements OnInit,OnChanges {
    linkData: any = null;
   allrecipientArr: any[] = [];
   addPanel: boolean = false;
- 
+ showSearchInput:boolean = false;
+ searchByName:string= '';
   //-------form group
   registerForm: FormGroup;
   Cd: any = CountryCode;
@@ -146,9 +147,10 @@ export class SelectMembersComponent implements OnInit,OnChanges {
   }
   ngOnChanges() {
     this.getNavData = null;
-    if(this.allMemberSelectObject !== null){
+    if(this.allMemberSelectObject){
     this.getNavData = this.allMemberSelectObject;
-     this.fetchAllM();
+    //console.log(this.getNavData);
+    this.fetchAllM();
    }
   }
   setValue() {
@@ -172,9 +174,9 @@ export class SelectMembersComponent implements OnInit,OnChanges {
           let checked = false;
           let presentStatus = null;
           let disabled = (data.uid == this.getUserData) && this.getUserData.role != 'ADMIN';
-          switch(this.allMemberSelectObject.eventType){
+          switch(this.getNavData.eventType){
             case 'propagateCalendar':
-              if(data.countryServe == this.allMemberSelectObject.countryData.countryCode && data.regionServe == this.allMemberSelectObject.countryData.region){
+              if(data.countryServe == this.getNavData.countryData.countryData.countryCode && data.regionServe == this.getNavData.countryData.countryData.region){
                 checked = true;
                 presentStatus = 'EXISTING';
               } else if(data.countryServe || data.regionServe){
@@ -184,16 +186,16 @@ export class SelectMembersComponent implements OnInit,OnChanges {
             case 'propagateLeaveAdmin':
               data.leaveAdmin &&
               Object.keys(data.leaveAdmin).forEach(l=>{
-                if(data.leaveAdmin[l].country == this.allMemberSelectObject.countryData.countryCode && data.leaveAdmin[l].region == this.allMemberSelectObject.countryData.region){
+                if(data.leaveAdmin[l].country == this.getNavData.countryData.countryData.countryCode && data.leaveAdmin[l].region == this.getNavData.countryData.countryData.region){
                   checked = true;
                   presentStatus = 'EXISTING';
                 }
               });
               break;
-            case 'propagateExpenseAdmin':
+            case "propagateExpenseAdmin":
               data.expenseAdmin &&
               Object.keys(data.expenseAdmin).forEach(e=>{
-                if(data.expenseAdmin[e].country == this.allMemberSelectObject.countryData.countryCode && data.expenseAdmin[e].region == this.allMemberSelectObject.countryData.region){
+                if(data.expenseAdmin[e].country == this.getNavData.countryData.countryData.countryCode && data.expenseAdmin[e].region == this.getNavData.countryData.countryData.region){
                   checked = true;
                   presentStatus = 'EXISTING';
                 }
@@ -209,6 +211,8 @@ export class SelectMembersComponent implements OnInit,OnChanges {
       ).subscribe((data)=>{
         this.spinner.hide();
         this.allMembers = data;
+        this.filterMemberArray = data;
+       // console.log(this.allMembers)
       });
   }
 
@@ -271,7 +275,23 @@ sendMemberListToParents(){
   this.attendeeList = [];
 }
 
-
+  //------------------- set phone number----------------
+  format_phone_no(data) {
+    var phone_array = data.split(" ");
+    var country_code = phone_array[0].split("@");
+    return country_code[1] + " " + phone_array[1];
+  }
+    //----------------------------filter members--------------------
+  filterMember(e) {
+    if (this.searchByName === '') {
+      this.allMembers = this.filterMemberArray;
+    } else if (this.searchByName !== "") {
+      this.allMembers = this.filterMemberArray.filter((member) => {
+      let name = member.name.toLowerCase();
+      return !name.indexOf(this.searchByName .toLowerCase());
+      });
+    } 
+  }
 
   //-----------------------caching image----------------------
   profileImgErrorHandler(user: any) {
