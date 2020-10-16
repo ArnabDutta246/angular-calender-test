@@ -209,7 +209,7 @@ export class SweetAlertService {
   confirmAlert(text: string, ques?: string) {
     return Swal.fire({
       title: `${ques}`,
-      text: text,
+      html: text,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

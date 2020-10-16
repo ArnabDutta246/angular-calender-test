@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { ConnectionService } from 'ng-connection-service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
+import { CalendarComponentOptions } from 'src/app/calenders';
 import { AllCollectionsService } from 'src/app/shared/all-collections.service';
 import { AllMembersDataService } from 'src/app/shared/all-members-data.service';
 import { SweetAlertService } from 'src/app/shared/sweet-alert.service';
@@ -57,12 +58,10 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       calendarEndMonth: 12
     }
   }
-
   lastSelectedDate_before_toggle:any;
   toggleMode: string = "single";
   showLeaveTypes: any =false;
   showExpenseTypes: any = false;
-
   public years=[];
   public months=[
     {content:"Jan to Dec",month:1, startMonth: 1, endMonth: 12},
@@ -100,15 +99,23 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
                           'fas fa-share',
                         ];
 
-//  optionsRange: CalendarComponentOptions = {
-//     pickMode: 'range',
-//     weekStart: 1,
-//   };
 
-//   optionsSingle: CalendarComponentOptions = {
-//     pickMode: 'single',
-//     weekStart: 1,
-//   };
+  holiday_desc:any;
+  single_or_range_date:any;
+  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
+  optionsRange: CalendarComponentOptions = {
+    pickMode: 'range',
+    weekStart: 1,
+    from: new Date("2019-01-01"),
+    disableWeeks: [0, 6],
+  };
+  optionsSingle: CalendarComponentOptions = {
+    pickMode: 'single',
+    weekStart: 1,
+    from: new Date("2019-01-01"),
+    disableWeeks: [0, 6],
+  };
+  singleDaysEvents: boolean = false;
 
   // =================== calender functions =================
     options: any = {
@@ -127,7 +134,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       { date: new Date("2020-09-25"), cssClass: "holiday" },
     ],
   };
-  singleDaysEvents: boolean = false;
+
 
   constructor(
     private allMemberDataService: AllMembersDataService,
@@ -380,27 +387,10 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       }
 
     });
-    //this.renderDataSet();
-    // this.monthChanges({newMonth: {months: parseInt(moment().format("MM")), years: parseInt(moment().format("YYYY"))}});
+    this.renderDataSet();
+  //this.monthChanges({newMonth: {months: parseInt(moment().format("MM")), years: parseInt(moment().format("YYYY"))}});
   }
 
-  // render whole data in the array
-  // only use this and send parameters
-  // renderDataSet(){
-  //   setTimeout(()=>{
-  //     const newOptions = {
-  //                             daysConfig: [...this.newObj]
-  //                         };
-  //     this.optionsRange = {
-  //                               ...this.optionsRange,
-  //                               ...newOptions
-  //                           };
-  //     this.optionsSingle = {
-  //                               ...this.optionsSingle,
-  //                               ...newOptions
-  //                           };
-  //   }, 100);
-  // }
   getLeaveAdmin(){
     // console.log(this.users);
     let {region, countryCode} = this.forCountryData.countryData;
@@ -668,4 +658,114 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
     })
   }
 
+  //======================= holiday =======================
+  
+  holiday_add(){
+
+    if(this.holiday_desc){
+      if(!this.single_or_range_date){
+        this.alertMessage.showAlert("info","Please select a date or range of dates to add holiday to the calendar.","Please select a date");
+      } else if(this.toggleMode=='single'){
+        let hd = moment(this.single_or_range_date._d).format('DD-MMM-YYYY');
+        // check if the holiday list already exists
+        if(Object.keys(this.pageObj.holidayList).includes(hd)){
+          this.alertMessage.showAlert("info","The selected date has already added to the list of holidays. Please check and try again.","Please check and try again.");
+        } else {
+          this.alertMessage.confirmAlert("Are you sure you want to add <b>"+ hd + "</b> as a holiday?","Confirmation",)
+          .then(()=>{
+            this.pageObj.holidayList[hd]={startDate: new Date(hd), endDate: new Date(hd),desc:this.holiday_desc};
+            this.holiday_desc="";
+            this.updateDataOfHolidays();
+          }).catch(()=>{ this.holiday_desc=""; });
+        }
+
+      }else{
+        let hdStart = moment(this.single_or_range_date.from._d).format('DD-MMM-YYYY');
+        let hdEnd = moment(this.single_or_range_date.to._d).format('DD-MMM-YYYY');
+        if(Object.keys(this.pageObj.holidayList).includes(hdStart+'_'+hdEnd)){
+          this.alertMessage.showAlert("info","The selected date has already added to the list of holidays. Please check and try again.","Please check and try again");
+        } else if (this.isRangeConflict(hdStart,hdEnd)){
+          this.alertMessage.showAlert("info","There are other holidays defined between the selected dates <b>"+ hdStart+"</b> to <b>"+hdEnd+"</b>. Please check and try again.","Please check and try again");
+        } else {
+          this.alertMessage.confirmAlert("Are you sure you want to add <b>"+ hdStart+"</b> to <b>"+hdEnd+"</b> as holidays?","Confirmation")
+          .then(res=>{
+            this.pageObj.holidayList[hdStart+'_'+hdEnd]={startDate: new Date(hdStart), endDate: new Date(hdEnd),desc:this.holiday_desc};
+            this.holiday_desc="";
+            this.updateDataOfHolidays();
+            this.holiday_desc="";
+          }).catch(err=>{this.holiday_desc="";});
+        }
+      }
+    }else{
+      this.alertMessage.showAlert("error","Please enter the holiday description.","Error");
+    }
+  }
+
+  // check date range validity
+  isRangeConflict(hdStart: any,hdEnd: any){
+
+    let idx = Object.keys(this.pageObj.holidayList)
+              .findIndex(k=>{
+                // console.log(moment(hdStart,'DD-MMM-YYYY') , moment(this.pageObj.holidayList[k].endDate,'DD-MMM-YYYY'));
+                // console.log(moment(this.pageObj.holidayList[k].startDate,'DD-MMM-YYYY') , moment(hdEnd,'DD-MMM-YYYY'));
+                let khlend = this.pageObj.holidayList[k].endDate.seconds ?
+                          moment(this.pageObj.holidayList[k].endDate.seconds * 1000)
+                          :
+                          this.pageObj.holidayList[k].endDate;
+                let khlstart = this.pageObj.holidayList[k].startDate.seconds ?
+                          moment(this.pageObj.holidayList[k].startDate.seconds * 1000)
+                          :
+                          this.pageObj.holidayList[k].startDate;
+                return !(moment(hdStart,'DD-MMM-YYYY') > khlend ||
+                         khlstart > moment(hdEnd,'DD-MMM-YYYY') );
+              })
+    return (idx!=-1);
+  }
+  // update holiday in selected year
+  updateDataOfHolidays(){
+    if(navigator.onLine){
+      this.session.user.loader = true;
+      this.allCol.updateData(this.allCol._LEAVE_CALENDER, this.pageObj.documentId,{
+        holidays: this.pageObj.holidayList
+      }).then(()=>{
+        this.session.user.loader = false;
+      }).catch(()=>{
+        this.session.user.loader = false;
+        this.alertMessage.showAlert("error","Failed to update new holidays","Failed");
+      })
+    }else{
+      this.alertMessage.poorNetwork();
+    }
+  }
+  toggleCalender(){
+
+    switch (this.toggleMode) {
+      case 'single':
+        this.options.pickMode = "range"
+        this.toggleMode = "range";
+            alert(this.options.pickMode+"...."+this.toggleMode);
+        break;
+      case 'range':
+        this.options.pickMode = "single"
+        this.toggleMode = "single";
+        alert(this.options.pickMode+"...."+this.toggleMode);
+        break;
+    
+      default:
+        break;
+    }
+  }
+    // render whole data in the array
+  // only use this and send parameters
+  renderDataSet(){
+    setTimeout(()=>{
+      const newOptions = { daysConfig: [...this.newObj]};
+      this.optionsRange = { ...this.optionsRange,...newOptions};
+      this.optionsSingle = {...this.optionsSingle,...newOptions};
+    }, 100);
+  }
+  // convertDate to dd-mmm-yyyy
+  dateConvert(day){
+    return day ? moment(day.seconds*1000).format('ll') : moment().format('ll');
+  }
 }

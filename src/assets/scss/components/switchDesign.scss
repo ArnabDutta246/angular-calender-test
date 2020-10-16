@@ -74,19 +74,19 @@
 .calender-toggle-switch .switch {
   position: relative;
   display: inline-block;
-  width: 109px;
+  width: 116px;
   height: 27px;
 }
 .calender-toggle-switch .switch input:checked + .slider:before {
-  -webkit-transform: translateX(82px);
-  -ms-transform: translateX(82px);
-  transform: translateX(82px);
+  -webkit-transform: translateX(92px);
+  -ms-transform: translateX(92px);
+  transform: translateX(92px);
 }
 .calender-toggle-switch .slider:after {
-  content: "Multi days";
+  content: "Multi Date";
 }
 .calender-toggle-switch .switch input:checked + .slider:after {
-  content: "Single day";
+  content: "Single Date";
 }
 // ================ register toggle button ===========
 .url-toggle-switch .switch {

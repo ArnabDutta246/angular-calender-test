@@ -312,7 +312,7 @@
                               placeholder="Description*" name="leave_type">
                           </div>
                           <div class="col-3">
-                          <input class="form-control" type="number" placeholder="" [(ngModel)]="pageObj.newleaveTypes.allowed" name="leave_amount">
+                          <input class="form-control" type="number" placeholder="" [(ngModel)]="pageObj.newleaveTypes.allowed" name="leave_amount" min="0">
                           </div>
                         </div>
                       </div>
@@ -334,7 +334,7 @@
                           </div>
                           <div class="col-2">
                             <input type="number" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].allowed"
-                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount"/>
+                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount" min="0"/>
                           </div>
                           <div class="col-2" *ngIf="i==0 && (session.role == 'ADMIN' || session.leaveAdmin)">
 
@@ -442,41 +442,48 @@
               </div>
             </div>
           </div> 
-          <div class="leave-calender my-2">
+          <div class="leave-calender my-3">
+            <!-- holday calender heding -->
             <div class="row">
               <div class="col-6 text-left">
-            <label for="leave"><i class="far fa-calendar-alt mr-1 text-danger fa-1x"></i> Calendar </label>
+            <label for="leave"><i class="far fa-calendar-alt mr-1 text-danger fa-1x"></i> Holiday Calendar </label>
               </div>
               <div class="col-6 text-right">
                 <div class="calender-toggle-switch">
                   <label class="switch">
-                    <input type="checkbox" checked />
+                    <input type="checkbox" (change)="toggleCalender()" checked/>
                     <span class="slider"></span>
                   </label>
                 </div>
               </div>
             </div>
-
+            <!-- holiday calender form -->
+            <div class="row mt-2">
+              <div class="col-10">
+                <div class="form-group">
+                  <input type="text" class="form-control text-primary" id="holiday_description" aria-describedby="emailHelp"
+                  placeholder="description *" [(ngModel)]="holiday_desc" name="holiday_desc">
+                </div>
+              </div>
+              <div class="col-2">
+                <button class="btn btn-sm btn-success" (click)="holiday_add()"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+           <!-- holiday calender -->
             <div class="row">
               <ion-calendar
-              >
-              [options]="options"
+              [(ngModel)]="single_or_range_date"
+              [options]="toggleMode !== 'single' ? optionsRange : optionsSingle"
               (select)="onSelect($event)"
               (selectStart)="onSelectStart($event)"
               (selectEnd)="onSelectEnd($event)"
-              (monthChange)="onMonthChange($event)"
+              (monthChange)="onMonthChange($event)">
               </ion-calendar>
             </div>
           </div>
-
-
-
         </div>
       </div>
     </div>
-
-
-
   </div>
 </div>
 
