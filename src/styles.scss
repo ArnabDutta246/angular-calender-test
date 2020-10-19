@@ -616,7 +616,37 @@ label {
     }
   }
 }
-
+.HolidayCard {
+  display: flex;
+  box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
+  margin-bottom: 3px;
+  height: 70px;
+  position: relative;
+  .day {
+    // position: absolute;
+    font-size: $floating_font;
+    color: $color-white;
+    background: $color-peach-bg;
+    padding: 3px 13px;
+    height: 25px;
+    min-width: 120px;
+    margin-top: 8px;
+    margin-left: 5px;
+    border-radius: 3px;
+  }
+  .desc {
+    position: absolute;
+    font-size: $input_font;
+    // color: #bdbdbd;
+    padding-left: 0px;
+    margin-top: 40px;
+    margin-left: 10px;
+  }
+  p {
+    // padding: 13px;
+    // font-size: $header_font;
+  }
+}
 //==========================================
 // -----------------all import extra files------------------------
 @import "./assets/scss/customBootstrap.scss";

@@ -101,7 +101,10 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
 
 
   holiday_desc:any;
-  single_or_range_date:any;
+  single_or_range_date:any
+  single_or_range_date_to:any;
+  single_or_range_date_from:any;
+
   type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   optionsRange: CalendarComponentOptions = {
     pickMode: 'range',
@@ -134,7 +137,8 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
       { date: new Date("2020-09-25"), cssClass: "holiday" },
     ],
   };
-
+  status = "ONLINE"; //initializing as online by default
+  isConnected = true;
 
   constructor(
     private allMemberDataService: AllMembersDataService,
@@ -150,6 +154,16 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     this.regionexpenseTypes = Object.keys(this.pageObj.expenseTypes).sort();
     let usedIcons = this.regionexpenseTypes.map(e=>this.pageObj.expenseTypes[e].icon);
     this.expenseIcons = this.expenseIcons.filter(i=>!usedIcons.includes(i));
+
+    //----------------------network check function------------------
+    this.connectionService.monitor().subscribe((isConnected) => {
+      this.isConnected = isConnected;
+      if (this.isConnected) {
+        this.status = "ONLINE";
+      } else {
+        this.status = "OFFLINE";
+      }
+    });
    }
 
   ngOnInit() {
@@ -367,7 +381,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     }
   }
 
-    // extract holidays for calendar daysConfig
+  // extract holidays for calendar daysConfig
   // extract the all applied leaves
   extratHolidays(){
     this.newObj = [];
@@ -586,20 +600,29 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
 
 
   onChange($event) {
-    console.log($event);
+    //console.log($event);
   }
   onSelect($event) {
-    console.log("onSelect", $event);
-    this.singleDaysEvents = true;
+    //console.log("onSelect", new Date($event.time).getTime());
+    //console.log("onSelect",typeof new Date($event.time).getTime());
+    if(this.toggleMode=='single'){
+      this.single_or_range_date = new Date($event.time).getTime();
+      this.single_or_range_date = new Date($event.time).getTime();
+    }
   }
   onSelectStart($event) {
-    console.log("onSelectStart", $event);
+    //console.log("onSelectStart", $event.time);
+    this.single_or_range_date_from = new Date($event.time).getTime();
+     
   }
   onSelectEnd($event) {
-    console.log("onSelectEnd", $event);
+    //console.log("onSelectEnd", $event.time);
+    this.single_or_range_date_to = new Date($event.time).getTime();
+        setTimeout(()=>{
+    },100);
   }
   onMonthChange($event) {
-    console.log("onMonthChange", $event);
+    //console.log("onMonthChange", $event);
   }
 
   getArmDates(e, day){
@@ -661,12 +684,11 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
   //======================= holiday =======================
   
   holiday_add(){
-
     if(this.holiday_desc){
       if(!this.single_or_range_date){
         this.alertMessage.showAlert("info","Please select a date or range of dates to add holiday to the calendar.","Please select a date");
       } else if(this.toggleMode=='single'){
-        let hd = moment(this.single_or_range_date._d).format('DD-MMM-YYYY');
+        let hd = moment(this.single_or_range_date).format('DD-MMM-YYYY');
         // check if the holiday list already exists
         if(Object.keys(this.pageObj.holidayList).includes(hd)){
           this.alertMessage.showAlert("info","The selected date has already added to the list of holidays. Please check and try again.","Please check and try again.");
@@ -680,8 +702,8 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
         }
 
       }else{
-        let hdStart = moment(this.single_or_range_date.from._d).format('DD-MMM-YYYY');
-        let hdEnd = moment(this.single_or_range_date.to._d).format('DD-MMM-YYYY');
+        let hdStart = moment(this.single_or_range_date_from).format('DD-MMM-YYYY');
+        let hdEnd = moment(this.single_or_range_date_to).format('DD-MMM-YYYY');
         if(Object.keys(this.pageObj.holidayList).includes(hdStart+'_'+hdEnd)){
           this.alertMessage.showAlert("info","The selected date has already added to the list of holidays. Please check and try again.","Please check and try again");
         } else if (this.isRangeConflict(hdStart,hdEnd)){
@@ -723,14 +745,14 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
   }
   // update holiday in selected year
   updateDataOfHolidays(){
-    if(navigator.onLine){
-      this.session.user.loader = true;
+    if(this.status="ONLINE"){
+      this.spinner.show();
       this.allCol.updateData(this.allCol._LEAVE_CALENDER, this.pageObj.documentId,{
         holidays: this.pageObj.holidayList
       }).then(()=>{
-        this.session.user.loader = false;
+        this.spinner.hide();
       }).catch(()=>{
-        this.session.user.loader = false;
+        this.spinner.hide();
         this.alertMessage.showAlert("error","Failed to update new holidays","Failed");
       })
     }else{
@@ -743,12 +765,12 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
       case 'single':
         this.options.pickMode = "range"
         this.toggleMode = "range";
-            alert(this.options.pickMode+"...."+this.toggleMode);
+           // alert(this.options.pickMode+"...."+this.toggleMode);
         break;
       case 'range':
         this.options.pickMode = "single"
         this.toggleMode = "single";
-        alert(this.options.pickMode+"...."+this.toggleMode);
+        //alert(this.options.pickMode+"...."+this.toggleMode);
         break;
     
       default:

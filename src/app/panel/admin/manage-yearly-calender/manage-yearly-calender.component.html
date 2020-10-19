@@ -480,6 +480,18 @@
               (monthChange)="onMonthChange($event)">
               </ion-calendar>
             </div>
+
+            <div class="row">
+              <div class="HolidayCard" *ngFor="let data of giveMentionYearHoliday()">
+                <p class="day">{{dateConvert(pageObj.holidayList[data].startDate)}}
+                <p class="day" *ngIf="pageObj.holidayList[data].startDate.seconds != pageObj.holidayList[data].endDate.seconds">
+                  {{dateConvert(pageObj.holidayList[data].endDate)}}
+                </p>
+                <p class="desc">{{pageObj.holidayList[data].desc}}</p>
+              </div>
+              
+              </div>
+            </div>
           </div>
         </div>
       </div>
