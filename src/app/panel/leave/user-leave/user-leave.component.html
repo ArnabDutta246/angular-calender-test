@@ -1,0 +1,170 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/panel/dashboard"><i class="fab fa-houzz mr-1"></i>Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
+      <i class="fas fa-mug-hot mr-1"></i> User Leave 
+    </li>
+  </ol>
+</nav>
+
+
+
+
+
+<div class="p-lg-3">
+<!-- main page row -->
+<div class="row">
+  <!--============ calender and summery section start ========== -->
+  <div class="col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-12">
+      <ion-calendar
+        (select)="onSelect($event)" 
+        (selectStart)="onSelectStart($event)" 
+        (selectEnd)="onSelectEnd($event)"
+        (monthChange)="onMonthChange($event)">
+      </ion-calendar>
+      </div>
+      <div class="col-12 my-3">
+        <div class="card">
+          <div class="card-body">
+            <h6>Leaves Status</h6>
+            <div class="row">
+               <div class="col-4">
+                <div class="row">
+                  <div class="col-2">
+                    <i class="fas fa-window-minimize text-success"></i>
+                  </div>
+                  <div class="col-10">
+                    <span class="text-muted">Approved</span>
+                  </div>
+                </div>
+               </div>
+
+               <div class="col-4">
+                <div class="row">
+                  <div class="col-2">
+                    <i class="fas fa-window-minimize text-warning"></i>
+                  </div>
+                  <div class="col-10">
+                    <span class="text-muted">Pending</span>
+                  </div>
+                </div>
+               </div>
+
+                <div class="col-4">
+                <div class="row">
+                  <div class="col-2">
+                    <i class="fas fa-window-minimize text-danger"></i>
+                  </div>
+                  <div class="col-10">
+                    <span class="text-muted">Rejected</span>
+                  </div>
+                </div>
+                </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!--============ calender and summery section end ========== -->
+  <!--============ leave summery section start ========== -->
+  <div class="col-sm-12 col-md-6 col-lg-6">
+    <div class="card">
+      <div class="card-body" *ngIf="calendarMeta.userleaveType">
+        <h6 class="mb-2">Leave Summary</h6>
+        <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+          <div class="row">
+            <div class="col-6">
+              <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+            </div>
+            <div class="col-6">
+              <h6>
+              {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+              of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+             </h6>
+            </div>
+            <div class="col-12">
+              <!-- <div class="chartrate">
+                <div [ngStyle]="{'background': leaveColors[i%14],
+                                 'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed )+'%' : '0%'}"></div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--============ leave summery section end ========== -->
+</div>
+
+</div>
+    <!-- <div class="eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+      <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+      <p>
+        {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+        of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken</p>
+      <div class="clear"></div>
+      <div class="chartrate">
+        <div [ngStyle]="{
+                            'background': leaveColors[i%14],
+                            'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?
+                                     (calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%'
+                                     : '0%'
+                          }"></div>
+      </div>
+    </div> -->
+
+
+<!-- main page row -->
+<!-- ================= whole tab content==================== -->
+<div class="tab-content" id="pills-tabContent">
+  <!-- =============== manage regions contents start=============== -->
+  <div class="tab-pane fade show active" id="pills-manage-region" role="tabpanel"
+    aria-labelledby="pills-manage-region-tab">
+  </div>
+  <!-- =============== manage regions contents end=============== -->
+
+  <!-- =============== apply leave  contents start=============== -->
+  <div class="tab-pane fade" id="pills-manage-year-calender" role="tabpanel"
+    aria-labelledby="pills-manage-year-calender-tab">
+    <!--=================== Yearly calender set ================= -->
+    <!-- top header -->
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <div class="row">
+          <div class="col-1">
+            <button class="btn btn-sm text-white" (click)="backToManageRegion()">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+          </div>
+          <div class="col-11">Apply Leave</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!--=================== Yearly calender set ================= -->
+  </div>
+  <!-- =============== apply leave contents start=============== -->
+</div>
+<!-- =============================================== -->
+<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="visibility: hidden">
+  <!-- =============== Manage region access Button =============== -->
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active" id="pills-manage-region-tab" data-toggle="pill" href="#pills-manage-region" role="tab"
+      aria-controls="pills-manage-region" aria-selected="true" #manageRegionPanel>Manage region</a>
+  </li>
+  <!-- =============== Year calender access Button =============== -->
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" id="pills-manage-year-calender-tab" data-toggle="pill" href="#pills-manage-year-calender"
+      role="tab" aria-controls="pills-manage-year-calender" aria-selected="false" #manageYearCalenderPanel>Manage Year
+      Calender</a>
+  </li>
+</ul>
+<!-- =============================================== -->

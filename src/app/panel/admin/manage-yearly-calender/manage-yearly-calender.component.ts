@@ -177,8 +177,8 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
   ngOnChanges(){
     this.forCountryData = null;
     if(this.data !== null){
-     this.forCountryData = this.data;
-     this.getHolidayCalendar();
+    this.forCountryData = this.data;
+    this.getHolidayCalendar();
     this.getTeam();
     this.getLeaveAdmin();
     this.getExpenseAdmin();
@@ -564,7 +564,9 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
           expenseTypes: expenseTypes,
         };
         let leaveDocId = data.uid + this.session.subscriberId + this.forCountryData.countryData.countryCode + this.forCountryData.countryData.region.replace(/[^A-Za-z]/g,'').toUpperCase() + this.pageObj.yearSelected;
+        //alert(leaveDocId);
         let userLeaveDoc = this.allCol.afs.collection(this.allCol._USER_LEAVE_CALENDAR).doc(leaveDocId).ref;
+        //alert(userLeaveDoc);
         batch.set(userLeaveDoc,leaveCalendarObj,{merge: true});
         let userDoc = data.uid + "_" + this.session.subscriberId;
         let userDocRef = this.allCol.afs.collection(this.allCol.users).doc(userDoc).ref;

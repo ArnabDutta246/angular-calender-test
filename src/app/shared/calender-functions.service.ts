@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { AllCollectionsService } from './all-collections.service';
 import { SweetAlertService } from './sweet-alert.service';
@@ -10,7 +11,8 @@ export class CalenderFunctionsService {
 
   constructor(
     private allCol:AllCollectionsService,
-    private alertMessage:SweetAlertService
+    private alertMessage:SweetAlertService,
+    private spinner:NgxSpinnerService
   ) { }
 
   public leaveColors: any = ['#3b9a91', '#f56538', '#9a75dc',
@@ -46,8 +48,8 @@ export class CalenderFunctionsService {
     }
 
     isUserRegionValid(session,showAlert:boolean=true){
-      if(!session.user.regionServe || session.user.regionServe=='' ||
-         !session.user.countryServe || session.user.countryServe==''
+      if(!session.regionServe || session.regionServe=='' ||
+         !session.countryServe || session.countryServe==''
        ){
          if(showAlert){
            this.alertMessage.showAlert("error", "Please note that your account is not linked to any valid region. Request your administrator to associate your account to a valid region from Admin panel > Maintain Region > Propagate Region Calendar","Invalid Region",);
@@ -62,7 +64,7 @@ export class CalenderFunctionsService {
       if(this.isUserRegionValid(session,showAlert))
       {
           let leaveAdminRegions = session.user.leaveAdmin ?
-                                  Object.keys(session.user.leaveAdmin)
+                                  Object.keys(session.leaveAdmin)
                                   :
                                   [];
           if(leaveAdminRegions.length==0){
@@ -81,8 +83,8 @@ export class CalenderFunctionsService {
     isUserRegionExpenseAdmin(session, showAlert:boolean=true){
       if(this.isUserRegionValid(session,showAlert))
       {
-          let expenseAdminRegions = session.user.expenseAdmin ?
-                                  Object.keys(session.user.expenseAdmin)
+          let expenseAdminRegions = session.expenseAdmin ?
+                                  Object.keys(session.expenseAdmin)
                                   :
                                   [];
           if(expenseAdminRegions.length==0){
@@ -112,7 +114,7 @@ export class CalenderFunctionsService {
 
       // console.log("getCalendarYearData",calendarMeta.calendaryears.years,JSON.stringify(calendarMeta.calendarOptions), JSON.stringify(calendarMeta.userCalendarYear));
       if(this.isUserRegionValid(session)){
-        session.user.loader = true;
+        this.spinner.show();
 
         let years = [(parseInt(year) -1 ).toString(),year.toString(),(parseInt(year) + 1 ).toString()];
         // fetch data only if required
@@ -223,10 +225,10 @@ export class CalenderFunctionsService {
 
       if(calendarYear){
         return this.allCol.afs.collection(this.allCol._USER_LEAVE_CALENDAR,
-                            ref=> ref.where("subscriberId","==",session.admin.subscriberId)
-                            .where("uid","==",session.user.uid)
-                            .where("country","==",session.user.countryServe)
-                            .where("region","==",session.user.regionServe)
+                            ref=> ref.where("subscriberId","==",session.subscriberId)
+                            .where("uid","==",session.uid)
+                            .where("country","==",session.countryServe)
+                            .where("region","==",session.regionServe)
                             .where("year","==",calendarYear)
                           )
                           .snapshotChanges()

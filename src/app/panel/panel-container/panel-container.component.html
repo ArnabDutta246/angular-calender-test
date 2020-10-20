@@ -42,6 +42,12 @@
                   </div>
                 </a>
               </ng-container>
+              <a routerLink="/panel/user-leave">
+                <div class="menu-link text-center" routerLinkActive="active-url">
+                  <i class="fas fa-mug-hot mr-3"></i>
+                  <span>Leaves Apply</span>
+                </div>
+              </a>
               <div
                 [ngClass]="
                   currentUser.role === 'ADMIN' &&
@@ -122,6 +128,12 @@
               </div>
             </a>
           </ng-container>
+          <a routerLink="/panel/user-leave">
+            <div class="menu-link text-center" routerLinkActive="active-url">
+              <i class="fas fa-mug-hot mr-3"></i>
+              <span>Leaves Apply</span>
+            </div>
+          </a>
           <div
             [ngClass]="
               currentUser.role === 'ADMIN' &&

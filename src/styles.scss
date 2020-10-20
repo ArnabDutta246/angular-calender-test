@@ -647,6 +647,19 @@ label {
     // font-size: $header_font;
   }
 }
+.chartrate {
+  width: 100%;
+  height: 7px;
+  background: $color-gray;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 5px 0;
+  div {
+    animation: slide-right 0.5s ease;
+    height: 100%;
+    border-radius: 7px;
+  }
+}
 //==========================================
 // -----------------all import extra files------------------------
 @import "./assets/scss/customBootstrap.scss";

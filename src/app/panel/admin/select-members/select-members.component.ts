@@ -174,14 +174,14 @@ export class SelectMembersComponent implements OnInit,OnChanges {
           // bring me into user
           let checked = false;
           let presentStatus = null;
-          let disabled = (data.uid == this.getUserData) && this.getUserData.role != 'ADMIN';
+          let disabled = (data.uid == this.getUserData.uid ) && this.getUserData.role != 'ADMIN';
           switch(this.getNavData.eventType){
             case 'propagateCalendar':
               if(data.countryServe == this.getNavData.countryData.countryData.countryCode && data.regionServe == this.getNavData.countryData.countryData.region){
                 checked = true;
                 presentStatus = 'EXISTING';
               } else if(data.countryServe || data.regionServe){
-                disabled = true;
+                //disabled = true;
               }
               break;
             case 'propagateLeaveAdmin':

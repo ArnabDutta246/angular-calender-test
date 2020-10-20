@@ -39,6 +39,8 @@ import { PaymentComponent } from "./allPayments/payment/payment.component";
 import { ManageRegionsComponent } from './panel/admin/manage-regions/manage-regions.component';
 import { ManageYearlyCalenderComponent } from './panel/admin/manage-yearly-calender/manage-yearly-calender.component';
 import { SelectMembersComponent } from './panel/admin/select-members/select-members.component';
+import { ApplyLeavesComponent } from './panel/leave/apply-leaves/apply-leaves.component';
+import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
 
 //.......................................................................
 
@@ -66,6 +68,8 @@ import { SelectMembersComponent } from './panel/admin/select-members/select-memb
     ManageRegionsComponent,
     ManageYearlyCalenderComponent,
     SelectMembersComponent,
+    ApplyLeavesComponent,
+    UserLeaveComponent,
   ],
   imports: [
     BrowserModule,
