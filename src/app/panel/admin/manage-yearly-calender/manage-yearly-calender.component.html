@@ -482,7 +482,7 @@
             </div>
 
             <div class="row">
-              <div class="HolidayCard" *ngFor="let data of giveMentionYearHoliday()">
+              <div class="HolidayCard col-12" *ngFor="let data of giveMentionYearHoliday()">
                 <p class="day">{{dateConvert(pageObj.holidayList[data].startDate)}}
                 <p class="day" *ngIf="pageObj.holidayList[data].startDate.seconds != pageObj.holidayList[data].endDate.seconds">
                   {{dateConvert(pageObj.holidayList[data].endDate)}}
