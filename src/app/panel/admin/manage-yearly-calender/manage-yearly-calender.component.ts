@@ -182,9 +182,9 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     this.getTeam();
     this.getLeaveAdmin();
     this.getExpenseAdmin();
-    } 
+    }
 
-  
+
   }
   getHolidayCalendar(){
     this.pageObj.documentId = this.session.subscriberId+
@@ -474,7 +474,7 @@ export class ManageYearlyCalenderComponent implements OnInit,OnChanges {
     this.alertMessage.showAlert("success","Expense admin for the region " + this.forCountryData.countryData.countryCode +
     " - " + this.forCountryData.countryData.region +
     " updated successfully.","Rgeion Expense Admin",);
-  } 
+  }
 
   //========================= define leave admin=========
   defineLeaveAdmin(recipientList: any =[])
@@ -615,7 +615,7 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
   onSelectStart($event) {
     //console.log("onSelectStart", $event.time);
     this.single_or_range_date_from = new Date($event.time).getTime();
-     
+
   }
   onSelectEnd($event) {
     //console.log("onSelectEnd", $event.time);
@@ -684,7 +684,7 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
   }
 
   //======================= holiday =======================
-  
+
   holiday_add(){
     if(this.holiday_desc){
       if(!this.single_or_range_date){
@@ -774,7 +774,7 @@ propagateLeaveforUser(recipientList: any =[],broadcastMsg: any='', showAlert: bo
         this.toggleMode = "single";
         //alert(this.options.pickMode+"...."+this.toggleMode);
         break;
-    
+
       default:
         break;
     }

@@ -66,7 +66,7 @@ export class AllCollectionsService {
     this.users = "users";
     this.subscribers = "subscribers";
     this.noti = "notifications";
- 
+
     // hrms collections
     this._EXPENSES = "expenses";
     this._LEAVES_RULES = "leaveRules";
@@ -77,6 +77,7 @@ export class AllCollectionsService {
     this._COLL_LEAVE_REGULATOR = "leaveRegional";
     this._COLL_EXPENSE_REGULATOR = "expenseRegional";
     this._COLL_USER_EXPENSE_REGULATOR = "userExpenseSummary";
+    this._USER_LEAVE_CALENDAR="userLeaveCalendar";
     // latest hrms collection
     this._REGIONS = "regions";
     this._LEAVES_APPLIED = "leavesApplied";

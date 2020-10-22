@@ -48,8 +48,8 @@ export class CalenderFunctionsService {
     }
 
     isUserRegionValid(session,showAlert:boolean=true){
-      if(!session.regionServe || session.regionServe=='' ||
-         !session.countryServe || session.countryServe==''
+      if(!session.user.regionServe || session.user.regionServe=='' ||
+         !session.user.countryServe || session.user.countryServe==''
        ){
          if(showAlert){
            this.alertMessage.showAlert("error", "Please note that your account is not linked to any valid region. Request your administrator to associate your account to a valid region from Admin panel > Maintain Region > Propagate Region Calendar","Invalid Region",);
@@ -83,8 +83,8 @@ export class CalenderFunctionsService {
     isUserRegionExpenseAdmin(session, showAlert:boolean=true){
       if(this.isUserRegionValid(session,showAlert))
       {
-          let expenseAdminRegions = session.expenseAdmin ?
-                                  Object.keys(session.expenseAdmin)
+          let expenseAdminRegions = session.user.expenseAdmin ?
+                                  Object.keys(session.user.expenseAdmin)
                                   :
                                   [];
           if(expenseAdminRegions.length==0){
@@ -123,7 +123,7 @@ export class CalenderFunctionsService {
         if(JSON.stringify(array1) != JSON.stringify(array2)|| forced){
           calendarMeta.calendaryears.years = [...years];
           return this.allCol.afs.collection(this.allCol._LEAVE_CALENDER,
-                              ref=> ref.where("subscriberId","==",session.admin.subscriberId)
+                              ref=> ref.where("subscriberId","==",session.user.subscriberId)
                               .where("country","==",session.user.countryServe)
                               .where("region","==",session.user.regionServe)
                               // we need to check for calendar data for selected year and a year before that
@@ -146,7 +146,7 @@ export class CalenderFunctionsService {
                                   // console.log("calendaryears ", d);
                                   let calStart = d.year+d.calendarStartMonth.toString().padStart(2, '0');
                                   let calEnd = (d.calendarEndMonth > 1 ? (parseInt(d.year)+1).toString() : d.year)+d.calendarEndMonth.toString().padStart(2, '0');
-                                 
+
                                   if(calStart <= (year+month) && calEnd >= (year+month)){
                                     matched = true;
 
@@ -195,7 +195,7 @@ export class CalenderFunctionsService {
             // console.log("calendaryears ", d);
             let calStart = d.year+d.calendarStartMonth.toString().padStart(2, '0');
             let calEnd = (d.calendarEndMonth > 1 ? (parseInt(d.year)+1).toString() : d.year)+d.calendarEndMonth.toString().padStart(2, '0');
-            
+
             if(calStart <= (year+month) && calEnd >= (year+month)){
               matched = true;
 
@@ -225,10 +225,10 @@ export class CalenderFunctionsService {
 
       if(calendarYear){
         return this.allCol.afs.collection(this.allCol._USER_LEAVE_CALENDAR,
-                            ref=> ref.where("subscriberId","==",session.subscriberId)
-                            .where("uid","==",session.uid)
-                            .where("country","==",session.countryServe)
-                            .where("region","==",session.regionServe)
+                            ref=> ref.where("subscriberId","==",session.user.subscriberId)
+                            .where("uid","==",session.user.uid)
+                            .where("country","==",session.user.countryServe)
+                            .where("region","==",session.user.regionServe)
                             .where("year","==",calendarYear)
                           )
                           .snapshotChanges()
@@ -350,4 +350,3 @@ export class CalenderFunctionsService {
       // this.monthChanges({newMonth: {months: parseInt(moment().format("MM")), years: parseInt(moment().format("YYYY"))}});
     }
 }
-

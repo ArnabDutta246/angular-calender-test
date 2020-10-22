@@ -53,7 +53,7 @@ export class UserLeaveComponent implements OnInit {
     let year = moment().format('YYYY');
     let month = moment().format('MM');
     // this.getCalendarYearData(month,year);
-    this.cal.getCalendarYearData(month, year, this.session, this.calendarMeta);
+    this.cal.getCalendarYearData(month, year, {user: this.session}, this.calendarMeta);
     this.getListOfleaves();
 
   }
@@ -94,15 +94,16 @@ export class UserLeaveComponent implements OnInit {
     const year = e.newMonth.years;
     this.monthStartDate =  moment(year+month+'01','YYYYMMDD').startOf('month').subtract(1,'month');
     this.monthEndDate = moment(year+month+'01','YYYYMMDD').endOf('month').add(1,'month');
+    // console.log("this.calendarMeta",this.calendarMeta);
     // await this.getCalendarYearData(month, year);
-    await this.cal.getCalendarYearData(month, year, this.session, this.calendarMeta,);
+    await this.cal.getCalendarYearData(month, year, {user: this.session}, this.calendarMeta,);
     await this.getListOfleaves();
 
   }
 
   dateFormatting(date, type){
     return date ? moment(date).format(type) : moment(this.monthStartDate).format(type);
-  } 
+  }
   details(data){
     let showData = {
       docId: data.id,
@@ -153,5 +154,5 @@ export class UserLeaveComponent implements OnInit {
     //   {data:this.session,details:showData,
     //     actionType: actionType}
     //  );
-  }   
+  }
 }

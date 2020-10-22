@@ -4,7 +4,7 @@
       <a routerLink="/panel/dashboard"><i class="fab fa-houzz mr-1"></i>Dashboard</a>
     </li>
     <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
-      <i class="fas fa-mug-hot mr-1"></i> User Leave 
+      <i class="fas fa-mug-hot mr-1"></i> User Leave
     </li>
   </ol>
 </nav>
@@ -18,84 +18,102 @@
 <div class="row">
   <!--============ calender and summery section start ========== -->
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <div class="row">
-      <div class="col-12">
-      <ion-calendar
-        (select)="onSelect($event)" 
-        (selectStart)="onSelectStart($event)" 
-        (selectEnd)="onSelectEnd($event)"
-        (monthChange)="onMonthChange($event)">
-      </ion-calendar>
-      </div>
-      <div class="col-12 my-3">
-        <div class="card">
-          <div class="card-body">
-            <h6>Leaves Status</h6>
-            <div class="row">
-               <div class="col-4">
-                <div class="row">
-                  <div class="col-2">
-                    <i class="fas fa-window-minimize text-success"></i>
-                  </div>
-                  <div class="col-10">
-                    <span class="text-muted">Approved</span>
-                  </div>
-                </div>
-               </div>
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header bg-primary text-white">
+          <div class="col-12">Leave Calendar</div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!-- <div class="col-12"> -->
+            <ion-calendar
+              [readonly]="true"
+              [options]="calendarMeta.calendarOptions"
+              (monthChange)="monthChanges($event)">
+            </ion-calendar>
+            <!-- </div> -->
+            <!-- <div class="col-12 my-3"> -->
+              <div class="col-12 card">
+                <div class="card-body">
+                  <h6>Leaves Status</h6>
+                  <div class="row">
+                     <div class="col-4">
+                      <div class="row">
+                        <div class="col-2">
+                          <i class="fas fa-window-minimize text-success"></i>
+                        </div>
+                        <div class="col-10">
+                          <span class="text-muted"><small>Approved</small></span>
+                        </div>
+                      </div>
+                     </div>
 
-               <div class="col-4">
-                <div class="row">
-                  <div class="col-2">
-                    <i class="fas fa-window-minimize text-warning"></i>
-                  </div>
-                  <div class="col-10">
-                    <span class="text-muted">Pending</span>
-                  </div>
-                </div>
-               </div>
+                     <div class="col-4">
+                      <div class="row">
+                        <div class="col-2">
+                          <i class="fas fa-window-minimize text-warning"></i>
+                        </div>
+                        <div class="col-10">
+                          <span class="text-muted"><small>Pending</small></span>
+                        </div>
+                      </div>
+                     </div>
 
-                <div class="col-4">
-                <div class="row">
-                  <div class="col-2">
-                    <i class="fas fa-window-minimize text-danger"></i>
-                  </div>
-                  <div class="col-10">
-                    <span class="text-muted">Rejected</span>
-                  </div>
-                </div>
-                </div>
+                      <div class="col-4">
+                      <div class="row">
+                        <div class="col-2">
+                          <i class="fas fa-window-minimize text-danger"></i>
+                        </div>
+                        <div class="col-10">
+                          <span class="text-muted"><small>Rejected</small></span>
+                        </div>
+                      </div>
+                      </div>
 
-          </div>
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+        </div>
         </div>
       </div>
     </div>
   </div>
-  </div>
   <!--============ calender and summery section end ========== -->
   <!--============ leave summery section start ========== -->
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <div class="card">
-      <div class="card-body" *ngIf="calendarMeta.userleaveType">
-        <h6 class="mb-2">Leave Summary</h6>
-        <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
-          <div class="row">
-            <div class="col-6">
-              <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
-            </div>
-            <div class="col-6">
-              <h6>
-              {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
-              of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
-             </h6>
-            </div>
-            <div class="col-12">
-              <!-- <div class="chartrate">
-                <div [ngStyle]="{'background': leaveColors[i%14],
-                                 'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed )+'%' : '0%'}"></div>
-              </div> -->
+    <div class="row p-1">
+      <div class="col-12 card bg-white">
+        <div class="row card-header  bg-primary text-white">
+          <div class="col-12">Leave Summary</div>
+        </div>
+        <!-- <div class="card"> -->
+          <div class="card-body" *ngIf="!calendarMeta.userleaveTypes">
+            <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid region using Manage Region option</p>
+          </div>
+          <div class="card-body" *ngIf="calendarMeta.userleaveTypes">
+            <h6 class="mb-2">Your Leave Summary</h6>
+            <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+              <div class="row">
+                <div class="col-6">
+                  <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+                </div>
+                <div class="col-6">
+                  <h6>
+                  {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+                  of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+                 </h6>
+                </div>
+                <div class="col-12">
+                  <!-- <div class="chartrate">
+                    <div [ngStyle]="{'background': leaveColors[i%14],
+                                     'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed )+'%' : '0%'}"></div>
+                  </div> -->
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+    <!-- </div> -->
       </div>
     </div>
   </div>
