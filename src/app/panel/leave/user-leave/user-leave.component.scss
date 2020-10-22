@@ -1,0 +1,68 @@
+@import "../../../../assets/scss/variables.scss";
+.eachDetails {
+  margin-top: 10px;
+  // border-left: 5px solid $color-amber;
+  // box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  overflow: hidden;
+  .type {
+    padding: 5px 30px 6px 10px;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: $big_weight;
+    color: $color-white;
+    font-family: $font-family;
+    position: relative;
+    &::after {
+      content: "";
+      border-top: 21px solid transparent;
+      border-right: 21px solid $color-white;
+      border-bottom: 21px solid transparent;
+      border-left: 21px solid transparent;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+  }
+  .approved {
+    background: $color-aqua-bg;
+  }
+  .timings {
+    padding-left: 15px;
+    .applied {
+      color: $color-fab-btn;
+      font-size: $input-font;
+      margin-top: 5px;
+    }
+    .leavetype {
+      font-weight: $big_weight;
+      font-size: $title-font;
+      margin-top: -3px;
+    }
+    .rason {
+      font-size: $input_font;
+      color: $color-dark-grey;
+    }
+    .days {
+      display: flex;
+      padding-bottom: 6px;
+      span {
+        margin-right: 10px;
+        b {
+          color: $color-accent;
+          font-size: 15px;
+          margin-right: 5px;
+        }
+        &:nth-child(2) {
+          padding-top: 5px;
+        }
+      }
+      img {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+        margin-top: 2px;
+      }
+    }
+  }
+}

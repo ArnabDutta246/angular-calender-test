@@ -21,10 +21,17 @@
     <div class="row p-1">
       <div class="col-12 card bg-white">
         <div class="row card-header bg-primary text-white">
-          <div class="col-12">Leave Calendar</div>
+          <div class="col-7 align-left">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
+          <div class="col-5">
+            <div class="btn btn-sm btn-light" (click)="switchApplyform = !switchApplyform">{{ switchApplyform !== true ? 'Apply Leave' : 'Cancel Leave' }} 
+              <i class="fas fa-stopwatch ml-1" *ngIf="switchApplyform !== true"></i>
+              <i class="fas fa-undo ml-1" *ngIf="switchApplyform === true"></i>
+            </div>
+          </div>
         </div>
         <div class="card-body">
-          <div class="row">
+        <!--=============== readonly mood for leave calender =============-->
+        <div class="row" *ngIf="switchApplyform !== true">
             <!-- <div class="col-12"> -->
             <ion-calendar
               [readonly]="true"
@@ -75,6 +82,76 @@
             </div>
           <!-- </div> -->
         </div>
+        <!--=============== readonly mood for leave calender =============-->
+        <!--=============== apply leave form ===========================  -->
+        <div class="row" *ngIf="switchApplyform === true">
+          <div class="col-12">
+
+            <div class="row my-3">
+              <div class="col-1">
+                <i class="fas fa-mug-hot text-danger"></i>
+              </div>
+              <div class="col-11">
+                Leave Types
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                <select [(ngModel)]="pageObj.apllyingLeave.type" (change)="dayCounter()" class="form-control">
+                  <option *ngFor="let data of calendarMeta.allLeavesOrgHave; let i = index" [value]="i">{{data.type}}</option>
+                </select>
+                </div>
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-1">
+              <i class="far fa-calendar-alt text-danger"></i>
+              </div>
+              <div class="col-6">
+                Select Date{{toggleMode == 'range' ? 's' : ''}}
+              </div>
+              <div class="col-5 align-right">
+              <div class="calender-toggle-switch">
+                <label class="switch">
+                  <input type="checkbox" (change)="changeToggleMode()" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              </div>
+              <div class="col-12">
+                <!-- Calendar -->
+                <ion-calendar
+                #calendar [options]="calendarMeta.calendarOptions" 
+                (onSelect)="onSelect($event)"
+                (onSelectStart)="onSelectStart($event)" 
+                (onSelectEnd)="onSelectEnd($event)" 
+                (monthChange)="monthChanges($event)">
+                </ion-calendar>
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-1">
+              <i class="fas fa-comment-alt text-danger"></i>
+              </div>
+              <div class="col-11">
+                Reason
+              </div>
+              <div class="col-10">
+                <div class="form-group">
+                  <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="btn btn-sm btn-primary">
+                  <i class="fas fa-paper-plane" (click)="applyLeave()"></i>
+                </div>
+              </div>
+              <div class="col-12">
+                <p>{{pageObj.apllyingLeave.resultDescribe}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--=============== apply leave form ===========================  -->
         </div>
       </div>
     </div>
@@ -93,6 +170,7 @@
           </div>
           <div class="card-body" *ngIf="calendarMeta.userleaveTypes">
             <h6 class="mb-2">Your Leave Summary</h6>
+            <!-- =========== horizontal bar graph ==============-->
             <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
               <div class="row">
                 <div class="col-6">
@@ -100,20 +178,61 @@
                 </div>
                 <div class="col-6">
                   <h6>
-                  {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
-                  of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
-                 </h6>
+                    {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+                    of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+                  </h6>
                 </div>
                 <div class="col-12">
-                  <!-- <div class="chartrate">
-                    <div [ngStyle]="{'background': leaveColors[i%14],
-                                     'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed )+'%' : '0%'}"></div>
-                  </div> -->
+                  <div class="chartrate">
+                    <div
+                      [ngStyle]="{'background': leaveColors[i%14],'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?(calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <!-- =========== horizontal bar graph ==============-->
           </div>
     <!-- </div> -->
+      </div>
+      <div class="col-12 card bg-white mt-2">
+        <div class="row card-header bg-primary text-white">
+          <div class="col-12">
+            Adjoining Leaves
+          </div>
+        </div>
+        <div class="card-body">
+            <div class="eachDetails" *ngIf="monthsData.length==0">
+              <p class="type" [ngClass]="'moderate'">No Leave Found</p>
+              <div class="timings">
+                <p class="applied">Yet to apply any leave for the month</p>
+                <p class="leavetype">No leave record exist</p>
+                <p class="rason">No leave applied for the selected month.</p>
+                <div class="days">
+                  <span><b>0</b>Day</span>
+                  <i class="far fa-calendar-alt mr-2"></i>
+                  <span>{{dateFormatting(null,'ll')}}</span>
+                <i class="far fa-calendar-alt mr-2"></i>
+                  <span>{{dateFormatting(null,'ll')}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="eachDetails" (click)="details(data)" *ngFor="let data of monthsData">
+              <p class="type" [ngClass]="data.status">{{data.status}}</p>
+              <div class="timings">
+                <p class="applied">Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}}</p>
+                <p class="leavetype">{{data.type}}</p>
+                <p class="rason">{{data.reason}}</p>
+                <div class="days">
+                  <span><b>{{data.daysCount}}</b> {{(data.daysCount >  1) ? 'Days' : 'Day'}}</span>
+                  <i class="far fa-calendar-alt mr-2"></i>
+                  <span>{{dateFormatting(data.startDate.seconds * 1000,'ll')}}</span>
+                  <i class="far fa-calendar-alt mr-2"></i>
+                  <span>{{dateFormatting(data.endDate.seconds * 1000,'ll')}}</span>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -121,21 +240,7 @@
 </div>
 
 </div>
-    <!-- <div class="eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
-      <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
-      <p>
-        {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
-        of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken</p>
-      <div class="clear"></div>
-      <div class="chartrate">
-        <div [ngStyle]="{
-                            'background': leaveColors[i%14],
-                            'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?
-                                     (calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%'
-                                     : '0%'
-                          }"></div>
-      </div>
-    </div> -->
+
 
 
 <!-- main page row -->

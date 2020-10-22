@@ -1,0 +1,24 @@
+<div *ngIf="calendarMeta.userleaveTypes">
+<div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+  <div class="row">
+    <div class="col-6">
+      <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+    </div>
+    <div class="col-6">
+      <h6>
+        {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+        of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+      </h6>
+    </div>
+    <div class="col-12">
+      <div class="chartrate">
+        <div
+          [ngStyle]="{'background': leaveColors[i%14],
+                                     'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?
+                                               (calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

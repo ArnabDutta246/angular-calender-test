@@ -18,7 +18,7 @@ export class SweetAlertService {
         Swal.fire({
           icon: "success",
           title: errorTitle,
-          text: text,
+          html: text,
           showConfirmButton: true,
           allowOutsideClick: false,
           // timer: 2500,
@@ -28,7 +28,7 @@ export class SweetAlertService {
         Swal.fire({
           icon: "error",
           title: errorTitle,
-          text: text,
+          html: text,
           allowOutsideClick: false,
         });
         break;
@@ -36,7 +36,7 @@ export class SweetAlertService {
         Swal.fire({
           icon: "info",
           title: errorTitle,
-          text: text,
+          html: text,
           showConfirmButton: true,
           allowOutsideClick: false,
         });

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { ConnectionService } from 'ng-connection-service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -6,12 +7,15 @@ import { map } from 'rxjs/operators';
 import { AllCollectionsService } from 'src/app/shared/all-collections.service';
 import { AllMembersDataService } from 'src/app/shared/all-members-data.service';
 import { CalenderFunctionsService } from 'src/app/shared/calender-functions.service';
+import { NotificationService } from 'src/app/shared/notification.service';
 import { SweetAlertService } from 'src/app/shared/sweet-alert.service';
+import { TextSearchService } from 'src/app/shared/text-search.service';
 
 @Component({
   selector: 'app-user-leave',
   templateUrl: './user-leave.component.html',
-  styleUrls: ['./user-leave.component.scss']
+  styleUrls: ['./user-leave.component.scss'],
+  encapsulation:ViewEncapsulation.None,
 })
 export class UserLeaveComponent implements OnInit {
 
@@ -24,6 +28,32 @@ export class UserLeaveComponent implements OnInit {
   monthsData: any[] = [];
   status = "ONLINE"; //initializing as online by default
   isConnected = true;
+  switchApplyform:boolean = false;
+
+  leaveAdmins: any = [];
+  applierDateDiff: any[] = [];
+  toggleMode: string = "single";
+    pageObj: any = {
+    documentId: "",
+    yearSelected: '',
+    allLeavesOrgHave: [],
+    allHolidays: [],
+    weeklyOffDays: [],
+    session:{
+      startMonth: 0,
+      endMonth: 11
+    },
+    apllyingLeave:{
+      type: 0,
+      startDate: '',
+      endDate: '',
+      reason: '',
+      noOfDays: 0,
+      resultDescribe: ""
+    }
+  }
+
+
   constructor(
     private db: AllCollectionsService,
     private cal: CalenderFunctionsService,
@@ -31,12 +61,14 @@ export class UserLeaveComponent implements OnInit {
     private alertMessage:SweetAlertService,
     private spinner:NgxSpinnerService,
     private connectionService: ConnectionService,
+    private searchMap:TextSearchService,
+    private notification:NotificationService
   ) {
       this.session = this.allMembers.getCurrLogUserData();
       //this.leaveAdminRegions = this.cal.isUserRegionLeaveAdmin(this.session, false);
    }
 
-  ngOnInit() {
+  async ngOnInit() {
     //----------------------network check function------------------
     this.connectionService.monitor().subscribe((isConnected) => {
       this.isConnected = isConnected;
@@ -56,8 +88,12 @@ export class UserLeaveComponent implements OnInit {
     this.cal.getCalendarYearData(month, year, {user: this.session}, this.calendarMeta);
     this.getListOfleaves();
 
+    this.calendarMeta.calendarOptions.from = moment().startOf('month').subtract(12,'month');
+    Object.assign(this.calendarMeta,{excludeStatus: ['rejected'], isUserCalendarRequired: true});
+    this.getLeavAdmins();
+
   }
-  getListOfleaves(){
+  async getListOfleaves(){
     if(this.status ==='ONLINE'){
       this.spinner.show();
       this.db.afs.collection(this.db._LEAVES_APPLIED,
@@ -155,4 +191,222 @@ export class UserLeaveComponent implements OnInit {
     //     actionType: actionType}
     //  );
   }
+
+
+  //=============================== apply leave ====================
+    getLeavAdmins(){
+    let ur = {country: this.session.countryServe, region: this.session.regionServe};
+    return this.db.afs.collection(this.db.users,
+      ref=> ref.where("subscriberId","==",this.session.subscriberId)
+      .where("leaveAdmin." + ur.country + "_" + ur.region.replace(/[^A-Za-z]/g,''),"==",ur))
+      .snapshotChanges()
+      .pipe(map((actions: any[]) => actions.map((a: any) => {
+        const data = a.payload.doc.data();
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))).subscribe((data: any[]) => {
+        this.leaveAdmins = data;
+        // this.session.user.loader = false;
+      })
+  }
+
+  changeToggleMode(){
+    this.toggleMode = (this.toggleMode == 'range') ? 'single' : 'range';
+    this.calendarMeta.calendarOptions.pickMode = this.toggleMode;
+    this.pageObj.apllyingLeave.noOfDays = 0;
+    this.dayCounter();
+    this.cal.renderDataSet(this.calendarMeta);
+    // this.renderDataSet();
+  }
+
+  // seleting the date between
+  // user seleting the dates
+  onSelect(event){
+    if(this.toggleMode=='single'){
+      this.pageObj.apllyingLeave.startDate = new Date(event.time).getTime();
+      this.pageObj.apllyingLeave.endDate = new Date(event.time).getTime();
+      if(this.checkConflicts()){
+        let leaveDate = moment(this.pageObj.apllyingLeave.startDate).format('ll');
+        this.alertMessage.showAlert("info","Please note that " + leaveDate + " is not valid, it is either a holiday or you applied leave for the day earlier. Check the date and try again.","Warning");
+      }
+      this.dayCounter();
+    } else {
+      // Do nothing
+    }
+
+    // this.diffEr()
+  }
+
+  onSelectStart(event){
+    this.pageObj.apllyingLeave.startDate = new Date(event.time).getTime();
+  }
+
+  onSelectEnd(event){
+    this.pageObj.apllyingLeave.endDate = new Date(event.time).getTime();
+    // The timeout is added here as onSelectStart will be called if end date is less than start date
+    setTimeout(()=>{
+      if(this.checkConflicts()){
+        let leaveStartDate = moment(this.pageObj.apllyingLeave.startDate).format('ll');
+        let leaveEndDate = moment(this.pageObj.apllyingLeave.endDate).format('ll');
+        this.alertMessage.showAlert("info","Please note that the period, " + leaveStartDate + " to " + leaveEndDate + " you are trying to apply leave is not valid, it either contains other holidays or leaves you applied earlier. Check the dates and try again.","Check the dates and try again");
+      }
+      this.dayCounter();
+    },100);
+  }
+
+  checkConflicts(){
+    let endDate = this.pageObj.apllyingLeave.endDate ?
+                           this.pageObj.apllyingLeave.endDate
+                           :
+                           this.pageObj.apllyingLeave.startDate;
+    let startDate = this.pageObj.apllyingLeave.startDate;
+    this.pageObj.apllyingLeave.noOfDays = 0;
+    if(this.toggleMode=='single'){
+      let result= this.calendarMeta.newObj.filter(h=>h.cssClass!='rejected' && moment(h.date).format('YYYYMMDD') == moment(startDate).format('YYYYMMDD'));
+      
+      if(result.length == 0){
+        this.pageObj.apllyingLeave.noOfDays = 1;
+      }
+      return result.length > 0;
+    } else {
+
+      let holidays = this.calendarMeta.newObj.filter(h=>h.cssClass!='rejected').map(n=>moment(n.date).format('YYYY-MM-DD'));
+      // console.log("holidays inside checkConflicts", holidays);
+      let noOfDays = moment(endDate).diff(startDate,'days') + 1;
+      startDate = moment(startDate).format("YYYY-MM-DD");
+      endDate = moment(endDate).format("YYYY-MM-DD");
+      while(startDate <= endDate){
+        console.log("Processing weekday", moment(startDate).format('e'),noOfDays)
+        if(this.calendarMeta.orgCalendarYear.weeklyOffDays.includes(parseInt(moment(startDate).format('e')))){
+          noOfDays--;
+        }
+        if(holidays.includes(startDate)){
+          return true;
+        }
+        // this.newObj.push({date: new Date(startDate), cssClass: status});
+        startDate = moment(startDate).add(1, 'days').format("YYYY-MM-DD");
+      }
+      this.pageObj.apllyingLeave.noOfDays = noOfDays;
+      // end of the while lopp, which means no match found
+      return false;
+    }
+
+  }
+
+  // returning day count
+  dayCounter(){
+    // console.log("this.pageObj.apllyingLeave.type",this.pageObj.apllyingLeave.type, this.calendarMeta.userCalendarYear.leaveTypes,this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code]);
+    if(this.calendarMeta.allLeavesOrgHave.length >0 && this.pageObj.apllyingLeave){
+      let title = this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type];
+      let noOfdays = this.pageObj.apllyingLeave.noOfDays;
+      this.pageObj.apllyingLeave.resultDescribe = title.type+" for "+noOfdays+ " day"+((noOfdays > 1) ? "s":"");
+    }
+  }
+   searchTextImplementation(){
+    let searchStrings = this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].type+" "+
+    this.session.user.name +" "+this.session.user.email+ " " +
+    moment(this.pageObj.apllyingLeave.startDate).format("YYYY") + " "+
+    moment(this.pageObj.apllyingLeave.startDate).format("MMMM") + " " +
+    moment(this.pageObj.apllyingLeave.startDate).format("MMM") + " " +
+    moment(this.pageObj.apllyingLeave.endDate).format("YYYY") + " "+
+    moment(this.pageObj.apllyingLeave.endDate).format("MMMM") + " " +
+    moment(this.pageObj.apllyingLeave.endDate).format("MMM") + " pending applied";
+    return this.searchMap.createSearchMap(searchStrings);
+  }
+
+  // submit the form
+  applyLeave(){
+    // check if there is already a date exits that this user applied
+    // check for start date
+    if(!this.leaveAdmins || (this.leaveAdmins && this.leaveAdmins.length ==0)){
+      this.alertMessage.showAlert("info", "No leave admin defined for you, please contact administrator to assign a leave manager for you","No leave admin defined for you");
+    } else if(!this.calendarMeta.userCalendarYear || (this.calendarMeta.userCalendarYear && !this.calendarMeta.userCalendarYear.year)){
+      this.alertMessage.showAlert("info","No leave calendar found for the calendar year. Please ask admin to associate your account to <b>"+this.session.user.regionServe+"</b> of country code: <b>"+this.session.user.countryServe+"</b> for " +  moment(this.pageObj.apllyingLeave.startDate).format('MMM, YYYY'),"No Leave Calendar");
+    } else if(this.calendarMeta.userCalendarYear &&
+              (
+                parseInt(this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].allowed)
+                -
+                (this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].taken ?
+                parseInt(this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].taken)
+                :
+                0)
+              ) < this.pageObj.apllyingLeave.noOfDays){
+      this.alertMessage.showAlert("info","Number of days selected for  " +
+                                                this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].type +
+                                                " is more than the " +
+                                                (
+                                                  parseInt(this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].allowed)
+                                                  -
+                                                  (this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].taken ?
+                                                  parseInt(this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].taken)
+                                                  :
+                                                  0)
+                                                )
+                                                + " days available for the calendar year. Please check dates and try again.","Check No Of Days");
+    } else if(this.pageObj.apllyingLeave.reason && this.pageObj.apllyingLeave.noOfDays > 0){
+        this.session.user.loader = true;
+        // let res = this.session.user.uid;
+        // now submit the form
+        let batch = this.db.afs.firestore.batch();
+
+        let docId = this.db.afs.createId();
+        let data = {
+          subscriberId: this.session.admin.subscriberId,
+          uid: this.session.user.uid,
+          startDate: this.pageObj.apllyingLeave.startDate,
+          endDate: this.pageObj.apllyingLeave.endDate,
+          type: this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].type,
+          code: this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code,
+          reason: this.pageObj.apllyingLeave.reason,
+          status: "PENDING",
+          actionType: 'Applied',
+          searchMap: this.searchTextImplementation(),
+          country: this.session.user.countryServe,
+          region: this.session.user.regionServe,
+          year: this.calendarMeta.userCalendarYear.year, //this.pageObj.yearSelected,
+          daysCount: this.pageObj.apllyingLeave.noOfDays,
+          applied: firebase.firestore.FieldValue.serverTimestamp(),
+          user:{
+            uid: this.session.user.uid,
+            name: this.session.user.name,
+            email: this.session.user.email,
+            picUrl: this.session.user.picUrl
+          },
+        };
+
+        // application form
+        let applyForm = this.db.afs.collection(this.db._LEAVES_APPLIED).doc(docId).ref;
+        batch.set(applyForm,data);
+
+        // notification
+        let eventInfo = {
+              origin: 'applyleave',
+              eventType: 'new',
+              session: this.session,
+              leaveAdmins: [...this.leaveAdmins],
+              data: {
+                id: docId,
+                subscriberId: this.session.admin.subscriberId,
+                ...data
+              },
+            };
+        this.notification.createNotifications(eventInfo);
+        
+
+        batch.commit().then(()=>{
+          this.session.user.loader = false;
+          this.pageObj.apllyingLeave.reason = '';
+          this.pageObj.apllyingLeave.noOfDays = 0;
+          this.alertMessage.showAlert("success","Please note that leave applied successfully.","Leave Applied");
+        }).catch(err=>{
+          this.session.user.loader = false;
+          this.alertMessage.showAlert("error",err,"Please Try Again");
+        });
+
+    } else { // blank fields
+      this.alertMessage.showAlert("info","Please select the date and provide notes for the leave application to proceed.","Please Try Again");
+    }
+
+  }
+
 }

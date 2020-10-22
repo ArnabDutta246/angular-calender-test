@@ -41,6 +41,7 @@ import { ManageYearlyCalenderComponent } from './panel/admin/manage-yearly-calen
 import { SelectMembersComponent } from './panel/admin/select-members/select-members.component';
 import { ApplyLeavesComponent } from './panel/leave/apply-leaves/apply-leaves.component';
 import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
+import { HorizontalBarComponent } from './panel/graph/horizontal-bar/horizontal-bar.component';
 
 //.......................................................................
 
@@ -70,6 +71,7 @@ import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.componen
     SelectMembersComponent,
     ApplyLeavesComponent,
     UserLeaveComponent,
+    HorizontalBarComponent,
   ],
   imports: [
     BrowserModule,
