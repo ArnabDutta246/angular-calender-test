@@ -1,8 +1,8 @@
 @import "../../../../assets/scss/variables.scss";
 .eachDetails {
   margin-top: 10px;
-  // border-left: 5px solid $color-amber;
-  // box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+  border-left: 5px solid $color-amber;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   overflow: hidden;
   .type {
@@ -63,6 +63,107 @@
         margin-right: 10px;
         margin-top: 2px;
       }
+    }
+  }
+}
+.allBoxesAvail {
+  display: -webkit-box;
+  .eachBox {
+    background: $color-white;
+    padding: 10px;
+    width: 90%;
+    border-radius: 3px;
+    margin: 10px 5px 0 10px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+    .profile {
+      display: flex;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .moreInfo {
+        width: calc(100% - 50px);
+        h4 {
+          font-size: $title_font;
+          color: $color-black;
+          font-weight: $big_weight;
+          font-family: $font-family;
+          padding: 5px 0;
+        }
+        .dates {
+          display: flex;
+          padding: 5px 0;
+          img {
+            width: 15px;
+            height: 20px;
+            margin-right: 7px;
+          }
+          p {
+            width: calc(50% - 15px);
+            font-size: $floating_font;
+            font-weight: $small_weight;
+            color: $color-black;
+          }
+        }
+        .days {
+          display: flex;
+          margin-top: -10px;
+          p {
+            width: 50%;
+            padding: 5px;
+            font-family: $font-family;
+            b {
+              font-size: $header_font;
+              color: $color-accent;
+            }
+            &:nth-child(1) {
+              font-size: $input_font;
+              color: $color-black;
+            }
+            &:nth-child(2) {
+              color: $color-sky;
+              font-size: $details_font;
+            }
+          }
+        }
+      }
+    }
+    .reasons {
+      padding-left: 10px;
+      border-left: 5px solid $color-accent;
+      h5 {
+        font-size: $input_font;
+        font-weight: $big_weight;
+        font-family: $font-family;
+        padding: 5px 0;
+        color: $color-black;
+      }
+      p {
+        color: $color-black;
+        font-size: $child_font;
+        font-family: $font-family;
+        max-height: 35px;
+        overflow: hidden;
+      }
+    }
+  }
+  .noTaskForAdmin {
+    text-align: center;
+    // font-size: 22px;
+    // color: $color-accent;
+    // margin: 5px 0;
+    // font-family: $font-family;
+    p {
+      padding: 10px 0;
+      font-size: $floating_font;
+      font-weight: $small_weight;
+    }
+    img {
+      margin-top: -15px;
+      opacity: 0.5;
+      width: 70%;
     }
   }
 }

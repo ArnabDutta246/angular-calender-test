@@ -53,7 +53,20 @@ export class UserLeaveComponent implements OnInit {
     }
   }
 
+ //=============my leaves/pending applied status
+  private data: any;
+  pageTitle: string = "";
+  viewMode: any = '';
+  selectedRegionCode: any;
+  selectedCountry: any ='';
+  selectedRegion: any = '';
+  private dataSource=[];
+  pendingData: any[] = [];
+  otherData: any[] = [];
 
+  searchTexts: string=null;
+  searchMode: string = 'all';
+ showHidePendingLeaves = false;
   constructor(
     private db: AllCollectionsService,
     private cal: CalenderFunctionsService,
@@ -92,6 +105,22 @@ export class UserLeaveComponent implements OnInit {
     Object.assign(this.calendarMeta,{excludeStatus: ['rejected'], isUserCalendarRequired: true});
     this.getLeavAdmins();
 
+
+    
+    //this.viewMode = this.navParams.get("viewMode") ? this.navParams.get("viewMode") : 'USER';
+    this.viewMode = 'USER';
+        if(navigator.onLine) {
+      this.spinner.show();
+      if(this.viewMode != 'USER' && (this.data.user.role == "ADMIN" || this.viewMode == 'LEAVEADMIN')){ // when admin comes
+        this.pageTitle = "Leave Approval Requests";
+        this.getLeaveAdminRegions();
+      }else{ // when user comes sees his own views
+        this.pageTitle = "My Leaves";
+      }
+      this.apporveRequestData();
+    }else{
+      this.alertMessage.poorNetwork();
+    }
   }
   async getListOfleaves(){
     if(this.status ==='ONLINE'){
@@ -109,6 +138,7 @@ export class UserLeaveComponent implements OnInit {
           const id = a.payload.doc.id;
           return { id, ...data };
         }))).subscribe((data: any[]) => {
+          console.log(".........",data)
           this.monthsData = data;
           this.cal.extractHolidays(data,
                           'user',
@@ -141,6 +171,7 @@ export class UserLeaveComponent implements OnInit {
     return date ? moment(date).format(type) : moment(this.monthStartDate).format(type);
   }
   details(data){
+    alert(data.startDate.seconds);
     let showData = {
       docId: data.id,
       startDate:moment(data.startDate.seconds*1000).format('ll'),
@@ -222,6 +253,7 @@ export class UserLeaveComponent implements OnInit {
   // seleting the date between
   // user seleting the dates
   onSelect(event){
+    alert(new Date(event.time).getTime());
     if(this.toggleMode=='single'){
       this.pageObj.apllyingLeave.startDate = new Date(event.time).getTime();
       this.pageObj.apllyingLeave.endDate = new Date(event.time).getTime();
@@ -304,7 +336,7 @@ export class UserLeaveComponent implements OnInit {
   }
    searchTextImplementation(){
     let searchStrings = this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].type+" "+
-    this.session.user.name +" "+this.session.user.email+ " " +
+    this.session.name +" "+this.session.email+ " " +
     moment(this.pageObj.apllyingLeave.startDate).format("YYYY") + " "+
     moment(this.pageObj.apllyingLeave.startDate).format("MMMM") + " " +
     moment(this.pageObj.apllyingLeave.startDate).format("MMM") + " " +
@@ -321,7 +353,7 @@ export class UserLeaveComponent implements OnInit {
     if(!this.leaveAdmins || (this.leaveAdmins && this.leaveAdmins.length ==0)){
       this.alertMessage.showAlert("info", "No leave admin defined for you, please contact administrator to assign a leave manager for you","No leave admin defined for you");
     } else if(!this.calendarMeta.userCalendarYear || (this.calendarMeta.userCalendarYear && !this.calendarMeta.userCalendarYear.year)){
-      this.alertMessage.showAlert("info","No leave calendar found for the calendar year. Please ask admin to associate your account to <b>"+this.session.user.regionServe+"</b> of country code: <b>"+this.session.user.countryServe+"</b> for " +  moment(this.pageObj.apllyingLeave.startDate).format('MMM, YYYY'),"No Leave Calendar");
+      this.alertMessage.showAlert("info","No leave calendar found for the calendar year. Please ask admin to associate your account to <b>"+this.session.regionServe+"</b> of country code: <b>"+this.session.countryServe+"</b> for " +  moment(this.pageObj.apllyingLeave.startDate).format('MMM, YYYY'),"No Leave Calendar");
     } else if(this.calendarMeta.userCalendarYear &&
               (
                 parseInt(this.calendarMeta.userCalendarYear.leaveTypes[this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code].allowed)
@@ -344,33 +376,33 @@ export class UserLeaveComponent implements OnInit {
                                                 )
                                                 + " days available for the calendar year. Please check dates and try again.","Check No Of Days");
     } else if(this.pageObj.apllyingLeave.reason && this.pageObj.apllyingLeave.noOfDays > 0){
-        this.session.user.loader = true;
+        this.spinner.show();
         // let res = this.session.user.uid;
         // now submit the form
         let batch = this.db.afs.firestore.batch();
 
         let docId = this.db.afs.createId();
         let data = {
-          subscriberId: this.session.admin.subscriberId,
-          uid: this.session.user.uid,
-          startDate: this.pageObj.apllyingLeave.startDate,
-          endDate: this.pageObj.apllyingLeave.endDate,
+          subscriberId: this.session.subscriberId,
+          uid: this.session.uid,
+          startDate:new Date(this.pageObj.apllyingLeave.startDate),
+          endDate: new Date(this.pageObj.apllyingLeave.endDate),
           type: this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].type,
           code: this.calendarMeta.allLeavesOrgHave[this.pageObj.apllyingLeave.type].code,
           reason: this.pageObj.apllyingLeave.reason,
           status: "PENDING",
           actionType: 'Applied',
           searchMap: this.searchTextImplementation(),
-          country: this.session.user.countryServe,
-          region: this.session.user.regionServe,
+          country: this.session.countryServe,
+          region: this.session.regionServe,
           year: this.calendarMeta.userCalendarYear.year, //this.pageObj.yearSelected,
           daysCount: this.pageObj.apllyingLeave.noOfDays,
           applied: firebase.firestore.FieldValue.serverTimestamp(),
           user:{
-            uid: this.session.user.uid,
-            name: this.session.user.name,
-            email: this.session.user.email,
-            picUrl: this.session.user.picUrl
+            uid: this.session.uid,
+            name: this.session.name,
+            email: this.session.email,
+            picUrl: this.session.picUrl
           },
         };
 
@@ -386,7 +418,7 @@ export class UserLeaveComponent implements OnInit {
               leaveAdmins: [...this.leaveAdmins],
               data: {
                 id: docId,
-                subscriberId: this.session.admin.subscriberId,
+                subscriberId: this.session.subscriberId,
                 ...data
               },
             };
@@ -394,12 +426,12 @@ export class UserLeaveComponent implements OnInit {
         
 
         batch.commit().then(()=>{
-          this.session.user.loader = false;
+          this.spinner.hide();
           this.pageObj.apllyingLeave.reason = '';
           this.pageObj.apllyingLeave.noOfDays = 0;
           this.alertMessage.showAlert("success","Please note that leave applied successfully.","Leave Applied");
         }).catch(err=>{
-          this.session.user.loader = false;
+          this.spinner.hide();
           this.alertMessage.showAlert("error",err,"Please Try Again");
         });
 
@@ -407,6 +439,195 @@ export class UserLeaveComponent implements OnInit {
       this.alertMessage.showAlert("info","Please select the date and provide notes for the leave application to proceed.","Please Try Again");
     }
 
+  }
+//======================= my leaves / applied leaves ==============
+
+   changeSearchMode(){
+    this.searchMode = this.searchMode=='all' ? 'any' : 'all';
+    if(this.searchTexts){
+      this.getDataOfallSearch();
+    } else {
+      this.apporveRequestData();
+    }
+  }
+
+  getDataOfallSearch()
+  {
+    this.spinner.show();
+    let searchString = '';
+    if(this.searchTexts && this.searchTexts.trim()){
+      searchString = this.searchTexts;
+      let leaveRef = this.db.afs.collection<any>(this.db._LEAVES_APPLIED,
+          ref=>this.searchMap.getSearchMapQuery(
+                  this.session.leaveAdmin && this.leaveAdminRegions.length > 0 && this.viewMode=='LEAVEADMIN' ?
+                  ref.where("subscriberId","==", this.session.subscriberId)
+                  .where("country","==",this.selectedCountry)
+                  .where("region","==",this.selectedRegion)
+                  :
+                  ref.where("subscriberId","==",this.session.subscriberId)
+                    .where("uid","==",this.session.uid)
+                  ,
+                  'searchMap',
+                  searchString,
+                  this.searchMode ? this.searchMode : 'all')
+          );
+          // get data from database
+          leaveRef.snapshotChanges()
+          .pipe(
+            map((actions: any[]) => actions.map((a: any) => {
+              const data = a.payload.doc.data();
+              const id = a.payload.doc.id;
+              // let meetingTime = moment(data.meetingStart.seconds*1000).format('LT') + " - " + moment(data.meetingEnd.seconds*1000).format('LT');
+
+              return {
+                docId: id,
+                startDate:moment(data.startDate.seconds*1000).format('ll'),
+                endDate: moment(data.endDate.seconds*1000).format('ll'),
+                appliedAgo: (data.status == 'PENDING' && data.previousStatus ? 'Re-submitted ': 'Applied ')+
+                            (
+                              data.applied && data.applied.seconds ?
+                              (
+                                moment().diff(data.applied.seconds * 1000,'days') > 0 ?
+                                (
+                                  moment().diff(data.applied.seconds * 1000,'days')==1 ?
+                                  moment().diff(data.applied.seconds * 1000,'days') + ' day ago'
+                                  :
+                                  moment().diff(data.applied.seconds * 1000,'days') + ' days ago'
+                                )
+                                :
+                                moment().diff(data.applied.seconds * 1000,'hour') + ' hr ago'
+                              )
+                              :
+                              '0 hr ago'
+                            ),
+                updatedOn: (data.status == 'CANCELLED' ? 'Canceled ': data.status == 'APPROVED'? 'Approved ' : 'Rejected ')+(
+                              (data.updatedOn) ?
+                                moment().diff(data.updatedOn.seconds * 1000,'days') > 0
+                                ?
+                                moment().diff(data.updatedOn.seconds * 1000,'days')==1
+                                  ?
+                                  moment().diff(data.updatedOn.seconds * 1000,'days') + ' day ago'
+                                  :
+                                  moment().diff(data.updatedOn.seconds * 1000,'days') + ' days ago'
+
+                                :
+                                moment().diff(data.updatedOn.seconds * 1000,'hour') + ' hr ago'
+                              :
+                              '0 hr ago'),
+                data:{
+                  id: id,
+                  ...data
+                }
+              };
+            })))
+            .subscribe(data =>{
+              this.dataSource = data;
+              this.pendingData = data.filter(function(finding) { return finding.data.status == "PENDING"; });
+              this.otherData = data.filter(function(finding) { return finding.data.status !== "PENDING"; });
+              this.spinner.hide();
+            });
+          }else {
+            this.apporveRequestData();
+          }
+  }
+
+  getLeaveAdminRegions(){
+    // this.cal.isUserRegionValid(this.data);
+    this.leaveAdminRegions = this.session.leaveAdmin ?
+                             Object.keys(this.session.leaveAdmin)
+                             :
+                             [];
+   if(this.leaveAdminRegions.length==0){
+     this.alertMessage.showAlert("info", "Please note that your account is not linked to any valid region as leave admin. Request your administrator to associate your account to a valid region from Admin panel > Maintain Region > Propagate Region Calendar","No Leave Region",);
+   }
+   this.selectedRegionCode = this.leaveAdminRegions.length > 0 ? this.leaveAdminRegions[0] : '';
+   this.selectedCountry = this.leaveAdminRegions.length > 0 ? this.session.leaveAdmin[this.selectedRegionCode].country : '';
+   this.selectedRegion = this.leaveAdminRegions.length > 0 ? this.session.leaveAdmin[this.selectedRegionCode].region : '';
+   // console.log("getLeaveAdminRegions",this.leaveAdminRegions.length,this.leaveAdminRegions[0],this.session.leaveAdmin[this.selectedRegionCode],this.selectedCountry,this.selectedRegion,this.session.role, this.viewMode);
+  }
+
+  getSelectedRegion(){
+    this.selectedCountry = this.session.leaveAdmin[this.selectedRegionCode].country;
+    this.selectedRegion = this.session.leaveAdmin[this.selectedRegionCode].region;
+    this.apporveRequestData();
+  }
+
+  // for admin view
+  apporveRequestData(){
+    this.spinner.show();
+    let leaveRef = null;
+    if(this.viewMode == 'LEAVEADMIN' && this.session.role == "ADMIN" && !this.selectedCountry && !this.selectedRegion){
+      leaveRef = this.db.afs.collection<any>(this.db._LEAVES_APPLIED, ref=> ref
+        .where("subscriberId","==",this.session.subscriberId)
+      )
+    } else if(this.viewMode == 'LEAVEADMIN' && (this.session.leaveAdmin || this.session.role == "ADMIN")){
+      // if the mode is approval view
+      leaveRef = this.db.afs.collection<any>(this.db._LEAVES_APPLIED, ref=> ref
+        .where("subscriberId","==",this.session.subscriberId)
+        .where("country","==",this.selectedCountry)
+        .where("region","==",this.selectedRegion)
+      )
+    } else {
+      leaveRef = this.db.afs.collection<any>(this.db._LEAVES_APPLIED, ref=> ref
+        .where("subscriberId","==",this.session.subscriberId)
+        .where("uid","==",this.session.uid)
+      )
+    }
+    leaveRef
+      .snapshotChanges()
+      .pipe(
+        map((actions: any[]) => actions.map((a: any) => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          // let meetingTime = moment(data.meetingStart.seconds*1000).format('LT') + " - " + moment(data.meetingEnd.seconds*1000).format('LT');
+
+          return {
+            docId: id,
+            startDate:moment(data.startDate.seconds*1000).format('ll'),
+            endDate: moment(data.endDate.seconds*1000).format('ll'),
+            appliedAgo: (data.status == 'PENDING' && data.previousStatus ? 'Re-submitted ': 'Applied ')+
+                        (
+                          data.applied && data.applied.seconds ?
+                          (
+                            moment().diff(data.applied.seconds * 1000,'days') > 0 ?
+                            (
+                              moment().diff(data.applied.seconds * 1000,'days')==1 ?
+                              moment().diff(data.applied.seconds * 1000,'days') + ' day ago'
+                              :
+                              moment().diff(data.applied.seconds * 1000,'days') + ' days ago'
+                            )
+                            :
+                            moment().diff(data.applied.seconds * 1000,'hour') + ' hr ago'
+                          )
+                          :
+                          '0 hr ago'
+                        ),
+            updatedOn: (data.status == 'CANCELLED' ? 'Canceled ': data.status == 'APPROVED'? 'Approved ' : 'Rejected ')+(
+                          (data.updatedOn) ?
+                            moment().diff(data.updatedOn.seconds * 1000,'days') > 0
+                            ?
+                            moment().diff(data.updatedOn.seconds * 1000,'days')==1
+                              ?
+                              moment().diff(data.updatedOn.seconds * 1000,'days') + ' day ago'
+                              :
+                              moment().diff(data.updatedOn.seconds * 1000,'days') + ' days ago'
+
+                            :
+                            moment().diff(data.updatedOn.seconds * 1000,'hour') + ' hr ago'
+                          :
+                          '0 hr ago'),
+            data:{
+              id: id,
+              ...data
+            }
+          };
+        })))
+        .subscribe(data =>{
+          this.dataSource = data;
+          this.pendingData = data.filter(function(finding) { return finding.data.status == "PENDING"; });
+          this.otherData = data.filter(function(finding) { return finding.data.status !== "PENDING"; });
+          this.spinner.hide();
+        });
   }
 
 }

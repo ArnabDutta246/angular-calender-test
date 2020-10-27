@@ -88,6 +88,24 @@
 .calender-toggle-switch .switch input:checked + .slider:after {
   content: "Single Date";
 }
+//================= search toggle button =============
+.search-toggle-switch .switch {
+  position: relative;
+  display: inline-block;
+  width: 216px;
+  height: 27px;
+}
+.search-toggle-switch .switch input:checked + .slider:before {
+  -webkit-transform: translateX(188px);
+  -ms-transform: translateX(188px);
+  transform: translateX(188px);
+}
+.search-toggle-switch .slider:after {
+  content: "any search keywords";
+}
+.search-toggle-switch .switch input:checked + .slider:after {
+  content: "all search keywords";
+}
 // ================ register toggle button ===========
 .url-toggle-switch .switch {
   position: relative;
