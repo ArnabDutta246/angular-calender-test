@@ -21,6 +21,11 @@
     <div class="row p-1">
       <div class="col-12 card bg-white">
         <div class="row card-header bg-primary text-white">
+        <div class="col-1" *ngIf="showHidePendingLeaves === true">
+          <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="toggleCondition()" >
+          <i class="fas fa-arrow-left"></i>
+          </div>
+        </div>
           <div class="col-10 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
           <div class="col-1" *ngIf="showHidePendingLeaves !== true">
             <div class="btn btn-sm btn-primary" (click)="switchApplyform = !switchApplyform" >
@@ -31,8 +36,8 @@
           <div class="col-11" *ngIf="showHidePendingLeaves === true">
             My Leaves
           </div>
-          <div class="col-1">
-            <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="showHidePendingLeaves = !showHidePendingLeaves">
+          <div class="col-1" *ngIf="showHidePendingLeaves !== true">
+            <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="showHidePendingLeaves = !showHidePendingLeaves" >
               <i class="fas fa-bell"></i>
             </div>
           </div>
@@ -165,6 +170,76 @@
         </div>
         <!-- =================== normal view (calender view) =============-->
         <!-- =================== leave details view (leave view) =============-->
+        <div class="card-body" *ngIf="showHidePendingLeaves === true">
+          <!-- if details is not selected -->
+          <div *ngIf="detailsData === null">
+            <div class="row">
+              <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1">
+                <div class="card bg-light">
+                  <div class="card-body">
+                    <i class="fas fa-home"></i><small class="text-muted ml-1">leaves +</small>
+                    <div class="text-right">
+                      <h2>{{pendingData.length}}</h2>
+                      <h6>Pending</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0 p-1">
+                <div class="card bg-primary">
+                  <div class="card-body text-white">
+                    <i class="fas fa-flag"></i><small class="ml-1">leaves +</small>
+                    <div class="text-right">
+                      <h2>{{otherData.length}}</h2>
+                      <h6>Applied</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 card bg-white">
+                <div class="row card-header  bg-primary text-white">
+                  <div class="col-12">Leave Summary</div>
+                </div>
+                <!-- <div class="card"> -->
+                <div class="card-body" *ngIf="!calendarMeta.userleaveTypes">
+                  <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid
+                    region using Manage Region option</p>
+                </div>
+                <div class="card-body" *ngIf="calendarMeta.userleaveTypes">
+                  <h6 class="mb-2">Your Leave Summary</h6>
+                  <!-- =========== horizontal bar graph ==============-->
+                  <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+                    <div class="row">
+                      <div class="col-6">
+                        <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+                      </div>
+                      <div class="col-6">
+                        <h6>
+                          {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+                          of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+                        </h6>
+                      </div>
+                      <div class="col-12">
+                        <div class="chartrate">
+                          <div
+                            [ngStyle]="{'background': leaveColors[i%14],'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?(calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- =========== horizontal bar graph ==============-->
+                </div>
+                <!-- </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- if details is selected -->
+          <div *ngIf="detailsData !== null">
+            <app-user-leave-details [detailsData]="detailsData"> </app-user-leave-details>
+          </div>
+          <!--  -->
+        </div>
         <!-- =================== leave details view (leave view) =============-->
       </div>
     </div>
@@ -177,7 +252,7 @@
   <div class="showHidePendingLeaves" *ngIf="showHidePendingLeaves === true">
       <!-- pending/recent leave search card -->
       <div class="col-12 card bg-white mb-2">
-        <div class="row card-header">
+        <div class="row card-header bg-primary text-white">
           Search Here
         </div>
         <div class="card-body">
@@ -210,7 +285,7 @@
       <!-- pending/recent leave all cards -->
         <div class="col-12 allBoxes card my-2">
         
-          <div class="row card-header pendingBox bg-warning text-white">
+          <div class="row card-header pendingBox">
             <div class="col-12">
                Pending
             </div>
@@ -254,7 +329,7 @@
               </div>
           </div>
           <div class="col-12 allBoxes card my-2">
-            <div class="row card-header recentBox bg-success text-white">
+            <div class="row card-header recentBox">
               <div class="col-12">
                 Recent
               </div>
@@ -306,7 +381,7 @@
    </div> 
   <!--============  pending/recent leave section end ========== -->
 
-      <div class="col-12 card bg-white">
+      <div class="col-12 card bg-white" *ngIf="showHidePendingLeaves !== true">
         <div class="row card-header  bg-primary text-white">
           <div class="col-12">Leave Summary</div>
         </div>

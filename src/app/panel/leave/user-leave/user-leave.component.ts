@@ -66,7 +66,8 @@ export class UserLeaveComponent implements OnInit {
 
   searchTexts: string=null;
   searchMode: string = 'all';
- showHidePendingLeaves = false;
+  showHidePendingLeaves = false;
+  detailsData = null;
   constructor(
     private db: AllCollectionsService,
     private cal: CalenderFunctionsService,
@@ -171,29 +172,30 @@ export class UserLeaveComponent implements OnInit {
     return date ? moment(date).format(type) : moment(this.monthStartDate).format(type);
   }
   details(data){
-    alert(data.startDate.seconds);
+    console.log(data,".............data....");
+    //alert(data.startDate.seconds);
     let showData = {
-      docId: data.id,
+      docId: data.data.id,
       startDate:moment(data.startDate.seconds*1000).format('ll'),
       endDate: moment(data.endDate.seconds*1000).format('ll'),
-      appliedAgo: (data.status == 'PENDING' && data.previousStatus ? 'Re-submitted ': 'Applied ')+
+      appliedAgo: (data.data.status == 'PENDING' && data.data.previousStatus ? 'Re-submitted ': 'Applied ')+
                   (
-                    data.applied && data.applied.seconds ?
+                    data.data.applied && data.data.applied.seconds ?
                     (
-                      moment().diff(data.applied.seconds * 1000,'days') > 0 ?
+                      moment().diff(data.data.applied.seconds * 1000,'days') > 0 ?
                       (
-                        moment().diff(data.applied.seconds * 1000,'days')==1 ?
-                        moment().diff(data.applied.seconds * 1000,'days') + ' day ago'
+                        moment().diff(data.data.applied.seconds * 1000,'days')==1 ?
+                        moment().diff(data.data.applied.seconds * 1000,'days') + ' day ago'
                         :
-                        moment().diff(data.applied.seconds * 1000,'days') + ' days ago'
+                        moment().diff(data.data.applied.seconds * 1000,'days') + ' days ago'
                       )
                       :
-                      moment().diff(data.applied.seconds * 1000,'hour') + ' hr ago'
+                      moment().diff(data.data.applied.seconds * 1000,'hour') + ' hr ago'
                     )
                     :
                     '0 hr ago'
                   ),
-      updatedOn: (data.status == 'CANCELLED' ? 'Canceled ': data.status == 'APPROVED'? 'Approved ' : 'Rejected ')+(
+      updatedOn: (data.data.status == 'CANCELLED' ? 'Canceled ': data.data.status == 'APPROVED'? 'Approved ' : 'Rejected ')+(
                     (data.updatedOn) ?
                       moment().diff(data.updatedOn.seconds * 1000,'days') > 0
                       ?
@@ -208,14 +210,19 @@ export class UserLeaveComponent implements OnInit {
                     :
                     '0 hr ago'),
       data:{
-        id: data.id,
+        id: data.data.id,
         ...data
       }
     };
     let actionType = 'back';
-    if(['PENDING','APPROVED'].includes(data.status)){
+    if(['PENDING','APPROVED'].includes(data.data.status)){
         actionType = 'cancel';
     }
+    this.detailsData = {
+      data:this.session,
+      details:showData,
+      actionType: actionType
+    };
     // this.navCtrl.push(
     //   LeaveAppliedDetailsPage,
     //   {data:this.session,details:showData,
@@ -629,5 +636,10 @@ export class UserLeaveComponent implements OnInit {
           this.spinner.hide();
         });
   }
-
+ 
+  toggleCondition(){
+    this.showHidePendingLeaves = !this.showHidePendingLeaves;
+    this.detailsData = null;
+    //console.log(this.detailsData);
+  }
 }

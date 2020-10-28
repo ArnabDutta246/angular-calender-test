@@ -1,0 +1,126 @@
+<div class="fullBody">
+  <div class="row">
+    <div class="col-4 preview">
+      <img src="{{(details.data.data.picUrl) ? details.data.data.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+        (error)="'../../../../assets/image/imgs/profile.png'" />
+      <p [class]="details.data.data.status">{{details.data.data.status}}</p>
+    </div>
+    <div class="col-8 profileDetails">
+      <h6>{{details.data.data.user.name}}</h6>
+      <div class="eachPart">
+        <i class="far fa-calendar-alt mr-2"></i>
+        <span>{{details.data.startDate}}</span>
+      </div>
+      <div class="eachPart">
+        <i class="far fa-calendar-alt mr-2"></i>
+        <span>{{details.data.endDate}}</span>
+      </div>
+      <div class="row timmings">
+        <div class="col-4">
+        <span>{{details.data.data.daysCount>1?details.data.data.daysCount+' Days':details.data.data.daysCount+' Day'}}</span>
+        </div>
+        <div class="col-8">
+          <small class="text-primary">{{details.data.data.status=='PENDING' ? details.data.appliedAgo : details.data.updatedOn}}</small>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row type CANCELLED" *ngIf="details.data.status=='PENDING' && details.data.previousStatus=='APPROVED'">
+    <div class="col-2">
+    <i class="fas fa-hand-paper"></i>
+    </div>
+    <div class="col-10">
+        <p class="typeReason">Approved leave cancellation request</p>
+    </div>
+
+  </div>
+  <div class="row type">
+      <div class="col-2">
+       <i class="fas fa-stopwatch"></i>
+      </div>
+      <div class="col-10">
+     <p>{{details.data.data.type}}</p>
+      </div>
+  </div>
+  <div class="row type">
+    <div class="col-2">
+      <i class="fas fa-comments"></i>
+    </div>
+    <div class="col-10">
+     <p class="typeReason">{{details.data.data.reason}}</p>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="actionType != 'back'">
+    <div class="col-12">
+  <div>
+    <h6>Comments</h6>
+    <textarea #noteTxt (keyup)="resizeNote()" placeholder="Type your comment here." id="noteTxt" [(ngModel)]="detailsNote"
+      class="form-control"></textarea>
+  </div>
+  <br>
+    </div>
+  </div>
+
+
+
+  <h6>Leave Summary</h6>
+  <div class="leaveSummary">
+    <div class="eachRates" *ngFor="let data of userCalendarYear; let i=index;">
+      <h6>{{data.value.type}}</h6>
+      <p>{{(data.value.taken) ? data.value.taken : '0'}} of {{data.value.allowed}} Taken</p>
+      <div class="clear"></div>
+      <div class="chartrate">
+        <div [ngStyle]="{
+                          'background': leaveColors[i%14],
+                          'width': data.value.taken ?
+                                   (data.value.taken * 100 /data.value.allowed)+'%'
+                                   : '0%'
+                        }"></div>
+      </div>
+    </div>
+  </div>
+  <br>
+
+
+  <h6>Request Timeline</h6>
+  <div class="history">
+    <div class="eachHistory" *ngFor="let data of details.data.changeHistory"
+      [ngClass]="(data.status == 'CANCELED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
+      <h6>{{data.actionType ? data.actionType : data.status}}</h6>
+      <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll')}}</p>
+      <div class="box">
+        <img [src]="(data.updatedBy.picUrl) ? data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png'" />
+        <div>
+          <p>{{data.updatedBy.name}}</p>
+          <p>{{data.comment}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="eachHistory"
+      [ngClass]="(details.data.status == 'CANCELED') ? 'can' : (details.data.status == 'APPROVED') ? 'appr' : (details.data.status == 'REJECTED') ? 'rej' : 'pen'">
+      <h6>{{details.data.data.actionType ? details.data.data.actionType : details.data.data.status}}</h6>
+      <p class="time">
+        {{getDateFormat(details.data.updatedOn ? details.data.updatedOn.seconds*1000 : details.data.applied.seconds*1000,'lll')}}
+      </p>
+      <div class="box">
+        <img [src]="(details.data.updatedBy) ?
+                        details.data.updatedBy.picUrl :
+                        details.data ?
+                        details.data.picUrl : '../../../../assets/image/imgs/user2.png'" />
+        <div>
+          <p>{{(details.data.updatedBy) ? details.data.updatedBy.name : details.data.user.name}}</p>
+          <p>{{details.data.data.comment ? details.data.data.comment : details.data.data.reason}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn btn-sm" *ngIf="actionType == 'approve'">
+    <button class="buttonReject" (click)="reject()">Reject</button>
+    <button class="buttonApprove" (click)="approve()">Approve</button>
+  </div>
+  <div class="btn" *ngIf="actionType=='cancel'"><button class="buttonCancel" (click)="cancel()">Cancel</button></div>
+  <div class="btn" *ngIf="actionType=='back'"><button class="buttonBack" (click)="toBackPage()">Back</button></div>
+</div>

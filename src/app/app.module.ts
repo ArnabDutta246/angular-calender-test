@@ -42,6 +42,7 @@ import { SelectMembersComponent } from './panel/admin/select-members/select-memb
 import { ApplyLeavesComponent } from './panel/leave/apply-leaves/apply-leaves.component';
 import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
 import { HorizontalBarComponent } from './panel/graph/horizontal-bar/horizontal-bar.component';
+import { UserLeaveDetailsComponent } from './panel/leave/user-leave-details/user-leave-details.component';
 
 //.......................................................................
 
@@ -72,6 +73,7 @@ import { HorizontalBarComponent } from './panel/graph/horizontal-bar/horizontal-
     ApplyLeavesComponent,
     UserLeaveComponent,
     HorizontalBarComponent,
+    UserLeaveDetailsComponent,
   ],
   imports: [
     BrowserModule,
