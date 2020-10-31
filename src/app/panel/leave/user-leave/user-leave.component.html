@@ -4,7 +4,7 @@
       <a routerLink="/panel/dashboard"><i class="fab fa-houzz mr-1"></i>Dashboard</a>
     </li>
     <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
-      <i class="fas fa-mug-hot mr-1"></i> User Leave
+      <i class="fas fa-coffee mr-1"></i> User Leave
     </li>
   </ol>
 </nav>
@@ -13,34 +13,35 @@
 
 
 
-<div class="p-lg-3">
+<div class="p-3">
 <!-- main page row -->
 <div class="row">
   <!--============ calender and summery section start ========== -->
   <div class="col-sm-12 col-md-6 col-lg-6">
-    <div class="row p-1">
+    <div id="my-leaves" class="row p-1">
       <div class="col-12 card bg-white">
         <div class="row card-header bg-primary text-white">
-        <div class="col-1" *ngIf="showHidePendingLeaves === true">
-          <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="toggleCondition()" >
-          <i class="fas fa-arrow-left"></i>
+          <div class="col-1" *ngIf="showHidePendingLeaves === true">
+            <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="toggleCondition()" >
+            <i class="fas fa-arrow-left"></i>
+            </div>
           </div>
-        </div>
-          <div class="col-10 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
+          <div class="col-10 col-lg-11" *ngIf="showHidePendingLeaves === true">
+            My Leaves
+          </div>
+          <div class="col-9 col-lg-10 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
           <div class="col-1" *ngIf="showHidePendingLeaves !== true">
             <div class="btn btn-sm btn-primary" (click)="switchApplyform = !switchApplyform" >
               <i class="fas fa-plus" *ngIf="switchApplyform !== true" title="Apply Leave"></i>
               <i class="fas fa-times ml-1" *ngIf="switchApplyform === true" title="Cancel"></i>
             </div>
           </div>
-          <div class="col-11" *ngIf="showHidePendingLeaves === true">
-            My Leaves
-          </div>
           <div class="col-1" *ngIf="showHidePendingLeaves !== true">
             <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="showHidePendingLeaves = !showHidePendingLeaves" >
-              <i class="fas fa-bell"></i>
+              <i class="fas fa-th-list"></i>
             </div>
           </div>
+          <div class="col-1 d-lg-none"></div>
         </div>
         <!-- =================== normal view (calender view) =============-->
         <div class="card-body" *ngIf="showHidePendingLeaves !== true">
@@ -103,7 +104,7 @@
 
             <div class="row my-3">
               <div class="col-1">
-                <i class="fas fa-mug-hot text-danger"></i>
+                <i class="fas fa-coffee text-danger"></i>
               </div>
               <div class="col-11">
                 Leave Types
@@ -120,10 +121,10 @@
               <div class="col-1">
               <i class="far fa-calendar-alt text-danger"></i>
               </div>
-              <div class="col-6">
+              <div class="col-5">
                 Select Date{{toggleMode == 'range' ? 's' : ''}}
               </div>
-              <div class="col-5 align-right">
+              <div class="col-6 col-md-5 col-lg-6 d-flex justify-content-end">
               <div class="calender-toggle-switch">
                 <label class="switch">
                   <input type="checkbox" (change)="changeToggleMode()" checked />
@@ -134,8 +135,8 @@
               <div class="col-12">
                 <!-- Calendar -->
                 <ion-calendar
-                #calendar 
-                [options]="calendarMeta.calendarOptions" 
+                #calendar
+                [options]="calendarMeta.calendarOptions"
                 (select)="onSelect($event)"
                 (selectStart)="onSelectStart($event)"
                 (selectEnd)="onSelectEnd($event)"
@@ -175,9 +176,9 @@
           <div *ngIf="detailsData === null">
             <div class="row">
               <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1">
-                <div class="card bg-light">
-                  <div class="card-body">
-                    <i class="fas fa-home"></i><small class="text-muted ml-1">leaves +</small>
+                <div class="card PENDING">
+                  <div class="card-body text-white">
+                    <i class="fas fa-coffee"></i><small class="ml-1">leaves +</small>
                     <div class="text-right">
                       <h2>{{pendingData.length}}</h2>
                       <h6>Pending</h6>
@@ -186,56 +187,21 @@
                 </div>
               </div>
               <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0 p-1">
-                <div class="card bg-primary">
+                <div class="card APPROVED">
                   <div class="card-body text-white">
-                    <i class="fas fa-flag"></i><small class="ml-1">leaves +</small>
+                    <i class="fas fa-calendar-alt"></i><small class="ml-1">recent +</small>
                     <div class="text-right">
                       <h2>{{otherData.length}}</h2>
-                      <h6>Applied</h6>
+                      <h6>Recent Leaves</h6>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-12 card bg-white">
-                <div class="row card-header  bg-primary text-white">
-                  <div class="col-12">Leave Summary</div>
-                </div>
-                <!-- <div class="card"> -->
-                <div class="card-body" *ngIf="!calendarMeta.userleaveTypes">
-                  <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid
-                    region using Manage Region option</p>
-                </div>
-                <div class="card-body" *ngIf="calendarMeta.userleaveTypes">
-                  <h6 class="mb-2">Your Leave Summary</h6>
-                  <!-- =========== horizontal bar graph ==============-->
-                  <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
-                    <div class="row">
-                      <div class="col-6">
-                        <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
-                      </div>
-                      <div class="col-6">
-                        <h6>
-                          {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
-                          of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
-                        </h6>
-                      </div>
-                      <div class="col-12">
-                        <div class="chartrate">
-                          <div
-                            [ngStyle]="{'background': leaveColors[i%14],'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?(calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- =========== horizontal bar graph ==============-->
-                </div>
-                <!-- </div> -->
-              </div>
+
             </div>
           </div>
           <!-- if details is selected -->
-          <div *ngIf="detailsData !== null">
+          <div id="leave-details" *ngIf="detailsData !== null">
             <app-user-leave-details [detailsData]="detailsData"> </app-user-leave-details>
           </div>
           <!--  -->
@@ -249,28 +215,28 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <div class="row p-1">
   <!--============  pending/recent leave section start ========== -->
-  <div class="showHidePendingLeaves" *ngIf="showHidePendingLeaves === true">
+  <!-- <div class="showHidePendingLeaves" *ngIf="showHidePendingLeaves === true"> -->
       <!-- pending/recent leave search card -->
-      <div class="col-12 card bg-white mb-2">
+      <div class="col-12 card bg-white mb-2" *ngIf="showHidePendingLeaves === true">
         <div class="row card-header bg-primary text-white">
           Search Here
         </div>
         <div class="card-body">
           <div class="row bg-white">
-          <div class="col-11">
+          <div class="col-10 col-lg-11">
                 <div class="searchBox">
                   <input type="text" placeholder="Search Here....." class="form-control" [(ngModel)]="searchTexts" />
                 </div>
           </div>
           <div class="col-1">
-            <button class="btn btn-sm btn-default"><i class="fas fa-search" (click)="getDataOfallSearch()"></i></button> 
+            <button class="btn btn-sm btn-default"><i class="fas fa-search" (click)="getDataOfallSearch()"></i></button>
           </div>
           </div>
           <div class="row mt-2">
             <div class="col-5">
-              <span>Result matching</span>
+              <p><small>Result for</small></p>
             </div>
-            <div class="col-7">
+            <div class="col-7 mr-0 pr-0 d-flex justify-content-end">
             <div class="search-toggle-switch">
               <label class="switch">
                 <input type="checkbox" (click)="changeSearchMode()" checked />
@@ -283,15 +249,15 @@
       </div>
       <!-- pending/recent leave  search card -->
       <!-- pending/recent leave all cards -->
-        <div class="col-12 allBoxes card my-2">
-        
+        <div class="col-12 allBoxes card my-2" *ngIf="showHidePendingLeaves === true">
+
           <div class="row card-header pendingBox">
             <div class="col-12">
                Pending
             </div>
-          </div> 
-          <div class="card-body allBoxesAvail">
-                <div class="eachBox" *ngFor="let data of pendingData">
+          </div>
+          <div class="mb-3">
+                <!-- <div class="eachBox" *ngFor="let data of pendingData">
                   <div (click)="details(data)">
                     <div class="profile">
                       <img src="{{(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
@@ -315,7 +281,79 @@
                       <p>{{data.data.reason}}</p>
                     </div>
                   </div>
+                </div> -->
+
+
+                <div class="row" *ngFor="let data of pendingData">
+                  <div class="col-12 bg-white border-bottom" (click)="details(data)">
+                    <div
+                      class="row card-body"
+                      style="padding-bottom: 0px; padding-top: 0.5em"
+                    >
+                      <div class="col-3 col-md-3 col-lg-2">
+                        <img
+                          class="mx-auto d-block p-1 rounded-circle"
+                          style="width: 35px; height: 35px"
+                          src="{{(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+                          (error)="'../../../../assets/image/imgs/profile.png'"
+                        />
+                        <div class="row">
+                          <h6 class="col-12 text-danger text-center"><small><b>{{data.data.daysCount}}</b> {{(data.data.daysCount>1)?' Days':' Day'}}</small></h6>
+                          <h6 class="text-primary text-center"><small>{{data.appliedAgo}}</small></h6>
+                        </div>
+                      </div>
+                      <div class="col-8 col-sm-8 col-lg-9">
+                        <!-- <div class=""> -->
+                        <h5 class="">
+                          <small>{{data.data.user.name}}</small>
+                        </h5>
+                        <div class="row">
+                          <div class="col-6 pr-0">
+                            <h6 class="text-muted">
+                              <small><i class="fas fa-calendar-alt pr-1"></i>{{data.startDate}}</small>
+                            </h6>
+                          </div>
+                          <div class="col-6 pr-0">
+                            <h6 class="text-muted">
+                              <small><i class="fas fa-calendar-alt pr-1"></i>{{data.endDate}}</small>
+                            </h6>
+                          </div>
+                        </div>
+                        <h6 class="text-danger"><small>{{data.data.type}}</small></h6>
+                        <div class="row">
+                          <div class="col-11 pr-0">
+                            <h6 class="text-muted  text-truncate">
+                              <small>{{data.data.reason}}</small>
+                            </h6>
+                          </div>
+                          <div class="col-1 pr-0 btn btn-sm">
+                              <!-- <button
+                                type="button"
+                                class="btn bg-light btn-sm "
+                              > -->
+                                <i class="fas fa-arrow-right text-primary"></i>
+                              <!-- </button> -->
+                          </div>
+                        </div>
+
+                        <!-- </div> -->
+                      </div>
+                      </div>
+                    </div>
+                    <!-- <img class="card-img-left" src="..." alt="Card image cap"> -->
+                  <!-- </div> -->
                 </div>
+
+
+
+
+
+
+
+
+
+
+
                 <div class="noTaskForAdmin" *ngIf="pendingData.length == 0 && (viewMode=='LEAVEADMIN')">
                   <p>There are no leave requests requring your action for the selected region {{selectedCountry}} -
                     {{selectedRegion}}.</p>
@@ -325,10 +363,10 @@
                   <p>There are no pending leave requests submitted by you for approval.</p>
                   <img src="../../../../assets/image/imgs/splash_scr4.png" />
                 </div>
-        
+
               </div>
           </div>
-          <div class="col-12 allBoxes card my-2">
+          <div class="col-12 allBoxes card my-2" *ngIf="showHidePendingLeaves === true">
             <div class="row card-header recentBox">
               <div class="col-12">
                 Recent
@@ -374,11 +412,11 @@
                 <p>There are no recent leave request created by you.</p>
                 <img src="../../../../assets/image/imgs/splash_scr4.png" />
               </div>
-            
+
             </div>
           </div>
       <!-- pemding/recent leave all cards -->
-   </div> 
+   <!-- </div> -->
   <!--============  pending/recent leave section end ========== -->
 
       <div class="col-12 card bg-white" *ngIf="showHidePendingLeaves !== true">
@@ -422,7 +460,7 @@
             Adjoining Leaves
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body px-0">
             <div class="eachDetails" *ngIf="monthsData.length==0">
               <p class="type" [ngClass]="'moderate'">No Leave Found</p>
               <div class="timings">
@@ -461,4 +499,3 @@
 </div>
 
 </div>
-

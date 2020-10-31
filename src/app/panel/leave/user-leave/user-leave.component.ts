@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { ConnectionService } from 'ng-connection-service';
@@ -76,7 +77,7 @@ export class UserLeaveComponent implements OnInit {
     private spinner:NgxSpinnerService,
     private connectionService: ConnectionService,
     private searchMap:TextSearchService,
-    private notification:NotificationService
+    private notification:NotificationService,
   ) {
       this.session = this.allMembers.getCurrLogUserData();
       //this.leaveAdminRegions = this.cal.isUserRegionLeaveAdmin(this.session, false);
@@ -107,7 +108,7 @@ export class UserLeaveComponent implements OnInit {
     this.getLeavAdmins();
 
 
-    
+
     //this.viewMode = this.navParams.get("viewMode") ? this.navParams.get("viewMode") : 'USER';
     this.viewMode = 'USER';
         if(navigator.onLine) {
@@ -228,6 +229,8 @@ export class UserLeaveComponent implements OnInit {
     //   {data:this.session,details:showData,
     //     actionType: actionType}
     //  );
+    let element = document.getElementById("my-leaves"); //leave-details
+    element.scrollIntoView({behavior: "smooth"});
   }
 
 
@@ -302,7 +305,7 @@ export class UserLeaveComponent implements OnInit {
     this.pageObj.apllyingLeave.noOfDays = 0;
     if(this.toggleMode=='single'){
       let result= this.calendarMeta.newObj.filter(h=>h.cssClass!='rejected' && moment(h.date).format('YYYYMMDD') == moment(startDate).format('YYYYMMDD'));
-      
+
       if(result.length == 0){
         this.pageObj.apllyingLeave.noOfDays = 1;
       }
@@ -430,7 +433,7 @@ export class UserLeaveComponent implements OnInit {
               },
             };
         this.notification.createNotifications(eventInfo);
-        
+
 
         batch.commit().then(()=>{
           this.spinner.hide();
@@ -636,7 +639,7 @@ export class UserLeaveComponent implements OnInit {
           this.spinner.hide();
         });
   }
- 
+
   toggleCondition(){
     this.showHidePendingLeaves = !this.showHidePendingLeaves;
     this.detailsData = null;

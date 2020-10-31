@@ -33,7 +33,9 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     private db: AllCollectionsService,
     private cal: CalenderFunctionsService,
     private spinner:NgxSpinnerService
-  ) { }
+  ) {
+    console.log("constructor data detailsData", this.detailsData);
+  }
 
   ngOnInit() {
 
@@ -341,7 +343,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
         this.spinner.hide();
         //this.toBackPage()
     }.bind(this)).catch(function(error) {
-       
+
         this.spinner.hide();
          this.alertMessage.showAlert("error",error,"Error Leave Approval",);
     }.bind(this));

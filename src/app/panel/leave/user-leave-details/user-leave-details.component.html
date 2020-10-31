@@ -1,126 +1,189 @@
-<div class="fullBody">
-  <div class="row">
-    <div class="col-4 preview">
-      <img src="{{(details.data.data.picUrl) ? details.data.data.picUrl : '../../../../assets/image/imgs/profile.png'}}"
-        (error)="'../../../../assets/image/imgs/profile.png'" />
-      <p [class]="details.data.data.status">{{details.data.data.status}}</p>
+<div class="bg-white ">
+  <div class="row card-body p-0">
+    <div class="col-3 col-md-3 col-lg-2">
+      <img
+        class="mx-auto d-block p-0 rounded-circle"
+        style="width: 45px; height: 45px"
+        src="{{(details.data.data.picUrl) ? details.data.data.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+          (error)="'../../../../assets/image/imgs/profile.png'"
+      />
+      <span
+        class="row badge p-2 text-white d-flex justify-content-center"
+        [ngClass]="
+          details.data.data.status
+        "
+      >
+        {{ details.data.data.status.toLowerCase() }}
+      </span>
     </div>
-    <div class="col-8 profileDetails">
-      <h6>{{details.data.data.user.name}}</h6>
-      <div class="eachPart">
-        <i class="far fa-calendar-alt mr-2"></i>
-        <span>{{details.data.startDate}}</span>
-      </div>
-      <div class="eachPart">
-        <i class="far fa-calendar-alt mr-2"></i>
-        <span>{{details.data.endDate}}</span>
-      </div>
-      <div class="row timmings">
-        <div class="col-4">
-        <span>{{details.data.data.daysCount>1?details.data.data.daysCount+' Days':details.data.data.daysCount+' Day'}}</span>
+    <div class="col-8 col-sm-8 col-lg-9">
+      <!-- <div class=""> -->
+      <h5 class="">
+        <small>{{details.data.data.user.name}}</small>
+      </h5>
+      <div class="row">
+        <div class="col-6 pr-0">
+          <h6 class="text-muted">
+            <small><i class="fas fa-calendar-alt pr-1"></i>{{details.data.startDate}}</small>
+          </h6>
         </div>
-        <div class="col-8">
-          <small class="text-primary">{{details.data.data.status=='PENDING' ? details.data.appliedAgo : details.data.updatedOn}}</small>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <div class="row type CANCELLED" *ngIf="details.data.status=='PENDING' && details.data.previousStatus=='APPROVED'">
-    <div class="col-2">
-    <i class="fas fa-hand-paper"></i>
-    </div>
-    <div class="col-10">
-        <p class="typeReason">Approved leave cancellation request</p>
-    </div>
-
-  </div>
-  <div class="row type">
-      <div class="col-2">
-       <i class="fas fa-stopwatch"></i>
-      </div>
-      <div class="col-10">
-     <p>{{details.data.data.type}}</p>
-      </div>
-  </div>
-  <div class="row type">
-    <div class="col-2">
-      <i class="fas fa-comments"></i>
-    </div>
-    <div class="col-10">
-     <p class="typeReason">{{details.data.data.reason}}</p>
-    </div>
-  </div>
-
-  <div class="row" *ngIf="actionType != 'back'">
-    <div class="col-12">
-  <div>
-    <h6>Comments</h6>
-    <textarea #noteTxt (keyup)="resizeNote()" placeholder="Type your comment here." id="noteTxt" [(ngModel)]="detailsNote"
-      class="form-control"></textarea>
-  </div>
-  <br>
-    </div>
-  </div>
-
-
-
-  <h6>Leave Summary</h6>
-  <div class="leaveSummary">
-    <div class="eachRates" *ngFor="let data of userCalendarYear; let i=index;">
-      <h6>{{data.value.type}}</h6>
-      <p>{{(data.value.taken) ? data.value.taken : '0'}} of {{data.value.allowed}} Taken</p>
-      <div class="clear"></div>
-      <div class="chartrate">
-        <div [ngStyle]="{
-                          'background': leaveColors[i%14],
-                          'width': data.value.taken ?
-                                   (data.value.taken * 100 /data.value.allowed)+'%'
-                                   : '0%'
-                        }"></div>
-      </div>
-    </div>
-  </div>
-  <br>
-
-
-  <h6>Request Timeline</h6>
-  <div class="history">
-    <div class="eachHistory" *ngFor="let data of details.data.changeHistory"
-      [ngClass]="(data.status == 'CANCELED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
-      <h6>{{data.actionType ? data.actionType : data.status}}</h6>
-      <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll')}}</p>
-      <div class="box">
-        <img [src]="(data.updatedBy.picUrl) ? data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png'" />
-        <div>
-          <p>{{data.updatedBy.name}}</p>
-          <p>{{data.comment}}</p>
+        <div class="col-6 pr-0">
+          <h6 class="text-muted">
+            <small><i class="fas fa-calendar-alt pr-1"></i>{{details.data.endDate}}</small>
+          </h6>
         </div>
       </div>
-    </div>
-    <div class="eachHistory"
-      [ngClass]="(details.data.status == 'CANCELED') ? 'can' : (details.data.status == 'APPROVED') ? 'appr' : (details.data.status == 'REJECTED') ? 'rej' : 'pen'">
-      <h6>{{details.data.data.actionType ? details.data.data.actionType : details.data.data.status}}</h6>
-      <p class="time">
-        {{getDateFormat(details.data.updatedOn ? details.data.updatedOn.seconds*1000 : details.data.applied.seconds*1000,'lll')}}
-      </p>
-      <div class="box">
-        <img [src]="(details.data.updatedBy) ?
-                        details.data.updatedBy.picUrl :
-                        details.data ?
-                        details.data.picUrl : '../../../../assets/image/imgs/user2.png'" />
-        <div>
-          <p>{{(details.data.updatedBy) ? details.data.updatedBy.name : details.data.user.name}}</p>
-          <p>{{details.data.data.comment ? details.data.data.comment : details.data.data.reason}}</p>
+      <div class="row">
+        <h6 class="col-4 pr-0 text-danger text-left"><small><b>{{details.data.data.daysCount}}</b> {{(details.data.data.daysCount>1)?' Days':' Day'}}</small></h6>
+        <h6 class="col-8 p-0 text-primary text-center"><small>{{details.data.data.status=='PENDING' ? details.data.appliedAgo : details.data.updatedOn}}</small></h6>
+      </div>
+      </div>
+      <div class="col-12 mt-3">
+        <div class="CANCELLED" *ngIf="details.data.status=='PENDING' && details.data.previousStatus=='APPROVED'">
+          <div class="col-1 text-white">
+          <i class="fas fa-hand-paper"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+              <p class="text-white"><small>Approved leave cancellation request</small></p>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+      <div class="col-12 mt-3">
+        <div class="row">
+          <div class="col-1 text-muted">
+           <i class="fas fa-coffee"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <h6 class="">{{details.data.data.type}}</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-1 text-muted">
+           <i class="fas fa-comments"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <p class="text-muted">
+              <small>{{details.data.data.reason}}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-1 text-muted">
+           <i class="fas fa-edit"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <h6 class="">
+              Comments
+            </h6>
+          </div>
+          <div class="col-12">
+            <textarea #noteTxt (keyup)="resizeNote()" placeholder="Type your comment here." id="noteTxt" [(ngModel)]="detailsNote"
+            class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <div class="row">
+          <div class="col-1 text-muted">
+           <i class="fas fa-th-list"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <h6 class="">
+              Leave Summary
+            </h6>
+          </div>
+          <div class="col-12">
+            <div class="card-body" *ngIf="!userCalendarYear">
+              <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid region using Manage Region option</p>
+            </div>
+            <div class="card-body" *ngIf="userCalendarYear">
+              <!-- =========== horizontal bar graph ==============-->
+              <div class="summary-data eachRates" *ngFor="let leave of userCalendarYear; let i=index;">
+                <div class="row">
+                  <div class="col-7  text-muted text-truncate">
+                    <h6><small>{{leave.value.type}}</small></h6>
+                  </div>
+                  <div class="col-5 text-muted text-right">
+                    <h6><small>
+                      {{(leave.value.taken) ? leave.value.taken : '0'}} of {{leave.value.allowed}} Taken
+                    </small>
+                    </h6>
+                  </div>
+                  <div class="col-12">
+                    <div class="chartrate">
+                      <div
+                        [ngStyle]="{'background': leaveColors[i%14],'width': leave.value.taken ?
+                                       (leave.value.taken * 100 /leave.value.allowed)+'%'
+                                       : '0%'
+                                     }">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- =========== horizontal bar graph ==============-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-1 text-muted">
+           <i class="fas fa-stream"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <h6 class="">
+              Request Timeline
+            </h6>
+          </div>
+          <div class="col-12">
+            <div class="history">
+              <div class="eachHistory" *ngFor="let data of details.data.data.changeHistory"
+                [ngClass]="(data.status == 'CANCELED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
+                <h6>{{data.actionType ? data.actionType : data.status}}</h6>
+                <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll')}}</p>
+                <div class="box">
+                  <img [src]="(data.updatedBy.picUrl) ? data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png'" />
+                  <div>
+                    <p>{{data.updatedBy.name}}</p>
+                    <p>{{data.comment}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="eachHistory"
+                [ngClass]="(details.data.status == 'CANCELED') ? 'can' : (details.data.status == 'APPROVED') ? 'appr' : (details.data.status == 'REJECTED') ? 'rej' : 'pen'">
+                <h6>{{details.data.data.actionType ? details.data.data.actionType : details.data.data.status}}</h6>
+                <p class="time">
+                  {{getDateFormat(details.data.data.updatedOn ? details.data.data.updatedOn.seconds*1000 : details.data.data.applied.seconds*1000,'lll')}}
+                </p>
+                <div class="box">
+                  <img [src]="(details.data.data.updatedBy) ?
+                                  (details.data.data.updatedBy.picUrl ? details.data.data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png') :
+                                  (details.data.data && details.data.data.user.picUrl) ?
+                                  details.data.data.user.picUrl : '../../../../assets/image/imgs/user2.png'" />
+                  <div>
+                    <p>{{(details.data.data.updatedBy) ? details.data.data.updatedBy.name : details.data.data.user.name}}</p>
+                    <p>{{details.data.data.comment ? details.data.data.comment : details.data.data.reason}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
 
-  <div class="btn btn-sm" *ngIf="actionType == 'approve'">
-    <button class="buttonReject" (click)="reject()">Reject</button>
-    <button class="buttonApprove" (click)="approve()">Approve</button>
+          <div class="col-12 mb-2" *ngIf="actionType == 'approve'"><button type="button" class="btn btn-block text-white CANCELED" (click)="reject()">Reject</button></div>
+          <div class="col-12 mb-2" *ngIf="actionType == 'approve'"><button type="button" class="btn btn-block text-white  APPROVED" (click)="approve()">Approve</button></div>
+          <div class="col-12 mb-2" *ngIf="actionType=='cancel'"><button type="button" class="btn btn-block  text-white CANCELLED" (click)="cancel()">Cancel</button></div>
+          <div class="col-12 mb-2" *ngIf="actionType=='back'"><button type="button" class="btn btn-primary btn-block" (click)="toBackPage()">Back</button></div>
+
+        </div>
+      </div>
   </div>
-  <div class="btn" *ngIf="actionType=='cancel'"><button class="buttonCancel" (click)="cancel()">Cancel</button></div>
-  <div class="btn" *ngIf="actionType=='back'"><button class="buttonBack" (click)="toBackPage()">Back</button></div>
 </div>

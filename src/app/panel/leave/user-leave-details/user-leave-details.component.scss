@@ -1,4 +1,133 @@
 @import "../../../../assets/scss/variables.scss";
+.history {
+  margin: 10px 0;
+  // box-shadow: 0 3px 3px rgba(0,0,0,.5);
+  padding-bottom: 20px;
+  .eachHistory {
+    padding: 5px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin-top: 5px;
+    margin-left: 10px;
+    position: relative;
+    h6 {
+      color: $color-white;
+      font-family: $font-family;
+      // font-weight: 500;
+      margin-bottom: 7px;
+      background: $color-accent-bg;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      padding: 5px 20px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .time {
+      padding: 3px 10px;
+      // font-family: $font-family;
+      font-size: $input_font;
+      font-weight: $small_weight;
+      color: $color-fab-btn;
+    }
+    // h5{
+    //     font-weight: $big_weight;
+    //     color: $color-black;
+    //     font-size: $input_font;
+    //     padding: 0 0 4px 10px;
+    // }
+    // .leaveDates{
+    //     display: flex;
+    //     margin-bottom: 10px;
+    //     padding-left: 10px;
+    //     p{
+    //         width: calc(50% - 20px);
+    //         color: $color-black;
+    //         &:nth-child(2){
+    //             width: 20px;
+    //         }
+    //         &:nth-child(3){
+    //             text-align: right;
+    //         }
+    //     }
+    // }
+    .box {
+      display: flex;
+      padding-left: 10px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+        padding: 1px;
+        border: 1px solid $color-dark-grey;
+      }
+      div {
+        width: calc(100% - 30px);
+        p {
+          font-family: $font-family;
+          color: $color-black;
+          &:nth-child(1) {
+            text-transform: capitalize;
+            font-size: $floating_font;
+            font-weight: $small_weight;
+          }
+          &:nth-child(2) {
+            // text-transform: capitalize;
+            // font-weight: $big_weight;
+            font-size: $details_font;
+            color: $color-dark-grey;
+          }
+        }
+      }
+    }
+    &::after {
+      content: "";
+      width: 5px;
+      height: calc(100% + 5px);
+      position: absolute;
+      top: 5px;
+      left: 1px;
+      background: $color-accent;
+    }
+    &:last-child {
+      &::after {
+        height: 100%;
+      }
+    }
+  }
+  .appr {
+    h6 {
+      background: $color-secondary-bg;
+    }
+    &::after {
+      background: $color-sky;
+    }
+  }
+  .can {
+    h6 {
+      background: $color-accent-bg;
+    }
+    &::after {
+      background: $color-accent;
+    }
+  }
+  .rej {
+    h6 {
+      background: $color-reject-dismiss;
+    }
+    &::after {
+      background: $color-amber;
+    }
+  }
+  .pen {
+    h6 {
+      background: $color-peach-bg;
+    }
+    &::after {
+      background: $color-amber;
+    }
+  }
+}
 page-leave-applied-details {
   * {
     margin: 0;
@@ -7,6 +136,7 @@ page-leave-applied-details {
   .clear {
     clear: both;
   }
+
   // page title
   .topHeaderView {
     background: $color-primary-bg;
@@ -307,134 +437,7 @@ page-leave-applied-details {
         }
       }
     }
-    .history {
-      margin: 10px 0;
-      // box-shadow: 0 3px 3px rgba(0,0,0,.5);
-      padding-bottom: 20px;
-      .eachHistory {
-        padding: 5px;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
-        margin-top: 5px;
-        margin-left: 10px;
-        position: relative;
-        h6 {
-          color: $color-white;
-          font-family: $font-family;
-          font-weight: 500;
-          margin-bottom: 7px;
-          background: $color-accent-bg;
-          box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
-          display: inline-block;
-          padding: 5px 20px;
-          border-top-right-radius: 20px;
-          border-bottom-right-radius: 20px;
-        }
-        .time {
-          padding: 3px 10px;
-          // font-family: $font-family;
-          font-size: $input_font;
-          font-weight: $small_weight;
-          color: $color-fab-btn;
-        }
-        // h5{
-        //     font-weight: $big_weight;
-        //     color: $color-black;
-        //     font-size: $input_font;
-        //     padding: 0 0 4px 10px;
-        // }
-        // .leaveDates{
-        //     display: flex;
-        //     margin-bottom: 10px;
-        //     padding-left: 10px;
-        //     p{
-        //         width: calc(50% - 20px);
-        //         color: $color-black;
-        //         &:nth-child(2){
-        //             width: 20px;
-        //         }
-        //         &:nth-child(3){
-        //             text-align: right;
-        //         }
-        //     }
-        // }
-        .box {
-          display: flex;
-          padding-left: 10px;
-          img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            padding: 1px;
-            border: 1px solid $color-dark-grey;
-          }
-          div {
-            width: calc(100% - 30px);
-            p {
-              font-family: $font-family;
-              color: $color-black;
-              &:nth-child(1) {
-                text-transform: capitalize;
-                font-weight: $big_weight;
-              }
-              &:nth-child(2) {
-                // text-transform: capitalize;
-                // font-weight: $big_weight;
-                font-size: $details_font;
-                color: $color-dark-grey;
-              }
-            }
-          }
-        }
-        &::after {
-          content: "";
-          width: 5px;
-          height: calc(100% + 5px);
-          position: absolute;
-          top: 5px;
-          left: 1px;
-          background: $color-accent;
-        }
-        &:last-child {
-          &::after {
-            height: 100%;
-          }
-        }
-      }
-      .appr {
-        h6 {
-          background: $color-secondary-bg;
-        }
-        &::after {
-          background: $color-sky;
-        }
-      }
-      .can {
-        h6 {
-          background: $color-accent-bg;
-        }
-        &::after {
-          background: $color-accent;
-        }
-      }
-      .rej {
-        h6 {
-          background: $color-reject-dismiss;
-        }
-        &::after {
-          background: $color-amber;
-        }
-      }
-      .pen {
-        h6 {
-          background: $color-peach-bg;
-        }
-        &::after {
-          background: $color-amber;
-        }
-      }
-    }
+
     .btns {
       display: flex;
       margin-top: 10px;
