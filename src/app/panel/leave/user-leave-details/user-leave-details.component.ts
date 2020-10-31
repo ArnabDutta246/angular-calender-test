@@ -55,18 +55,13 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     updatedBy: this.details.data.updatedBy ? this.details.data.updatedBy : this.details.data.user,
     updatedOn: this.details.data.updatedOn ? this.details.data.updatedOn : this.details.data.applied,
   }
-    console.log("1....",this.data,"2.....",this.details);
-
-    console.log("..............");
-
-    console.log("details data",this.details.data);
-  if(!this.details.data.changeHistory){
-    this.changeHistory=[prevStatus,]
-  } else {
-    this.changeHistory = [...this.details.data.changeHistory,prevStatus];
-  }
-  this.getuserLeaveCalendar();
-  this.getOrgLeaveCalendar();
+    if(!this.details.data.changeHistory){
+      this.changeHistory=[prevStatus,]
+    } else {
+      this.changeHistory = [...this.details.data.changeHistory,prevStatus];
+    }
+    this.getuserLeaveCalendar();
+    this.getOrgLeaveCalendar();
     }
   }
   searchtextRebuild(type){

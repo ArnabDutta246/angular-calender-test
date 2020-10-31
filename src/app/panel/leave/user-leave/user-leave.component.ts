@@ -68,6 +68,7 @@ export class UserLeaveComponent implements OnInit {
   searchTexts: string=null;
   searchMode: string = 'all';
   showHidePendingLeaves = false;
+  leaveAdminView = false;
   detailsData = null;
   constructor(
     private db: AllCollectionsService,
@@ -110,10 +111,10 @@ export class UserLeaveComponent implements OnInit {
 
 
     //this.viewMode = this.navParams.get("viewMode") ? this.navParams.get("viewMode") : 'USER';
-    this.viewMode = 'USER';
-        if(navigator.onLine) {
+     this.viewMode = 'USER';
+     if(this.status === 'ONLINE') {
       this.spinner.show();
-      if(this.viewMode != 'USER' && (this.data.user.role == "ADMIN" || this.viewMode == 'LEAVEADMIN')){ // when admin comes
+      if(this.viewMode != 'USER' && (this.session.role == "ADMIN" || this.viewMode == 'LEAVEADMIN')){ // when admin comes
         this.pageTitle = "Leave Approval Requests";
         this.getLeaveAdminRegions();
       }else{ // when user comes sees his own views
@@ -173,8 +174,7 @@ export class UserLeaveComponent implements OnInit {
     return date ? moment(date).format(type) : moment(this.monthStartDate).format(type);
   }
   details(data){
-    console.log(data,".............data....");
-    //alert(data.startDate.seconds);
+    console.log(data);
     let showData = {
       docId: data.data.id,
       startDate:moment(data.startDate.seconds*1000).format('ll'),
@@ -216,23 +216,35 @@ export class UserLeaveComponent implements OnInit {
       }
     };
     let actionType = 'back';
-    if(['PENDING','APPROVED'].includes(data.data.status)){
+    if(this.session.role == "ADMIN" || this.viewMode == 'LEAVEADMIN'){ // if admin
+      if(data.data.uid == this.session.uid && ['PENDING','APPROVED'].includes(data.data.status)){ // if own requests
         actionType = 'cancel';
+      }else if(data.data.status=='PENDING'){
+        actionType = 'approve';
+      }
+    }else{ // if not admin
+      if(['PENDING','APPROVED'].includes(data.data.status)){
+        actionType = 'cancel';
+      }
     }
+
     this.detailsData = {
       data:this.session,
       details:showData,
       actionType: actionType
     };
-    // this.navCtrl.push(
-    //   LeaveAppliedDetailsPage,
-    //   {data:this.session,details:showData,
-    //     actionType: actionType}
-    //  );
+
+
+    let element = document.getElementById("my-leaves"); //leave-details
+    element.scrollIntoView({behavior: "smooth"});
+
+
+  }
+detailsAdj(){
+    this.showHidePendingLeaves = !this.showHidePendingLeaves ;
     let element = document.getElementById("my-leaves"); //leave-details
     element.scrollIntoView({behavior: "smooth"});
   }
-
 
   //=============================== apply leave ====================
     getLeavAdmins(){
@@ -562,6 +574,15 @@ export class UserLeaveComponent implements OnInit {
     this.apporveRequestData();
   }
 
+  leaveAdminViewToggle(adminView?:boolean){
+    if(adminView){
+    this.viewMode = 'LEAVEADMIN';
+    this.leaveAdminView = !this.leaveAdminView;
+    this.getLeaveAdminRegions();
+  }
+    this.apporveRequestData();
+    this.showHidePendingLeaves = !this.showHidePendingLeaves;
+  }
   // for admin view
   apporveRequestData(){
     this.spinner.show();
@@ -643,6 +664,8 @@ export class UserLeaveComponent implements OnInit {
   toggleCondition(){
     this.showHidePendingLeaves = !this.showHidePendingLeaves;
     this.detailsData = null;
+    this.leaveAdminView = this.leaveAdminView ? false:this.leaveAdminView;
+    this.viewMode = this.viewMode !== 'USER'? 'USER' : this.viewMode;
     //console.log(this.detailsData);
   }
 }

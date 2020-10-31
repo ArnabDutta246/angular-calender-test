@@ -1,4 +1,12 @@
 @import "../../../../assets/scss/variables.scss";
+.pointer {
+  cursor: pointer;
+}
+.innerBox {
+  max-height: 455px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 .pendingBox {
   background-image: $color-peach-bg !important;
   color: $color-white;

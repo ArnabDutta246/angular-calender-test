@@ -26,22 +26,20 @@
             <i class="fas fa-arrow-left"></i>
             </div>
           </div>
-          <div class="col-10 col-lg-11" *ngIf="showHidePendingLeaves === true">
-            My Leaves
+          <div class="col-10 col-lg-10" *ngIf="showHidePendingLeaves === true">
+           {{ leaveAdminView === true ? 'Leave admin view':'My Leaves' }}
           </div>
-          <div class="col-9 col-lg-10 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
-          <div class="col-1" *ngIf="showHidePendingLeaves !== true">
-            <div class="btn btn-sm btn-primary" (click)="switchApplyform = !switchApplyform" >
+          <div class="col-9 col-lg-9 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
+          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" (click)="switchApplyform = !switchApplyform">
               <i class="fas fa-plus" *ngIf="switchApplyform !== true" title="Apply Leave"></i>
               <i class="fas fa-times ml-1" *ngIf="switchApplyform === true" title="Cancel"></i>
-            </div>
           </div>
-          <div class="col-1" *ngIf="showHidePendingLeaves !== true">
-            <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="showHidePendingLeaves = !showHidePendingLeaves" >
+          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" title="Leaves Status" (click)="leaveAdminViewToggle()">
               <i class="fas fa-th-list"></i>
-            </div>
           </div>
-          <div class="col-1 d-lg-none"></div>
+          <div class="col-1 btn btn-sm btn-primary" *ngIf="session.leaveAdmin && leaveAdminView !== true && showHidePendingLeaves !== true" (click)="leaveAdminViewToggle(true)">
+            <i class="fas fa-users-cog"></i>
+          </div>
         </div>
         <!-- =================== normal view (calender view) =============-->
         <div class="card-body" *ngIf="showHidePendingLeaves !== true">
@@ -215,7 +213,25 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <div class="row p-1">
   <!--============  pending/recent leave section start ========== -->
-  <!-- <div class="showHidePendingLeaves" *ngIf="showHidePendingLeaves === true"> -->
+
+      <!-- LeaveAdmin Selected region check -->
+      <div class="col-12 mb-2 card" *ngIf="session.leaveAdmin && leaveAdminView !== false && showHidePendingLeaves === true">
+       <div class="row card-header bg-white">
+         <div class="col-1">
+          <i class="fas fa-search-location text-danger"></i>
+         </div>
+         <div class="col-4 text-dark">
+           Region
+         </div>
+         <div class="col-7">
+              <select class="form-control" id="adminRegionSelect" name="adminRegionSelect" [(ngModel)]="selectedRegionCode" (change)="getSelectedRegion()">
+                <option *ngFor="let region of leaveAdminRegions" [value]="region">{{session.leaveAdmin[region].country}} - {{session.leaveAdmin[region].region}}</option>
+              </select>
+         </div>
+       </div>
+      </div>
+      <!-- LeaveAdmin Selected region check -->
+
       <!-- pending/recent leave search card -->
       <div class="col-12 card bg-white mb-2" *ngIf="showHidePendingLeaves === true">
         <div class="row card-header bg-primary text-white">
@@ -256,34 +272,7 @@
                Pending
             </div>
           </div>
-          <div class="mb-3">
-                <!-- <div class="eachBox" *ngFor="let data of pendingData">
-                  <div (click)="details(data)">
-                    <div class="profile">
-                      <img src="{{(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
-                        (error)="'../../../../assets/image/imgs/profile.png'" />
-                      <div class="moreInfo">
-                        <h4>{{data.data.user.name}}</h4>
-                        <div class="dates">
-                          <img src="../../../../assets/image/imgs/calendar-black.svg" />
-                          <p>{{data.startDate}}</p>
-                          <img src="../../../../assets/image/imgs/calendar-black.svg" />
-                          <p>{{data.endDate}}</p>
-                        </div>
-                        <div class="days">
-                          <p><b>{{data.data.daysCount}}</b> {{(data.data.daysCount>1)?' Days':' Day'}}</p>
-                          <p>{{data.appliedAgo}}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="reasons">
-                      <h5>{{data.data.type}}</h5>
-                      <p>{{data.data.reason}}</p>
-                    </div>
-                  </div>
-                </div> -->
-
-
+          <div class="mb-3 innerBox">
                 <div class="row" *ngFor="let data of pendingData">
                   <div class="col-12 bg-white border-bottom" (click)="details(data)">
                     <div
@@ -327,33 +316,13 @@
                             </h6>
                           </div>
                           <div class="col-1 pr-0 btn btn-sm">
-                              <!-- <button
-                                type="button"
-                                class="btn bg-light btn-sm "
-                              > -->
                                 <i class="fas fa-arrow-right text-primary"></i>
-                              <!-- </button> -->
                           </div>
                         </div>
-
-                        <!-- </div> -->
                       </div>
                       </div>
                     </div>
-                    <!-- <img class="card-img-left" src="..." alt="Card image cap"> -->
-                  <!-- </div> -->
                 </div>
-
-
-
-
-
-
-
-
-
-
-
                 <div class="noTaskForAdmin" *ngIf="pendingData.length == 0 && (viewMode=='LEAVEADMIN')">
                   <p>There are no leave requests requring your action for the selected region {{selectedCountry}} -
                     {{selectedRegion}}.</p>
@@ -372,7 +341,7 @@
                 Recent
               </div>
             </div>
-            <div class="card-body allBoxesAvail">
+            <div class="card-body allBoxesAvail innerBox">
               <div class="eachBox" *ngFor="let data of otherData">
                 <div (click)="details(data)">
                   <div class="profile">
@@ -416,14 +385,13 @@
             </div>
           </div>
       <!-- pemding/recent leave all cards -->
-   <!-- </div> -->
   <!--============  pending/recent leave section end ========== -->
 
       <div class="col-12 card bg-white" *ngIf="showHidePendingLeaves !== true">
         <div class="row card-header  bg-primary text-white">
           <div class="col-12">Leave Summary</div>
         </div>
-        <!-- <div class="card"> -->
+        <div class="col-12">
           <div class="card-body" *ngIf="!calendarMeta.userleaveTypes">
             <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid region using Manage Region option</p>
           </div>
@@ -432,13 +400,15 @@
             <!-- =========== horizontal bar graph ==============-->
             <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
               <div class="row">
-                <div class="col-6">
-                  <h6>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</h6>
+                <div class="col-7">
+                  <h6 class="text-muted text-truncate"><small>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</small></h6>
                 </div>
-                <div class="col-6">
-                  <h6>
+                <div class="col-5">
+                  <h6 class="text-muted text-truncate">
+                  <small>
                     {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
                     of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+                  </small>
                   </h6>
                 </div>
                 <div class="col-12">
@@ -452,8 +422,13 @@
             </div>
             <!-- =========== horizontal bar graph ==============-->
           </div>
-    <!-- </div> -->
+        </div>
       </div>
+
+
+
+
+
       <div class="col-12 card bg-white mt-2" *ngIf="showHidePendingLeaves !== true">
         <div class="row card-header bg-primary text-white">
           <div class="col-12">
@@ -476,18 +451,45 @@
                 </div>
               </div>
             </div>
-            <div class="eachDetails" (click)="details(data)" *ngFor="let data of monthsData">
+
+            <div class="eachDetails" *ngFor="let data of monthsData">
               <p class="type" [ngClass]="data.status">{{data.status}}</p>
-              <div class="timings">
-                <p class="applied">Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}}</p>
-                <p class="leavetype">{{data.type}}</p>
-                <p class="rason">{{data.reason}}</p>
-                <div class="days">
-                  <span><b>{{data.daysCount}}</b> {{(data.daysCount >  1) ? 'Days' : 'Day'}}</span>
-                  <i class="far fa-calendar-alt mr-2"></i>
-                  <span>{{dateFormatting(data.startDate.seconds * 1000,'ll')}}</span>
-                  <i class="far fa-calendar-alt mr-2"></i>
-                  <span>{{dateFormatting(data.endDate.seconds * 1000,'ll')}}</span>
+              <div class="timings pointer" >
+                <p class="text-primary"><small>
+                  Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}} 
+                </small>
+                </p>
+                <h5>{{data.type}}</h5>
+                <p class="text-muted">
+                  <small>
+                  {{data.reason}}
+                  </small>
+                </p>
+                <div class="row days">
+                  <div class="col-2">
+                    <small><b>{{data.daysCount}}</b> {{(data.daysCount >  1) ? 'Days' : 'Day'}}</small>
+                  </div>
+                 <div class="col-4">
+                  <i class="far fa-calendar-alt mr-2 text-dark"></i>
+                  <span class="text-muted">
+                    <small>
+                     {{dateFormatting(data.startDate.seconds * 1000,'ll')}}
+                    </small>
+                  </span>
+                 </div>
+                 <div class="col-4">
+                  <i class="far fa-calendar-alt mr-2 text-dark"></i>
+                  <span class="text-muted">
+                    <small>
+                     {{dateFormatting(data.endDate.seconds * 1000,'ll')}} 
+                    </small> 
+                  </span>
+                 </div>
+                 <div class="col-2">
+                   <button class="btn btn-sm btn-default" (click)="detailsAdj()">
+                    <i class="fas fa-arrow-right text-primary"></i>
+                   </button>
+                 </div>
                 </div>
               </div>
             </div>
