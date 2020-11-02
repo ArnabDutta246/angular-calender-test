@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-12 my-2">
+    <ion-calendar [options]="calendarMeta.calendarOptions" (monthChange)="getMonthsData($event)"
+      (onSelect)="daySelectedInMonth($event)">
+    </ion-calendar>
+  </div>
+
+  <div class="col-12 my-2">
+    <!-- Card for leave summary -->
+    <div class="summaryCard">
+      <p>No of people on leave</p>
+      <div class="flexer">
+        <div class="low"> Total {{pageObj.dataOfThisMonth.monthlySummary}}</div>
+        <div class="medium"> Average {{pageObj.dataOfThisMonth.averageLeave}}</div>
+        <div class="high"> Highest {{pageObj.dataOfThisMonth.maxLeave}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 my-2">
+    <!-- Leave Graph -->
+    <div class="graphBox">
+      <div class="graphTitle">
+        <h3>Leave trends</h3>
+        <div class="checker">
+          <p>{{pageObj.graphViewMode}}</p>
+          <label class="switch">
+            <input type="checkbox"
+              (change)="pageObj.graphViewMode = (pageObj.graphViewMode == 'monthly') ? 'daily' : 'monthly'; getMonthsData(pageObj.monthSelected)">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="trends">
+        <div class="maxlabel">{{maxValue}}</div>
+        <!-- <div>{{data.cssClass}}</div> -->
+        <div class="halfwaymark">{{maxValue/2}}</div>
+        <div [class]="'eachbar ' + pageObj.graphViewMode" *ngFor="let data of leaveGraph; let i=index;">
+          <!-- <div class="maxBarHeight" [ngStyle]="{'height': data.maxHeight +'%'}"></div> -->
+          <div [class]="data.cssClass" [ngStyle]="{'height': data.height +'%'}"></div>
+          <!-- <span class="xAxis" *ngIf="data.day">{{data.day}}</span> -->
+        </div>
+      </div>
+      <div class="xAxis">
+        <div [class]="'eachbar ' + pageObj.graphViewMode" *ngFor="let data of leaveGraph; let i=index;">
+          <div *ngIf="i==0">{{data.day}} &nbsp;<i class="fas fa-arrow-right"></i>
+          </div>
+          <div *ngIf="i!=0">{{data.day}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

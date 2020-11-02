@@ -43,6 +43,7 @@ import { ApplyLeavesComponent } from './panel/leave/apply-leaves/apply-leaves.co
 import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
 import { HorizontalBarComponent } from './panel/graph/horizontal-bar/horizontal-bar.component';
 import { UserLeaveDetailsComponent } from './panel/leave/user-leave-details/user-leave-details.component';
+import { AdminLeaveCalenderComponent } from './panel/admin/leave/admin-leave-calender/admin-leave-calender.component';
 
 //.......................................................................
 
@@ -74,6 +75,7 @@ import { UserLeaveDetailsComponent } from './panel/leave/user-leave-details/user
     UserLeaveComponent,
     HorizontalBarComponent,
     UserLeaveDetailsComponent,
+    AdminLeaveCalenderComponent,
   ],
   imports: [
     BrowserModule,

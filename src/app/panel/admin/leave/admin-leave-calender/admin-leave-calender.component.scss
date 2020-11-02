@@ -1,0 +1,265 @@
+@import "../../../../../assets/scss/variables.scss";
+.flexer {
+  display: flex;
+  div {
+    width: 33.33%;
+    text-align: center;
+    // font-size: 17px;
+    font-weight: $small_weight;
+    // font-family: $font-family;
+    color: $color-dark-grey;
+    position: relative;
+    &::after {
+      content: "";
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 2px;
+      transform: translate(0, -50%);
+    }
+  }
+  .low {
+    &::after {
+      background: $color-secondary-bg;
+    }
+  }
+  .medium {
+    &::after {
+      background: $color-primary-bg;
+    }
+  }
+  .high {
+    &::after {
+      background: $color-peach-bg;
+    }
+  }
+}
+.graphBox {
+  padding-top: 10px;
+  padding-bottom: 40px;
+  .graphTitle {
+    display: flex;
+    h3 {
+      width: 50%;
+      font-size: $title_font;
+      color: $color-black;
+      font-weight: 600;
+      font-family: $font-family;
+    }
+    .checker {
+      width: 50%;
+      display: flex;
+      p {
+        width: calc(100% - 60px);
+        text-align: right;
+        color: $color-black;
+        margin-right: 10px;
+        font-size: 13px;
+        text-transform: capitalize;
+        font-weight: 600;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 20px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: $color-blue-bg-start;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 13px;
+        left: 4px;
+        bottom: 4px;
+        background-color: $color-white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked + .slider {
+        background: $color-primary-bg;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px $color-aqua;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(36px);
+        -ms-transform: translateX(36px);
+        transform: translateX(36px);
+      }
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+    }
+  }
+  .trends {
+    height: 200px;
+    margin-top: 15px;
+    border-bottom: 2px solid $color-dark-grey;
+    border-left: 1px solid $color-ash;
+    border-top: 2px dashed $color-ash;
+    display: flex;
+    .maxlabel {
+      height: 10px;
+      // background: green;
+      width: calc(100% - 20px);
+      position: absolute;
+      // border-bottom: 2px dashed $color-aqua;
+      z-index: 8;
+      text-align: end;
+      margin-top: -20px;
+    }
+    .halfwaymark {
+      height: 100px;
+      // background: green;
+      width: calc(100% - 20px);
+      position: absolute;
+      border-bottom: 2px dashed $color-aqua;
+      z-index: 8;
+      text-align: end;
+      padding-top: 100px;
+    }
+    .eachbar {
+      height: 100%;
+      margin: 0 2px;
+      overflow: hidden;
+      position: relative;
+      div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        // height: 50%;
+        width: 100%;
+        // transition: 0.4s opacity ease-in-out 0.1s;
+        animation: slide-up 0.5s ease;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+      }
+      &:nth-child(1) {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .daily {
+      width: calc(100% / 31);
+      div {
+        // animation: slide-up 0.5s ease;
+      }
+    }
+    .monthly {
+      width: calc(100% / 5);
+      div {
+        // animation: slide-up 0.5s ease;
+      }
+    }
+  }
+  .xAxis {
+    height: 10px;
+    margin-top: 10px;
+    // border-bottom: 2px solid $color-dark-grey;
+    // border-left: 1px solid $color-ash;
+    // border-top: 2px dashed $color-ash;
+    display: flex;
+    .eachbar {
+      width: calc(100% / 31);
+      height: 100%;
+      margin: 0 2px;
+      // overflow: hidden;
+      position: relative;
+      transition: width 5s, opacity 500ms, z-index 500ms;
+      div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        // height: 50%;
+        // width: 100%;
+        transition: 0.4s opacity ease-in-out 0.1s;
+        border-top-right-radius: 4px;
+        border-top-left-radius: 4px;
+        z-index: 2;
+      }
+      &:nth-child(1) {
+        margin-top: 20px;
+        margin-left: 0 !important;
+        // width: 70px;
+        overflow-x: visible;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .monthly {
+      width: calc(100% / 5);
+      margin-left: 20px !important;
+      margin-top: 0px !important;
+      transition: width 5s, opacity 500ms, z-index 500ms;
+    }
+  }
+  // .trends{
+  //     height: 200px;
+  //     margin-top: 10px;
+  //     border-bottom: 2px solid $color-dark-grey;
+  //     display: flex;
+  //     transition: .5s;
+  //     .eachbar{
+  //         height: 100%;
+  //         margin: 0 7px;
+  //         position: relative;
+  //         div{
+  //             position: absolute;
+  //             bottom: 0;
+  //             left: 0;
+  //             width: 100%;
+  //             transition: 0.4s opacity ease-in-out 0.1s;
+  //             border-top-right-radius: 4px !important;
+  //             border-top-left-radius: 4px !important;
+  //             span{
+  //                 position: absolute;
+  //                 bottom: -20px;
+  //                 left: 0;
+  //                 text-align: center;
+  //                 width: 100%;
+  //                 font-weight: 600;
+  //                 font-family: $font-family;
+  //             }
+  //         }
+  //         &:nth-child(1){
+  //             margin-left: 0;
+  //         }
+  //         &:last-child{
+  //             margin-right: 0;
+  //         }
+  //     }
+  // }
+  .graphType {
+    font-weight: 600;
+    transition: 0.5s;
+  }
+}

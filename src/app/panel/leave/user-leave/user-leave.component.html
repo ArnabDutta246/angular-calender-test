@@ -40,6 +40,9 @@
           <div class="col-1 btn btn-sm btn-primary" *ngIf="session.leaveAdmin && leaveAdminView !== true && showHidePendingLeaves !== true" (click)="leaveAdminViewToggle(true)">
             <i class="fas fa-users-cog"></i>
           </div>
+          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves == true && leaveAdminView == true && detailsData !== null" title="admin graph view" (click)="detailsData = null">
+            <i class="fas fa-chart-line"></i>
+          </div>
         </div>
         <!-- =================== normal view (calender view) =============-->
         <div class="card-body" *ngIf="showHidePendingLeaves !== true">
@@ -203,12 +206,20 @@
             <app-user-leave-details [detailsData]="detailsData"> </app-user-leave-details>
           </div>
           <!--  -->
+
+          <!--============== leave admin calender view start==============-->
+          <div class="leave-admin-calender-view" *ngIf="showHidePendingLeaves == true && leaveAdminView == true && detailsData == null">
+            <app-admin-leave-calender></app-admin-leave-calender>
+          </div>
+          <!--============== leave admin calender view end==============-->
         </div>
         <!-- =================== leave details view (leave view) =============-->
       </div>
     </div>
   </div>
   <!--============ calender and summery section end ========== -->
+
+
   <!--============ leave summery section start ========== -->
   <div class="col-sm-12 col-md-6 col-lg-6">
     <div class="row p-1">

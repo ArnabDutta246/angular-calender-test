@@ -63,7 +63,7 @@ export class CalenderFunctionsService {
     isUserRegionLeaveAdmin(session, showAlert:boolean=true){
       if(this.isUserRegionValid(session,showAlert))
       {
-          let leaveAdminRegions = session.user.leaveAdmin ?
+          let leaveAdminRegions = session.leaveAdmin ?
                                   Object.keys(session.leaveAdmin)
                                   :
                                   [];
