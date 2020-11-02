@@ -47,7 +47,10 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     this.details = this.detailsData.details;
     this.actionType = this.detailsData.actionType;
     this.leaveColors = this.cal.leaveColors;
-
+    console.log("---- details");
+    console.log(this.details);
+    console.log("---- data");
+    console.log(this.data);
     let prevStatus = {
     comment: this.details.data.comment ? this.details.data.comment : this.details.data.reason,
     status: this.details.data.status,
@@ -144,7 +147,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     let data = {
       status: status,
       actionType: actionType,
-      previousStatus: this.details.data.status,
+      previousStatus: this.details.data.data.status,
       comment:  this.detailsNote,
       updatedBy: { uid: this.data.uid, name: this.data.name, email: this.data.email, picUrl: this.data.picUrl,},
       updatedOn: firebase.firestore.FieldValue.serverTimestamp(),
@@ -159,10 +162,10 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
       origin: 'leaveRejected',
       eventType: 'reject',
       session: this.data,
-      leave: this.details.data,
+      leave: this.details.data.data,
       data: {
         id: this.details.docId,
-        subscriberId: this.data.admin.subscriberId,
+        subscriberId: this.data.subscriberId,
         ...data
       },
     };
@@ -184,6 +187,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     this.transaction();
   }
   transaction(){
+    console.log(this.details);
     // NOTE: Note that the approval request can be of two types:
     // 1. Normal APPROVAL REQUEST when user applies leave for the first time
     // 2. User tries to cancel an existing APPROVED leave,
@@ -199,9 +203,9 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
           let yearMonth = moment(startDate).format('YYYYMM');
           // initialise the summary view object
           let increment = ifactor*0;
-          let regionalLeaveSummary: any = {  subscriberId: data.subscriberId,
-                                        country: data.country,
-                                        region: data.region,
+          let regionalLeaveSummary: any = {  subscriberId: data.data.subscriberId,
+                                        country: data.data.country,
+                                        region: data.data.region,
                                         year: moment(startDate).format("YYYY"),
                                         month: moment(startDate).format("MM"),
                                         yearMonth: moment(startDate).format("YYYYMM"),
@@ -209,8 +213,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                         leaveSummary: {
                                             [moment(startDate).format("YYYYMMDD")] :
                                                 { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
-                                                  users: {[data.uid]: ifactor==1 ?
-                                                                          {...data,
+                                                  users: {[data.data.uid]: ifactor==1 ?
+                                                                          {...data.data,
                                                                              startDate: new Date(data.startDate.seconds*1000),
                                                                              endDate: new Date(data.endDate.seconds*1000),
                                                                            }
@@ -220,22 +224,22 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                             }
                                         };
           // let increment = 0;
-          let summaryId = data.subscriberId+"_"+data.country+"_"+
-                      data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
+          let summaryId = data.data.subscriberId+"_"+data.data.country+"_"+
+                      data.data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
                       yearMonth;
           let summaryRef = this.db.afs.collection(this.db._COLL_LEAVE_REGULATOR).doc(summaryId).ref;
           while(startDate <= endDate){
             if(yearMonth != moment(startDate).format('YYYYMM')){
-              summaryId = data.subscriberId+"_"+data.country+"_"+
-                          data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
+              summaryId = data.data.subscriberId+"_"+data.data.country+"_"+
+                          data.data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
                           yearMonth;
               summaryRef = this.db.afs.collection(this.db._COLL_LEAVE_REGULATOR).doc(summaryId).ref;
               transaction.set(summaryRef, regionalLeaveSummary, {merge: true});
               yearMonth = moment(startDate).format('YYYYMM');
               increment = ifactor*1;
-              regionalLeaveSummary = {  subscriberId: data.subscriberId,
-                                            country: data.country,
-                                            region: data.region,
+              regionalLeaveSummary = {  subscriberId: data.data.subscriberId,
+                                            country: data.data.country,
+                                            region: data.data.region,
                                             year: moment(startDate).format("YYYY"),
                                             month: moment(startDate).format("MM"),
                                             yearMonth: moment(startDate).format("YYYYMM"),
@@ -243,8 +247,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                             leaveSummary: {
                                                 [moment(startDate).format("YYYYMMDD")] :
                                                     { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
-                                                      users: {[data.uid]: ifactor==1 ?
-                                                                              {...data,
+                                                      users: {[data.data.uid]: ifactor==1 ?
+                                                                              {...data.data,
                                                                                startDate: new Date(data.startDate.seconds*1000),
                                                                                endDate: new Date(data.endDate.seconds*1000),
                                                                               }
@@ -269,8 +273,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                 Object.assign(regionalLeaveSummary.leaveSummary,{
                                     [moment(startDate).format("YYYYMMDD")] :
                                         { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
-                                          users: {[data.uid]:ifactor==1 ?
-                                                                  {...data,
+                                          users: {[data.data.uid]:ifactor==1 ?
+                                                                  {...data.data,
                                                                    startDate: new Date(data.startDate.seconds*1000),
                                                                    endDate: new Date(data.endDate.seconds*1000),
                                                                   }
@@ -286,21 +290,21 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
             startDate = startDate.add(1, 'days');
           }
           // Complete the last transaction which is to be executed out of while loop
-          summaryId = data.subscriberId+"_"+data.country+"_"+
-                      data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
+          summaryId = data.data.subscriberId+"_"+data.data.country+"_"+
+                      data.data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+"_"+
                       yearMonth;
           summaryRef = this.db.afs.collection(this.db._COLL_LEAVE_REGULATOR).doc(summaryId).ref;
           console.log("regionalLeaveSummary",regionalLeaveSummary);
           transaction.set(summaryRef, regionalLeaveSummary, {merge: true});
 
           // now increment the leave taken count
-          let kpiId = data.uid + data.subscriberId+data.country+
-                      data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+
-                      data.year;
+          let kpiId = data.data.uid + data.data.subscriberId+data.data.country+
+                      data.data.region.replace(/[^A-Za-z]/g,'').toUpperCase()+
+                      data.data.year;
           let kpiRef = this.db.afs.collection(this.db._USER_LEAVE_CALENDAR).doc(kpiId).ref;
 
           transaction.update(kpiRef, {
-            [`leaveTypes.${data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.daysCount),
+            [`leaveTypes.${data.data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.data.daysCount),
           });
           // finally mark the leave as approved
           let actionType = ifactor==1 ?
@@ -310,7 +314,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
           let objLeaveApproval = {
                                     status: ifactor==1 ? 'APPROVED' : 'CANCELLED',
                                     actionType: actionType,
-                                    previousStatus: this.details.data.status,
+                                    previousStatus: this.details.data.data.status,
                                     comment:  this.detailsNote,
                                     updatedBy: { uid: this.data.uid, name: this.data.name, email: this.data.email, picUrl: this.data.picUrl,},
                                     updatedOn: firebase.firestore.FieldValue.serverTimestamp(),
@@ -324,7 +328,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
             origin: 'leaveApproved',
             eventType: 'approve',
             session: this.data,
-            leave: this.details.data,
+            leave: this.details.data.data,
             data: {
               id: this.details.docId,
               subscriberId: this.data.subscriberId,
@@ -366,7 +370,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
         return new Promise((resolve: any, reject: any)=> {
           this.db.afs.collection(this.db._USER_LEAVE_CALENDAR,
             ref => ref.where('uid','==',this.details.data.uid)
-            .where("year","==",this.details.data.year)
+            .where("year","==",this.details.data.data.year)
           ).get().toPromise().then(function(querySnapshot){
             querySnapshot.forEach(function(doc){
               docId = doc.id;
