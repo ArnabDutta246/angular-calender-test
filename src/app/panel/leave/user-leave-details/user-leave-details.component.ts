@@ -198,8 +198,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     return this.db.afs.firestore.runTransaction(function(transaction) {
       return transaction.get(docRef).then(function(regDoc) {
           let {data} = this.details;
-          let endDate = moment(new Date(data.endDate.seconds*1000));
-          let startDate = moment(new Date(data.startDate.seconds*1000));
+          let endDate = moment(new Date(data.data.endDate.seconds*1000));
+          let startDate = moment(new Date(data.data.startDate.seconds*1000));
           let yearMonth = moment(startDate).format('YYYYMM');
           // initialise the summary view object
           let increment = ifactor*0;
