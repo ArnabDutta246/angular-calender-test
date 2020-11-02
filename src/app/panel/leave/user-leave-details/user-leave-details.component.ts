@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -17,6 +17,7 @@ import { TextSearchService } from 'src/app/shared/text-search.service';
 })
 export class UserLeaveDetailsComponent implements OnInit,OnChanges {
   @Input() detailsData:any;
+  @Output() returnBack = new EventEmitter<any>();
   private details:any;
   private data: any;
   actionType: string='back';
@@ -176,7 +177,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     batch.commit().then(()=>{
         this.alertMessage.showAlert("success","You have rejected the leave request successfully","Leave Rejected");
         this.spinner.hide();
-       // this.toBackPage();
+        this.toBackPage();
     }).catch(()=>{
         this.spinner.hide();
       this.alertMessage.showAlert("error","Something went wrong..","Error",);
@@ -342,7 +343,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     }.bind(this)).then(function() {
         this.alertMessage.showAlert("success","You have approved the leave request successfully","Leave Approved");
         this.spinner.hide();
-        //this.toBackPage()
+        this.toBackPage()
     }.bind(this)).catch(function(error) {
 
         this.spinner.hide();
@@ -408,7 +409,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
       });
       batch.commit().then(() =>{
           this.spinner.hide();
-          // this.toBackPage();
+           this.toBackPage();
       }).catch((err) => {});
   }
   // we need the organisation calendar year to fetch the user leave calendar
@@ -480,4 +481,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     return moment(date).format(type);
   }
 
+
+  toBackPage(){
+    this.returnBack.emit();
+  }
 }

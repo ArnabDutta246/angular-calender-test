@@ -203,7 +203,7 @@
           </div>
           <!-- if details is selected -->
           <div id="leave-details" *ngIf="detailsData !== null">
-            <app-user-leave-details [detailsData]="detailsData"> </app-user-leave-details>
+            <app-user-leave-details [detailsData]="detailsData" (returnBack)="returnBack()"> </app-user-leave-details>
           </div>
           <!--  -->
 
@@ -352,7 +352,7 @@
                 Recent
               </div>
             </div>
-            <div class="card-body allBoxesAvail innerBox">
+            <div class="card-body innerBox">
               <div class="row" *ngFor="let data of otherData">
                 <div class="col-12 bg-white border-bottom" (click)="details(data)">
                   <div class="row card-body" style="padding-bottom: 0px; padding-top: 0.5em">
@@ -374,7 +374,7 @@
                             <small>{{data.data.user.name}}</small>
                           </h5>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 text-white text-center">
                           <p [class]="'status ' + data.data.status">
                             {{data.data.status}}
                           </p>

@@ -668,4 +668,7 @@ detailsAdj(){
     this.viewMode = this.viewMode !== 'USER'? 'USER' : this.viewMode;
     //console.log(this.detailsData);
   }
+  returnBack(){
+    this.detailsData = null;
+  }
 }
