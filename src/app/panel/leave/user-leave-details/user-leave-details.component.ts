@@ -215,8 +215,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                                 { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
                                                   users: {[data.data.uid]: ifactor==1 ?
                                                                           {...data.data,
-                                                                             startDate: new Date(data.startDate.seconds*1000),
-                                                                             endDate: new Date(data.endDate.seconds*1000),
+                                                                             startDate: new Date(data.data.startDate.seconds*1000),
+                                                                             endDate: new Date(data.data.endDate.seconds*1000),
                                                                            }
                                                                            :
                                                                            {}
@@ -237,7 +237,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
               transaction.set(summaryRef, regionalLeaveSummary, {merge: true});
               yearMonth = moment(startDate).format('YYYYMM');
               increment = ifactor*1;
-              regionalLeaveSummary = {  subscriberId: data.data.subscriberId,
+              regionalLeaveSummary = {      subscriberId: data.data.subscriberId,
                                             country: data.data.country,
                                             region: data.data.region,
                                             year: moment(startDate).format("YYYY"),
@@ -248,9 +248,9 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                                 [moment(startDate).format("YYYYMMDD")] :
                                                     { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
                                                       users: {[data.data.uid]: ifactor==1 ?
-                                                                              {...data.data,
-                                                                               startDate: new Date(data.startDate.seconds*1000),
-                                                                               endDate: new Date(data.endDate.seconds*1000),
+                                                                              {...data,
+                                                                               startDate: new Date(data.data.startDate.seconds*1000),
+                                                                               endDate: new Date(data.data.endDate.seconds*1000),
                                                                               }
                                                                               :
                                                                               {}
@@ -274,9 +274,9 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
                                     [moment(startDate).format("YYYYMMDD")] :
                                         { onLeave: firebase.firestore.FieldValue.increment(ifactor*1),
                                           users: {[data.data.uid]:ifactor==1 ?
-                                                                  {...data.data,
-                                                                   startDate: new Date(data.startDate.seconds*1000),
-                                                                   endDate: new Date(data.endDate.seconds*1000),
+                                                                  {...data,
+                                                                   startDate: new Date(data.data.startDate.seconds*1000),
+                                                                   endDate: new Date(data.data.endDate.seconds*1000),
                                                                   }
                                                                   :
                                                                   {}
@@ -304,7 +304,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
           let kpiRef = this.db.afs.collection(this.db._USER_LEAVE_CALENDAR).doc(kpiId).ref;
 
           transaction.update(kpiRef, {
-            [`leaveTypes.${data.data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.data.daysCount),
+            [`leaveTypes.${data.data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.daysCount),
           });
           // finally mark the leave as approved
           let actionType = ifactor==1 ?
@@ -344,7 +344,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     }.bind(this)).catch(function(error) {
 
         this.spinner.hide();
-         this.alertMessage.showAlert("error",error,"Error Leave Approval",);
+        this.alertMessage.showAlert("error",error,"Error Leave Approval");
+        console.log(error)
     }.bind(this));
   }
 
