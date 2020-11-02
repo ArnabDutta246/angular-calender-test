@@ -52,11 +52,11 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     console.log("---- data");
     console.log(this.data);
     let prevStatus = {
-    comment: this.details.data.comment ? this.details.data.comment : this.details.data.reason,
-    status: this.details.data.status,
-    actionType: this.details.data.actionType,
-    updatedBy: this.details.data.updatedBy ? this.details.data.updatedBy : this.details.data.user,
-    updatedOn: this.details.data.updatedOn ? this.details.data.updatedOn : this.details.data.applied,
+    comment: this.details.data.comment ? this.details.data.comment : this.details.data.data.reason,
+    status: this.details.data.data.status,
+    actionType: this.details.data.data.actionType,
+    updatedBy: this.details.data.updatedBy ? this.details.data.updatedBy : this.details.data.data.user,
+    updatedOn: this.details.data.updatedOn ? this.details.data.updatedOn : this.details.data.data.applied,
   }
     if(!this.details.data.changeHistory){
       this.changeHistory=[prevStatus,]
@@ -71,15 +71,15 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     // let prevSearchTexts = this.details.data.searchMap;
     // let newSearchTexts = this.data.user.name+" "+this.data.user.email+" "+type;
     // let result = await this.searchMap.createSearchMap(newSearchTexts);
-    let searchStrings = this.details.data.type+" "+
+    let searchStrings = this.details.data.data.type+" "+
     // this.data.user.name +" "+this.data.user.email+ " " +
-    this.details.data.user.name +" "+this.details.data.user.email+ " " +
-    moment(this.details.data.startDate.seconds*1000).format("YYYY") + " "+
-    moment(this.details.data.startDate.seconds*1000).format("MMMM") + " " +
-    moment(this.details.data.startDate.seconds*1000).format("MMM") + " " +
-    moment(this.details.data.endDate.seconds*1000).format("YYYY") + " "+
-    moment(this.details.data.endDate.seconds*1000).format("MMMM") + " " +
-    moment(this.details.data.endDate.seconds*1000).format("MMM") + " " + type;
+    this.details.data.data.user.name +" "+this.details.data.data.user.email+ " " +
+    moment(this.details.data.data.startDate.seconds*1000).format("YYYY") + " "+
+    moment(this.details.data.data.startDate.seconds*1000).format("MMMM") + " " +
+    moment(this.details.data.data.startDate.seconds*1000).format("MMM") + " " +
+    moment(this.details.data.data.endDate.seconds*1000).format("YYYY") + " "+
+    moment(this.details.data.data.endDate.seconds*1000).format("MMMM") + " " +
+    moment(this.details.data.data.endDate.seconds*1000).format("MMM") + " " + type;
     return this.searchMap.createSearchMap(searchStrings);
   }
   // cancel the request
@@ -133,7 +133,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
 
   // reject the request
   reject(){
-     this.spinner.show();
+    this.spinner.show();
 
     let batch = this.db.afs.firestore.batch();
     let actionType = this.details.data.previousStatus=='APPROVED' ?
@@ -153,6 +153,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
       updatedOn: firebase.firestore.FieldValue.serverTimestamp(),
       changeHistory: this.changeHistory,
     }
+    console.log("....write batch data",data);
+    console.log("....search map result",this.searchtextRebuild(actionType + ' ' + status));
     batch.update(rejectRef, data);
     // another update
     batch.update(rejectRef, {searchMap: this.searchtextRebuild(actionType + ' ' + status)});

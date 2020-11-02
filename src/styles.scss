@@ -162,6 +162,8 @@ ion-calendar {
 .approved,
 .APPROVED {
   background: $color-secondary-bg;
+  color: $color-white;
+  text-align: center;
   p {
     color: $color-white !important;
   }
@@ -169,6 +171,8 @@ ion-calendar {
 .rejected,
 .REJECTED {
   background: $color-accent-bg;
+  color: $color-white;
+  text-align: center;
   p {
     color: $color-white !important;
   }

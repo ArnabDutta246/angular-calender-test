@@ -353,8 +353,62 @@
               </div>
             </div>
             <div class="card-body allBoxesAvail innerBox">
-              <div class="eachBox" *ngFor="let data of otherData">
-                <div (click)="details(data)">
+              <div class="row" *ngFor="let data of otherData">
+                <div class="col-12 bg-white border-bottom" (click)="details(data)">
+                  <div class="row card-body" style="padding-bottom: 0px; padding-top: 0.5em">
+                    <div class="col-3 col-md-3 col-lg-2">
+                      <img class="mx-auto d-block p-1 rounded-circle" style="width: 35px; height: 35px"
+                        src="{{(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+                        (error)="'../../../../assets/image/imgs/profile.png'" />
+                      <div class="row">
+                        <h6 class="col-12 text-success text-center"><small><b>{{data.data.daysCount}}</b>
+                            {{(data.data.daysCount>1)?' Days':' Day'}}</small></h6>
+                        <h6 class="text-primary text-center"><small>{{data.appliedAgo}}</small></h6>
+                      </div>
+                    </div>
+                    <div class="col-8 col-sm-8 col-lg-9">
+                      <!-- <div class=""> -->
+                      <div class="row">
+                        <div class="col-6">
+                          <h5 class="">
+                            <small>{{data.data.user.name}}</small>
+                          </h5>
+                        </div>
+                        <div class="col-6">
+                          <p [class]="'status ' + data.data.status">
+                            {{data.data.status}}
+                          </p>
+                        </div>
+                      </div>  
+
+
+                      <div class="row">
+                        <div class="col-6 pr-0">
+                          <h6 class="text-muted">
+                            <small><i class="fas fa-calendar-alt pr-1"></i>{{data.startDate}}</small>
+                          </h6>
+                        </div>
+                        <div class="col-6 pr-0">
+                          <h6 class="text-muted">
+                            <small><i class="fas fa-calendar-alt pr-1"></i>{{data.endDate}}</small>
+                          </h6>
+                        </div>
+                      </div>
+                      <h6 class="text-success"><small>{{data.data.type}}</small></h6>
+                      <div class="row">
+                        <div class="col-11 pr-0">
+                          <h6 class="text-muted  text-truncate">
+                            <small>{{data.data.reason}}</small>
+                          </h6>
+                        </div>
+                        <div class="col-1 pr-0 btn btn-sm">
+                          <i class="fas fa-arrow-right text-primary"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div (click)="details(data)">
                   <div class="profile">
                     <div class="state"
                       [ngStyle]="(data.data.status == 'APPROVED') ? {'border-left-color':'rgb(32, 150, 255)'} : {'border-left-color':'rgb(255, 216, 111)'}">
@@ -381,7 +435,7 @@
                     <img src="../../../../assets/image/imgs/calendar-black.svg" />
                     <p>{{data.endDate}}</p>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="noTaskForAdmin" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
                 <p>There are no leave request recently processed for the selected region {{selectedCountry}} -
