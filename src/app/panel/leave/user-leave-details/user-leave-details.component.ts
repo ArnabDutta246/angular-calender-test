@@ -311,7 +311,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
           let kpiRef = this.db.afs.collection(this.db._USER_LEAVE_CALENDAR).doc(kpiId).ref;
 
           transaction.update(kpiRef, {
-            [`leaveTypes.${data.data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.daysCount),
+            [`leaveTypes.${data.data.code}.taken`]: firebase.firestore.FieldValue.increment(ifactor*data.data.daysCount),
           });
           // finally mark the leave as approved
           let actionType = ifactor==1 ?
