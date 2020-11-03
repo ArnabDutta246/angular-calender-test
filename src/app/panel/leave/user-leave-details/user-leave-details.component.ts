@@ -57,10 +57,10 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
 
     
     let prevStatus = {
-    comment: this.details.data.comment ? this.details.data.comment : this.details.data.data.reason,
+    comment: this.details.data.data.comment ? this.details.data.data.comment : this.details.data.data.reason,
     status: this.details.data.data.status,
     actionType: this.details.data.data.actionType,
-    updatedBy: this.details.data.updatedBy ? this.details.data.updatedBy : this.details.data.data.user,
+    updatedBy: this.details.data.data.updatedBy ? this.details.data.data.updatedBy : this.details.data.data.user,
     updatedOn: this.details.data.data.updatedOn ? this.details.data.data.updatedOn : this.details.data.data.applied,
   }
     if(!this.details.data.changeHistory){
@@ -106,7 +106,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     let actionType = this.details.data.status=='APPROVED' ?
             'Cancellation request'
             :
-            this.details.data.status=='PENDING' && this.details.data.previousStatus=='APPROVED' ?
+            this.details.data.data.status=='PENDING' && this.details.data.data.previousStatus=='APPROVED' ?
             'Reverting cancellation request'
             :
             'Cancelled';
@@ -145,7 +145,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
             'Rejected cancellation request'
             :
             'Rejected';
-    let status = this.details.data.previousStatus=='APPROVED' ? 'APPROVED' : 'REJECTED';
+    let status = this.details.data.data.previousStatus=='APPROVED' ? 'APPROVED' : 'REJECTED';
 
     // update data
     let rejectRef = this.db.afs.collection(this.db._LEAVES_APPLIED).doc(this.details.docId).ref;
@@ -190,7 +190,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
 
   // approve the request
   approve(){
-     this.spinner.show();
+    this.spinner.show();
     this.transaction();
   }
   transaction(){
