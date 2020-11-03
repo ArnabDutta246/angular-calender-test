@@ -158,8 +158,8 @@
                 </div>
               </div>
               <div class="col-2">
-                <div class="btn btn-sm btn-primary">
-                  <i class="fas fa-paper-plane" (click)="applyLeave()"></i>
+                <div class="btn btn-sm btn-primary" (click)="applyLeave()">
+                  <i class="fas fa-paper-plane"></i>
                 </div>
               </div>
               <div class="col-12">
@@ -283,7 +283,7 @@
                Pending
             </div>
           </div>
-          <div class="row mb-3 innerBox">
+          <div [class]="pendingData.length == 0 ? 'row mb-3' : 'row mb-3 innerBox'">
               <div class="col-12">
                 <div class="row" *ngFor="let data of pendingData">
                   <div class="col-12 bg-white border-bottom" (click)="details(data)">
@@ -339,11 +339,11 @@
                 <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && (viewMode=='LEAVEADMIN')">
                   <p>There are no leave requests requring your action for the selected region {{selectedCountry}} -
                     {{selectedRegion}}.</p>
-                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                  <!-- <img src="../../../../assets/image/imgs/splash_scr4.png" /> -->
                 </div>
                 <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && viewMode!='LEAVEADMIN'">
                   <p>There are no pending leave requests submitted by you for approval.</p>
-                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                  <!-- <img src="../../../../assets/image/imgs/splash_scr4.png" /> -->
                 </div>
 
               </div>
@@ -489,45 +489,46 @@
                 </div>
               </div>
             </div>
-
-            <div class="eachDetails" *ngFor="let data of monthsData">
-              <p class="type" [ngClass]="data.status">{{data.status}}</p>
-              <div class="timings pointer" >
-                <p class="text-primary"><small>
-                  Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}}
-                </small>
-                </p>
-                <h5>{{data.type}}</h5>
-                <p class="text-muted">
-                  <small>
-                  {{data.reason}}
+            <div class="row innerBox">
+              <div class="col-12 pl-0 m-2 eachDetails" *ngFor="let data of monthsData">
+                <p class="type" [ngClass]="data.status">{{data.status}}</p>
+                <div class="timings pointer" >
+                  <p class="text-primary"><small>
+                    Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}}
                   </small>
-                </p>
-                <div class="row days">
-                  <div class="col-2">
-                    <small><b>{{data.daysCount}}</b> {{(data.daysCount >  1) ? 'Days' : 'Day'}}</small>
+                  </p>
+                  <h5>{{data.type}}</h5>
+                  <p class="text-muted">
+                    <small>
+                    {{data.reason}}
+                    </small>
+                  </p>
+                  <div class="row days">
+                    <div class="col-2">
+                      <small><b>{{data.daysCount}}</b> {{(data.daysCount >  1) ? 'Days' : 'Day'}}</small>
+                    </div>
+                   <div class="col-4">
+                    <i class="far fa-calendar-alt mr-2 text-dark"></i>
+                    <span class="text-muted">
+                      <small>
+                       {{dateFormatting(data.startDate.seconds * 1000,'ll')}}
+                      </small>
+                    </span>
+                   </div>
+                   <div class="col-4">
+                    <i class="far fa-calendar-alt mr-2 text-Adjoining Leavedark"></i>
+                    <span class="text-muted">
+                      <small>
+                       {{dateFormatting(data.endDate.seconds * 1000,'ll')}}
+                      </small>
+                    </span>
+                   </div>
+                   <div class="col-2">
+                     <button class="btn btn-sm btn-default" (click)="detailsAdj(data)">
+                      <i class="fas fa-arrow-right text-primary"></i>
+                     </button>
+                   </div>
                   </div>
-                 <div class="col-4">
-                  <i class="far fa-calendar-alt mr-2 text-dark"></i>
-                  <span class="text-muted">
-                    <small>
-                     {{dateFormatting(data.startDate.seconds * 1000,'ll')}}
-                    </small>
-                  </span>
-                 </div>
-                 <div class="col-4">
-                  <i class="far fa-calendar-alt mr-2 text-dark"></i>
-                  <span class="text-muted">
-                    <small>
-                     {{dateFormatting(data.endDate.seconds * 1000,'ll')}}
-                    </small>
-                  </span>
-                 </div>
-                 <div class="col-2">
-                   <button class="btn btn-sm btn-default" (click)="detailsAdj()">
-                    <i class="fas fa-arrow-right text-primary"></i>
-                   </button>
-                 </div>
                 </div>
               </div>
             </div>
