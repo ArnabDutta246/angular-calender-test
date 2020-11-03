@@ -242,6 +242,8 @@ export class UserLeaveComponent implements OnInit {
   }
 detailsAdj(){
     this.showHidePendingLeaves = !this.showHidePendingLeaves ;
+    this.leaveAdminView = false;
+    this.viewMode = 'USER'
     let element = document.getElementById("my-leaves"); //leave-details
     element.scrollIntoView({behavior: "smooth"});
   }

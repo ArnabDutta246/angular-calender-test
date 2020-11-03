@@ -48,16 +48,20 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     this.details = this.detailsData.details;
     this.actionType = this.detailsData.actionType;
     this.leaveColors = this.cal.leaveColors;
+
+
     console.log("---- details");
     console.log(this.details);
     console.log("---- data");
     console.log(this.data);
+
+    
     let prevStatus = {
     comment: this.details.data.comment ? this.details.data.comment : this.details.data.data.reason,
     status: this.details.data.data.status,
     actionType: this.details.data.data.actionType,
     updatedBy: this.details.data.updatedBy ? this.details.data.updatedBy : this.details.data.data.user,
-    updatedOn: this.details.data.updatedOn ? this.details.data.updatedOn : this.details.data.data.applied,
+    updatedOn: this.details.data.data.updatedOn ? this.details.data.data.updatedOn : this.details.data.data.applied,
   }
     if(!this.details.data.changeHistory){
       this.changeHistory=[prevStatus,]
@@ -477,7 +481,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     return reult+'%';
   }
 
-  getDateFormat(date: any,type:string='ll'){
+  getDateFormat(date: any,type:string='ll',data?){
+    console.log(data);
     return moment(date).format(type);
   }
 

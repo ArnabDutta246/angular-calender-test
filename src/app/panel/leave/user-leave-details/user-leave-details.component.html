@@ -143,9 +143,10 @@
           <div class="col-12">
             <div class="history">
               <div class="eachHistory" *ngFor="let data of details.data.data.changeHistory"
-                [ngClass]="(data.status == 'CANCELED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
+                [ngClass]="(data.status == 'CANCELLED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
+            
                 <h6>{{data.actionType ? data.actionType : data.status}}</h6>
-                <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll')}}</p>
+                <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll',data)}} </p>
                 <div class="box">
                   <img [src]="(data.updatedBy.picUrl) ? data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png'" />
                   <div>
@@ -155,7 +156,7 @@
                 </div>
               </div>
               <div class="eachHistory"
-                [ngClass]="(details.data.status == 'CANCELED') ? 'can' : (details.data.status == 'APPROVED') ? 'appr' : (details.data.status == 'REJECTED') ? 'rej' : 'pen'">
+                [ngClass]="(details.data.data.status == 'CANCELLED') ? 'can' : (details.data.data.status == 'APPROVED') ? 'appr' : (details.data.data.status == 'REJECTED') ? 'rej' : 'pen'">
                 <h6>{{details.data.data.actionType ? details.data.data.actionType : details.data.data.status}}</h6>
                 <p class="time">
                   {{getDateFormat(details.data.data.updatedOn ? details.data.data.updatedOn.seconds*1000 : details.data.data.applied.seconds*1000,'lll')}}
