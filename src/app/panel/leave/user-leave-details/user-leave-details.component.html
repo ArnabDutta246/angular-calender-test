@@ -39,13 +39,15 @@
       </div>
       </div>
       <div class="col-12 mt-3">
-        <div class="CANCELLED" *ngIf="details.data.status=='PENDING' && details.data.previousStatus=='APPROVED'">
+        <div class="p-2 CANCELLED" *ngIf="details.data.data.status=='PENDING' && details.data.data.previousStatus=='APPROVED'">
+          <div class="row">
           <div class="col-1 text-white">
           <i class="fas fa-hand-paper"></i>
           </div>
           <div class="col-10 col-lg-11">
               <p class="text-white"><small>Approved leave cancellation request</small></p>
           </div>
+        </div>
         </div>
       </div>
       <div class="col-12 mt-3">
@@ -144,7 +146,7 @@
             <div class="history">
               <div class="eachHistory" *ngFor="let data of details.data.data.changeHistory"
                 [ngClass]="(data.status == 'CANCELLED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
-            
+
                 <h6>{{data.actionType ? data.actionType : data.status}}</h6>
                 <p class="time">{{getDateFormat(data.updatedOn.seconds*1000,'lll',data)}} </p>
                 <div class="box">
