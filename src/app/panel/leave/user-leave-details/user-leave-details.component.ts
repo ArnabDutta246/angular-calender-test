@@ -482,7 +482,6 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
   }
 
   getDateFormat(date: any,type:string='ll',data?){
-    console.log(data);
     return moment(date).format(type);
   }
 

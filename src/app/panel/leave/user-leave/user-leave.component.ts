@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
@@ -11,6 +11,7 @@ import { CalenderFunctionsService } from 'src/app/shared/calender-functions.serv
 import { NotificationService } from 'src/app/shared/notification.service';
 import { SweetAlertService } from 'src/app/shared/sweet-alert.service';
 import { TextSearchService } from 'src/app/shared/text-search.service';
+import { AdminLeaveCalenderComponent } from '../../admin/leave/admin-leave-calender/admin-leave-calender.component';
 
 @Component({
   selector: 'app-user-leave',
@@ -277,7 +278,6 @@ detailsAdj(){
   // seleting the date between
   // user seleting the dates
   onSelect(event){
-    alert(new Date(event.time).getTime());
     if(this.toggleMode=='single'){
       this.pageObj.apllyingLeave.startDate = new Date(event.time).getTime();
       this.pageObj.apllyingLeave.endDate = new Date(event.time).getTime();
@@ -289,7 +289,6 @@ detailsAdj(){
     } else {
       // Do nothing
     }
-
     // this.diffEr()
   }
 
@@ -570,10 +569,14 @@ detailsAdj(){
    // console.log("getLeaveAdminRegions",this.leaveAdminRegions.length,this.leaveAdminRegions[0],this.session.leaveAdmin[this.selectedRegionCode],this.selectedCountry,this.selectedRegion,this.session.role, this.viewMode);
   }
 
+  @ViewChild(AdminLeaveCalenderComponent,{static:true}) adminLeaveCalenderComponent: AdminLeaveCalenderComponent 
   getSelectedRegion(){
     this.selectedCountry = this.session.leaveAdmin[this.selectedRegionCode].country;
     this.selectedRegion = this.session.leaveAdmin[this.selectedRegionCode].region;
     this.apporveRequestData();
+    this.adminLeaveCalenderComponent.pageObj.selectedCountry = this.session.leaveAdmin[this.selectedRegionCode].country;
+    this.adminLeaveCalenderComponent.pageObj.selectedRegion = this.session.leaveAdmin[this.selectedRegionCode].region;
+    this.adminLeaveCalenderComponent.getMonthsData(null);
   }
 
   leaveAdminViewToggle(adminView?:boolean){
@@ -658,7 +661,10 @@ detailsAdj(){
         .subscribe(data =>{
           this.dataSource = data;
           this.pendingData = data.filter(function(finding) { return finding.data.status == "PENDING"; });
-          this.otherData = data.filter(function(finding) { return finding.data.status !== "PENDING"; });
+          this.otherData = data.filter(function(finding) { 
+            return this.leaveAdminView == true ? finding.data.status === "APPROVED" : finding.data.status !== "PENDING"; 
+            }.bind(this)
+          );
           this.spinner.hide();
         });
   }
