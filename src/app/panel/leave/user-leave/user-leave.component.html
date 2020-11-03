@@ -363,22 +363,18 @@
                       <div class="row">
                         <h6 class="col-12 text-success text-center"><small><b>{{data.data.daysCount}}</b>
                             {{(data.data.daysCount>1)?' Days':' Day'}}</small></h6>
-                        <h6 class="text-primary text-center"><small>{{data.appliedAgo}}</small></h6>
+                        <h6 class="badge badge-success text-white text-center" [ngClass]="'status ' + data.data.status"><small>{{data.data.status}}</small></h6>
                       </div>
                     </div>
                     <div class="col-8 col-sm-8 col-lg-9">
                       <!-- <div class=""> -->
                       <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                           <h5 class="">
                             <small>{{data.data.user.name}}</small>
                           </h5>
                         </div>
-                        <div class="col-6 text-white text-center">
-                          <p [class]="'status ' + data.data.status">
-                            {{data.data.status}}
-                          </p>
-                        </div>
+             
                       </div>  
 
 
@@ -408,34 +404,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div (click)="details(data)">
-                  <div class="profile">
-                    <div class="state"
-                      [ngStyle]="(data.data.status == 'APPROVED') ? {'border-left-color':'rgb(32, 150, 255)'} : {'border-left-color':'rgb(255, 216, 111)'}">
-                      <p [class]="'status ' + data.data.status">
-                        {{data.data.status}}
-                      </p>
-                      <div class="reason">
-                        <p>{{data.data.type}}</p>
-                        <p>{{data.data.reason}}</p>
-                      </div>
-                    </div>
-                    <img [src]="(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'"
-                      (error)="'../../../../assets/image/imgs/profile.png'" />
-                    <div class="positioning">
-                      <p>{{data.data.user.name}}</p>
-                      <p>{{data.data.user.email}}</p>
-                    </div>
-                  </div>
-                  <p class="noOfdaysAgo">{{data.updatedOn}}</p>
-                  <div class="days">
-                    <p><b>{{data.data.daysCount}}</b> {{(data.data.daysCount>1)?' Days':' Day'}}</p>
-                    <img src="../../../../assets/image/imgs/calendar-black.svg" />
-                    <p>{{data.startDate}}</p>
-                    <img src="../../../../assets/image/imgs/calendar-black.svg" />
-                    <p>{{data.endDate}}</p>
-                  </div>
-                </div> -->
+
               </div>
               <div class="noTaskForAdmin" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
                 <p>There are no leave request recently processed for the selected region {{selectedCountry}} -
