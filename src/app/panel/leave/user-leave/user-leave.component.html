@@ -26,7 +26,7 @@
             <i class="fas fa-arrow-left"></i>
             </div>
           </div>
-          <div class="col-10 col-lg-10" *ngIf="showHidePendingLeaves === true">
+          <div [class]="leaveAdminView == true && detailsData !== null ? 'col-9' : 'col-10'" *ngIf="showHidePendingLeaves === true">
            {{ leaveAdminView === true ? 'Leave admin view':'My Leaves' }}
           </div>
           <div class="col-9 col-lg-9 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
@@ -283,7 +283,8 @@
                Pending
             </div>
           </div>
-          <div class="mb-3 innerBox">
+          <div class="row mb-3 innerBox">
+              <div class="col-12">
                 <div class="row" *ngFor="let data of pendingData">
                   <div class="col-12 bg-white border-bottom" (click)="details(data)">
                     <div
@@ -334,12 +335,13 @@
                       </div>
                     </div>
                 </div>
-                <div class="noTaskForAdmin" *ngIf="pendingData.length == 0 && (viewMode=='LEAVEADMIN')">
+              </div>
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && (viewMode=='LEAVEADMIN')">
                   <p>There are no leave requests requring your action for the selected region {{selectedCountry}} -
                     {{selectedRegion}}.</p>
                   <img src="../../../../assets/image/imgs/splash_scr4.png" />
                 </div>
-                <div class="noTaskForAdmin" *ngIf="pendingData.length == 0 && viewMode!='LEAVEADMIN'">
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && viewMode!='LEAVEADMIN'">
                   <p>There are no pending leave requests submitted by you for approval.</p>
                   <img src="../../../../assets/image/imgs/splash_scr4.png" />
                 </div>
@@ -352,18 +354,19 @@
                 Recent
               </div>
             </div>
-            <div class="card-body innerBox">
-              <div class="row" *ngFor="let data of otherData">
+            <div class="row mb-3 innerBox">
+              <div class="col-12">
+                <div class="row" *ngFor="let data of otherData">
                 <div class="col-12 bg-white border-bottom" (click)="details(data)">
                   <div class="row card-body" style="padding-bottom: 0px; padding-top: 0.5em">
-                    <div class="col-3 col-md-3 col-lg-2">
+                    <div class="col-3 col-md-3 col-lg-2 justify-content-center">
                       <img class="mx-auto d-block p-1 rounded-circle" style="width: 35px; height: 35px"
                         src="{{(data.data.user.picUrl) ? data.data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
                         (error)="'../../../../assets/image/imgs/profile.png'" />
-                      <div class="row">
+                      <div class="row justify-content-center">
                         <h6 class="col-12 text-success text-center"><small><b>{{data.data.daysCount}}</b>
                             {{(data.data.daysCount>1)?' Days':' Day'}}</small></h6>
-                        <h6 class="badge badge-success text-white text-center" [ngClass]="'status ' + data.data.status"><small>{{data.data.status}}</small></h6>
+                        <h6 class="badge badge-success p-2 text-white text-center" [ngClass]="'status ' + data.data.status"><small>{{data.data.status}}</small></h6>
                       </div>
                     </div>
                     <div class="col-8 col-sm-8 col-lg-9">
@@ -374,8 +377,8 @@
                             <small>{{data.data.user.name}}</small>
                           </h5>
                         </div>
-             
-                      </div>  
+
+                      </div>
 
 
                       <div class="row">
@@ -406,12 +409,13 @@
                 </div>
 
               </div>
-              <div class="noTaskForAdmin" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
+              </div>
+              <div class="noTaskForAdmin mt-3 text-center" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
                 <p>There are no leave request recently processed for the selected region {{selectedCountry}} -
                   {{selectedRegion}}.</p>
                 <img src="../../../../assets/image/imgs/splash_scr4.png" />
               </div>
-              <div class="noTaskForAdmin" *ngIf="otherData.length == 0 && viewMode!='LEAVEADMIN'">
+              <div class="noTaskForAdmin mt-3 text-center" *ngIf="otherData.length == 0 && viewMode!='LEAVEADMIN'">
                 <p>There are no recent leave request created by you.</p>
                 <img src="../../../../assets/image/imgs/splash_scr4.png" />
               </div>
@@ -490,7 +494,7 @@
               <p class="type" [ngClass]="data.status">{{data.status}}</p>
               <div class="timings pointer" >
                 <p class="text-primary"><small>
-                  Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}} 
+                  Applied: {{dateFormatting(data.applied.seconds * 1000, 'lll')}}
                 </small>
                 </p>
                 <h5>{{data.type}}</h5>
@@ -515,8 +519,8 @@
                   <i class="far fa-calendar-alt mr-2 text-dark"></i>
                   <span class="text-muted">
                     <small>
-                     {{dateFormatting(data.endDate.seconds * 1000,'ll')}} 
-                    </small> 
+                     {{dateFormatting(data.endDate.seconds * 1000,'ll')}}
+                    </small>
                   </span>
                  </div>
                  <div class="col-2">

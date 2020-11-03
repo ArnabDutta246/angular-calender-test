@@ -55,7 +55,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     console.log("---- data");
     console.log(this.data);
 
-    
+
     let prevStatus = {
     comment: this.details.data.data.comment ? this.details.data.data.comment : this.details.data.data.reason,
     status: this.details.data.data.status,
@@ -63,10 +63,10 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     updatedBy: this.details.data.data.updatedBy ? this.details.data.data.updatedBy : this.details.data.data.user,
     updatedOn: this.details.data.data.updatedOn ? this.details.data.data.updatedOn : this.details.data.data.applied,
   }
-    if(!this.details.data.changeHistory){
+    if(!this.details.data.data.changeHistory){
       this.changeHistory=[prevStatus,]
     } else {
-      this.changeHistory = [...this.details.data.changeHistory,prevStatus];
+      this.changeHistory = [...this.details.data.data.changeHistory,prevStatus];
     }
     this.getuserLeaveCalendar();
     this.getOrgLeaveCalendar();
@@ -103,15 +103,15 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     // set the batch process
     let batch = this.db.afs.firestore.batch();
     // update document status
-    let actionType = this.details.data.status=='APPROVED' ?
+    let actionType = this.details.data.data.status=='APPROVED' ?
             'Cancellation request'
             :
             this.details.data.data.status=='PENDING' && this.details.data.data.previousStatus=='APPROVED' ?
             'Reverting cancellation request'
             :
             'Cancelled';
-    let status = this.details.data.status=='APPROVED' ? 'PENDING' :
-        this.details.data.status=='PENDING' && this.details.data.previousStatus=='APPROVED' ? 'APPROVED' : 'CANCELLED';
+    let status = this.details.data.data.status=='APPROVED' ? 'PENDING' :
+        this.details.data.data.status=='PENDING' && this.details.data.data.previousStatus=='APPROVED' ? 'APPROVED' : 'CANCELLED';
     let cancelRef = this.db.afs.collection(this.db._LEAVES_APPLIED).doc(this.details.docId).ref;
     batch.set(cancelRef,{
       status: status,
@@ -141,7 +141,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     this.spinner.show();
 
     let batch = this.db.afs.firestore.batch();
-    let actionType = this.details.data.previousStatus=='APPROVED' ?
+    let actionType = this.details.data.data.previousStatus=='APPROVED' ?
             'Rejected cancellation request'
             :
             'Rejected';
@@ -200,7 +200,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     // 2. User tries to cancel an existing APPROVED leave,
     // document reference of the leave request
     let docRef = this.db.afs.collection(this.db._LEAVES_APPLIED).doc(this.details.docId).ref;
-    let ifactor = this.details.data.previousStatus == 'APPROVED' ? -1 : 1;
+    let ifactor = this.details.data.data.previousStatus == 'APPROVED' ? -1 : 1;
     // transaction provide here
     return this.db.afs.firestore.runTransaction(function(transaction) {
       return transaction.get(docRef).then(function(regDoc) {
@@ -377,7 +377,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
         let docId;
         return new Promise((resolve: any, reject: any)=> {
           this.db.afs.collection(this.db._USER_LEAVE_CALENDAR,
-            ref => ref.where('uid','==',this.details.data.uid)
+            ref => ref.where('uid','==',this.details.data.data.uid)
             .where("year","==",this.details.data.data.year)
           ).get().toPromise().then(function(querySnapshot){
             querySnapshot.forEach(function(doc){
@@ -392,8 +392,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
   }
 
   increment_decrement(docId, type){
-      var code=this.details.data.code; //.replace(/\s/g,'').toLowerCase();
-      let amount = (type == "increse") ? this.details.data.daysCount : -this.details.data.daysCount;
+      var code=this.details.data.data.code; //.replace(/\s/g,'').toLowerCase();
+      let amount = (type == "increse") ? this.details.data.data.daysCount : -this.details.data.data.daysCount;
 
       const batch = this.db.afs.firestore.batch();
       const kpiRef = this.db.afs.collection(this.db._USER_LEAVE_CALENDAR).doc(docId).ref;
@@ -403,8 +403,8 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
         // [`${type}taken`]: firebase.firestore.FieldValue.increment(1),
       });
 
-      let orgDocId = this.details.data.subscriberId + "_" + this.details.data.country +
-                     "_" + this.details.data.region.replace(/[^A-Za-z]/g,'').toUpperCase() + "_" + this.details.data.year;
+      let orgDocId = this.details.data.data.subscriberId + "_" + this.details.data.data.country +
+                     "_" + this.details.data.data.region.replace(/[^A-Za-z]/g,'').toUpperCase() + "_" + this.details.data.data.year;
       const orgRef = this.db.afs.collection(this.db._LEAVE_CALENDER).doc(orgDocId).ref;
 
       batch.update(orgRef, {
@@ -418,7 +418,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
   }
   // we need the organisation calendar year to fetch the user leave calendar
   getuserLeaveCalendar(){
-    if(this.details.data){
+    if(this.details.data.data){
       this.spinner.show();
       console.log(this.details.data)
       return this.db.afs.collection(this.db._USER_LEAVE_CALENDAR,
