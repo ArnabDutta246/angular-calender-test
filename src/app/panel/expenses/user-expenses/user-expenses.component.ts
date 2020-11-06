@@ -574,6 +574,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
         this.selectedRegion = this.expenseAdminRegions[position.target.value].region;
       }
     }
+    this.regionChanged(position.target.value);
     this.getAllExpenses();
   }
 
@@ -668,7 +669,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
     
     this.detailsData = {
       data:this.session,
-      details:data,
+      details:{...data},
       actionType: actionType
     }
   }
