@@ -1,4 +1,4 @@
-<div>
+<div [ngStyle]="{'height': '100vh',  'scrollbar-width': 'none'}">
 <div class="row">
   <div class="col-12">
     <div class="card-header bg-primary">
@@ -28,7 +28,21 @@
     >
       <div class="card border-0">
         <div class="card-header bg-white">
-          <h3 class="justify-content-start"><i class="fas fa-user-plus text-left"></i> Register</h3>
+          <div class="row">
+            <div class="col-6">
+              <h3 class="justify-content-start"><i class="fas fa-user-plus text-left"></i> Register</h3>
+            </div>
+            <div class="col-6 url-toggle-switch text-end">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="navigatePage === navigateArray[0]"
+                  (change)="changeNavigate()"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <form
@@ -51,6 +65,7 @@
                       Subscription ID
                       <span
                         data-title="Please enter the unique code for the organization,get in touch with your admin if you do not know the code"
+                        [ngStyle]="{'z-index': '3'}"
                         ><i class="fas fa-info-circle ml-2 text-info" title=""></i
                       ></span>
                     </div>
@@ -86,7 +101,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-2">
                 <div class="row">
                   <div class="col-1">
                     <i class="fas fa-user"></i>
@@ -130,7 +145,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-2">
                 <div class="row">
                   <div class="col-1">
                     <i class="fas fa-envelope"></i>
@@ -168,7 +183,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-2">
                 <div class="row">
                   <div class="col-1">
                     <i class="fas fa-phone-alt"></i>
@@ -181,7 +196,7 @@
                       <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
                     </div> -->
                     <div class="row">
-                      <div class="col-3">
+                      <div class="col-4">
                         <div class="form-group mb-2">
                           <label for="phone"></label>
                           <select
@@ -210,7 +225,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-9 pt-1">
+                      <div class="col-8 pt-1">
                         <div class="form-group mb-1">
                           <input
                             id="phone"
@@ -240,13 +255,16 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-2">
                 <div class="row">
                   <div class="col-1">
                     <i class="fas fa-lock"></i>
                   </div>
-                  <div class="col-9 text-left">
+                  <div class="col-8 text-left">
                     Password
+                  </div>
+                  <div class="col-1" (click)="passShow()">
+                    <i [class]="passshow ? 'fas fa-eye btn btn-sm' : 'fa fa-eye-slash btn btn-sm'"></i>
                   </div>
                   <div class="col-12">
                     <!-- <div class="form-group">
@@ -284,13 +302,16 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mt-2">
                 <div class="row">
                   <div class="col-1">
                     <i class="fas fa-lock"></i>
                   </div>
-                  <div class="col-9 text-left">
+                  <div class="col-8 text-left">
                     Confirm Password
+                  </div>
+                  <div class="col-1" (click)="passShowT()">
+                    <i [class]="passshowT ? 'fas fa-eye btn btn-sm' : 'fa fa-eye-slash btn btn-sm'"></i>
                   </div>
                   <div class="col-12">
                     <!-- <div class="form-group">
@@ -375,7 +396,23 @@
       </div>
     </div>
   </div>
-  <div class="bluebg col-12 col-md-4 col-lg-7 rounded-right" [ngStyle]="{'opacity': '0.5'}">
+  <div class="bluebg col-12 col-md-4 col-lg-7 rounded-right" [ngStyle]="{'opacity': '0.7'}">
+    <div class="card bluebg border-0">
+      <div class="card-body text-white">
+        <h2 class="justify-content-start"><i class="fas fa-user-shield text-left"></i></h2>
+        <div class="text-right">
+          <h2>HRMS supports your needs</h2>
+          <small>
+            <p class="text-left">
+              It's perfectly aligned for your needs.
+              HRMS helps you to record leaves, expenses, attendance in a single app.
+              Easy to use work flows with all required summaries and statistics for
+              you to review. Timelines to check series of events for the work flow.
+            </p>
+          </small>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>

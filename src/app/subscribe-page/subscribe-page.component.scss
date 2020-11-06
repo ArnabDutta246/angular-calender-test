@@ -1,17 +1,27 @@
-#loading {
-  position: fixed;
-  z-index: 1;
-  height: auto;
-  width: 200px;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  padding: 30px;
-  background: red;
-  text-align: center;
+// #loading {
+//   position: fixed;
+//   z-index: 1;
+//   height: auto;
+//   width: 200px;
+//   top: 50%;
+//   left: 50%;
+//   -webkit-transform: translate(-50%, -50%);
+//   transform: translate(-50%, -50%);
+//   padding: 30px;
+//   background: red;
+//   text-align: center;
+// }
+// .body-register #occurens-logo {
+//   height: 60px;
+//   width: auto;
+// }
+.custom-select{
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1.5px solid #989898 !important;
+  font-size: inherit;
 }
-.body-register #occurens-logo {
-  height: 60px;
-  width: auto;
+.form-control {
+  font-size: inherit;
 }

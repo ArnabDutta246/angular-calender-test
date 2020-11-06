@@ -1,3 +1,487 @@
+<div [ngStyle]="{'height': '100vh',  'scrollbar-width': 'none'}">
+<div class="row">
+  <div class="col-12">
+    <div class="card-header bg-primary">
+      <div class="row">
+        <div class="col-3">
+          <img
+            src="../../assets/image/imgs/logo.png"
+            alt="occurens logo"
+            style="height: 35px"
+          />
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-end text-white">
+            <a class="btn btn-sm  mr-2 p-0" routerLink="/">
+                <button class="btn btn-sm btn-outline-light"><i class="fas fa-home"></i></button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pb-3" [ngStyle]="{'height': 'calc(100% - 40px)', 'overflow-y': 'auto', 'scrollbar-width': 'none'}">
+  <div class="row m-2">
+    <div class="col-12 col-md-8 col-lg-5 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1"
+    [ngStyle]="{'box-shadow': '3px 3px 5px 2px #9e9e9ea8'}"
+    >
+      <div class="card border-0">
+        <div class="card-header bg-white">
+          <div class="row">
+            <div class="col-6">
+              <h3 class="justify-content-start"><i class="fas fa-qrcode text-left"></i>+ Subscribe</h3>
+            </div>
+            <div class="col-6 url-toggle-switch">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [checked]="navigatePage === navigateArray[0]"
+                  (change)="changeNavigate()"
+                />
+                <span class="slider purplebg"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form
+            [formGroup]="subscriptionForm"
+            (ngSubmit)="onSubmit()"
+            class="pt-3"
+          >
+            <div class="row">
+              <div class="col-2 order-2 order-md-1">
+              </div>
+              <div class="col-10 order-1 order-md-2">
+                <div class="row">
+                  <small>
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-1">
+                          <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="col-9 text-left">
+                          Choose Subscription ID
+                          <span
+                            data-title="Please provide an unique alphanumeric code for your organisation of 5 to 10 char long"
+                            [ngStyle]="{'z-index': '3'}"
+                            ><i class="fas fa-info-circle ml-2 text-info" title=""></i
+                          ></span>
+                        </div>
+                        <div class="col-12">
+                          <!-- <div class="form-group">
+                            <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                          </div> -->
+                          <input
+                            id="subid"
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            aria-label="Example text with two button addons"
+                            aria-describedby="button-addon3"
+                            [ngClass]="
+                              f.subscriptionID.touched || f.subscriptionID.dirty
+                                ? f.subscriptionID.errors
+                                  ? 'is-invalid'
+                                  : ''
+                                : ''
+                            "
+                            formControlName="subscriptionID"
+                            (keyup)="checkSID($event)"
+                          />
+
+                          <div
+                            *ngIf="
+                              (f.subscriptionID.touched || f.subscriptionID.dirty) &&
+                              f.subscriptionID.errors
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.subscriptionID.errors.required">
+                              Subscription ID is required
+                            </div>
+                            <div *ngIf="f.subscriptionID.errors.pattern">
+                              Invalid Pattern
+                            </div>
+                        </div>
+                        <div [ngSwitch]="alert" class="mb-2">
+                          <small *ngSwitchCase="'exist'"
+                            ><span class="text-danger"
+                              >This Subscription ID Already Exist</span
+                            ></small
+                          >
+                          <small *ngSwitchCase="'notexist'"
+                            ><span class="text-success">Good Choice</span></small
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-building"></i>
+                      </div>
+                      <div class="col-9 text-left">
+                        Organisation Name
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <input
+                          id="orgname"
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Example text with two button addons"
+                          aria-describedby="button-addon3"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.subscriberOrgName.errors
+                          }"
+                          formControlName="subscriberOrgName"
+                        />
+                        <div
+                          *ngIf="submitted && f.subscriberOrgName.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.subscriberOrgName.errors.required">
+                            Organization name is required
+                          </div>
+                          <div *ngIf="f.subscriberOrgName.errors.minlength">
+                            Invalid Organization Name Please Enter Full Name (min 5
+                            character)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div class="col-9 text-left">
+                        Contact Person
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <input
+                          id="name"
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Example text with two button addons"
+                          aria-describedby="button-addon3"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.subscriberName.errors
+                          }"
+                          formControlName="subscriberName"
+                        />
+                        <div
+                          *ngIf="submitted && f.subscriberName.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.subscriberName.errors.required">
+                            Name is required
+                          </div>
+                          <div *ngIf="f.subscriberName.errors.minlength">
+                            Invalid Name Please Enter Full Name (min 5 character)
+                          </div>
+                          <div *ngIf="f.subscriberName.errors.maxlength">
+                            Invalid Name Please Enter Full Name (max 20 character)
+                          </div>
+                          <div *ngIf="f.subscriberName.errors.pattern">
+                            Invalid Name Please Enter Full Name
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-envelope"></i>
+                      </div>
+                      <div class="col-9 text-left">
+                        Organisation Email Address
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <input
+                          id="email"
+                          type="email"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Example text with two button addons"
+                          aria-describedby="button-addon3"
+                          [ngClass]="{
+                            'is-invalid': submitted && f.subscriberEmail.errors
+                          }"
+                          formControlName="subscriberEmail"
+                        />
+                        <div
+                          *ngIf="submitted && f.subscriberEmail.errors"
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.subscriberEmail.errors.required">
+                            Email address is required
+                          </div>
+                          <div *ngIf="f.subscriberEmail.errors.email">
+                            Invalid Email
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-phone-alt"></i>
+                      </div>
+                      <div class="col-9 text-left">
+                        Contact Number
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <div class="row">
+                          <div class="col-4">
+                            <div class="form-group mb-2">
+                              <label for="phone"></label>
+                              <select
+                                class="custom-select"
+                                id="inputGroupSelect01"
+                                (change)="changeCountry($event)"
+                                [ngClass]="{
+                                  'is-invalid': submitted && f.subscriberCtc.errors
+                                }"
+                                formControlName="subscriberCtc"
+                              >
+                                <option value="null" disabled selected>Country</option>
+                                <ng-container *ngFor="let country of Cd; let i = index">
+                                  <option [value]="country.Iso2">
+                                    <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
+                                  </option>
+                                </ng-container>
+                              </select>
+                              <div
+                                *ngIf="submitted && f.subscriberCtc.errors"
+                                class="invalid-feedback"
+                              >
+                                <div *ngIf="f.subscriberCtc.errors.required">
+                                  Counrty is required
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-8 pt-1">
+                            <div class="form-group mb-1">
+                              <input
+                                id="phoneNumber"
+                                type="text"
+                                class="form-control"
+                                placeholder=""
+                                [ngClass]="{
+                                  'is-invalid': submitted && f.subscriberPhone.errors
+                                }"
+                                formControlName="subscriberPhone"
+                                placeholder="Organization contact number"
+                              />
+
+                              <div
+                                *ngIf="submitted && f.subscriberPhone.errors"
+                                class="invalid-feedback"
+                              >
+                                <div *ngIf="f.subscriberPhone.errors.required">
+                                  Phone number is required
+                                </div>
+                                <div *ngIf="f.subscriberPhone.errors.pattern">
+                                  Invalid phone no
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                      <div class="col-8 text-left">
+                        Password
+                      </div>
+                      <div class="col-1" (click)="passShow()">
+                        <i [class]="passshow ? 'fas fa-eye btn btn-sm' : 'fa fa-eye-slash btn btn-sm'"></i>
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <input
+                          id="password"
+                          [type]="passshow ? 'text' : 'password'"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Example text with two button addons"
+                          aria-describedby="button-addon3"
+                          [ngClass]="{
+                            'is-invalid':
+                              (submitted || f.password.value !== '') &&
+                              f.password.errors
+                          }"
+                          formControlName="password"
+                          (keyup)="paswStrength($event)"
+                        />
+                        <div
+                          *ngIf="
+                            (submitted || f.password.value !== '') &&
+                            f.password.errors
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.password.errors.required">
+                            Password is required
+                          </div>
+                          <div *ngIf="f.password.errors.pattern">
+                            Password must be at least 8 characters containing
+                            symbol,number,capital & small letter
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                      <div class="col-8 text-left">
+                        Confirm Password
+                      </div>
+                      <div class="col-1" (click)="passShowT()">
+                        <i [class]="passshowT ? 'fas fa-eye btn btn-sm' : 'fa fa-eye-slash btn btn-sm'"></i>
+                      </div>
+                      <div class="col-12">
+                        <!-- <div class="form-group">
+                          <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                        </div> -->
+                        <input
+                          id="confpass"
+                          [type]="passshowT ? 'text' : 'password'"
+                          class="form-control"
+                          placeholder=""
+                          aria-label="Example text with two button addons"
+                          aria-describedby="button-addon3"
+                          [ngClass]="{
+                            'is-invalid':
+                              (submitted || f.confirmPassword.value !== '') &&
+                              f.confirmPassword.errors
+                          }"
+                          formControlName="confirmPassword"
+                        />
+                        <div
+                          *ngIf="
+                            (submitted || f.confirmPassword.value !== '') &&
+                            f.confirmPassword.errors
+                          "
+                          class="invalid-feedback"
+                        >
+                          <div *ngIf="f.confirmPassword.errors.required">
+                            Password is required
+                          </div>
+                          <div *ngIf="f.confirmPassword.errors.validatePass">
+                            Password Not Matched
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-2 d-flex justify-content-start align-items-center">
+                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customControlInlineOwner1231"
+                        name="termandcondition"
+                        formControlName="termAndCondition"
+                      />
+                      <label
+                        class="custom-control-label"
+                        for="customControlInlineOwner1231"
+                      >
+                        I agree with
+                        <a [href]="termLink" class="text-primary"
+                          >terms of services</a
+                        ></label
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="col-12 mt-2 mb-2"
+                  >
+                    <div>
+                      Already have an account?
+                      <a routerLink="/login" class="text-primary">
+                            Login</a>
+
+                    </div>
+                    <div></div>
+                  </div>
+                  <div
+                    class="col-12 mt-2"
+                  >
+                    <button
+                      class="btn btn-sm btn-primary btn-lg btn-block"
+                      type="submit"
+                    >
+                      SUBSCRIBE
+                    </button>
+                  </div>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="peachbg col-12 col-md-4 col-lg-7 rounded-right" [ngStyle]="{'opacity': '0.7'}">
+      <div class="card peachbg border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-start"><i class="fas fa-qrcode text-left"></i></h2>
+          <div class="text-right">
+            <h2>HRMS is perfect for you</h2>
+            <small>
+              <p class="text-left">
+                HRMS support all your organisation needs.
+                It helps the growth of your team.
+                Focus on the real targets and leave the rest to HRMS for attendance,
+                leave management, expense tracking. Powerd by great serach engine
+                it helps you to search records the way you think it to be - be it name,
+                email, month, keyword etc.
+                Easy to use work flows with all required summaries and statistics for
+                you to review. Timelines to check series of events for the work flow.
+              </p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
 <div class="body-register subscription-form">
   <div class="containerr px-3 pb-2">
     <div class="row">
