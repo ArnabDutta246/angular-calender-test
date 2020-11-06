@@ -1,120 +1,142 @@
 <!-- navbar -->
-<div class="body-login">
-  <div class="containerr px-3 pt-2">
-    <div class="row">
-      <div class="col-12 formSection">
-        <div
-          class="d-flex justify-content-between align-items-center px-3 pt-4"
-        >
+<div class="row">
+  <div class="col-12">
+    <div class="card-header bg-primary">
+      <div class="row">
+        <div class="col-3">
           <img
-            src="../../../assets/image/imgs/logo.png"
-            alt="occurens"
-            id="occurens-logo"
+            src="../../assets/image/imgs/logo.png"
+            alt="occurens logo"
+            style="height: 35px"
           />
-          <ul class="d-flex justify-content-end mt-3">
-            <li class="mr-2">
-              <a class="" routerLink="/">
-                <button type="button" class="btn btn-home btn-sm">
-                  <i class="fas fa-home mr-1"></i>
-                  <span class="d-none d-lg-block">Go to home</span>
-                </button>
-              </a>
-            </li>
-          </ul>
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-end text-white">
+            <a class="btn btn-sm  mr-2 p-0" routerLink="/">
+                <button class="btn btn-sm btn-outline-light"><i class="fas fa-home"></i></button>
+            </a>
+          </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-12">
-        <div class="container px-4 pt-4">
-          <div class="card-box">
-            <div class="card-body-box login-card-box">
-              <h5 class="card-title">Login</h5>
-              <div class="straight-line"></div>
-              <form
-                [formGroup]="loginForm"
-                (ngSubmit)="onSubmit()"
-                class="pt-3"
-              >
-                <div class="form-group mb-2">
-                  <label for="subscriptionID"
-                    ><img
-                      src="../../assets/image/imgs/sub.svg"
-                      alt="org icon"
-                      style="transform: scale(1.2)"
-                    />Subcription ID
-                    <span
-                      data-title="Please enter the unique code for the organization,get in touch with your admin if you do not know the code"
-                      ><i class="fas fa-info-circle ml-2" title=""></i
-                    ></span>
-                  </label>
-                  <input
-                    id="subscriptionID"
-                    type="text"
-                    class="form-control"
-                    aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default"
-                    formControlName="subscriptionID"
-                    style="text-transform: uppercase"
-                    (keyup)="checkSID($event)"
-                    [ngClass]="{
-                      'is-invalid': submitted && f.subscriptionID.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submitted && f.subscriptionID.errors"
-                    class="invalid-feedback"
-                  >
-                    <div *ngIf="f.subscriptionID.errors.required">
-                      Subscription ID is required
+    </div>
+  </div>
+</div>
+<div class="pb-3" [ngStyle]="{'height': 'calc(100% - 40px)', 'overflow-y': 'auto', 'scrollbar-width': 'none'}">
+  <div class="row m-2">
+    <div class="col-12 col-md-8 col-lg-5 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1"
+    [ngStyle]="{'box-shadow': '3px 3px 5px 2px #9e9e9ea8'}"
+    >
+      <div class="card border-0">
+        <div class="card-header bg-white">
+          <h3 class="justify-content-start"><i class="fas fa-fingerprint text-left"></i> Login</h3>
+        </div>
+        <div class="card-body">
+          <form
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="pt-3"
+          >
+          <div class="row">
+            <div class="col-2 order-2 order-md-1">
+            </div>
+            <div class="col-10 order-1 order-md-2">
+              <div class="row">
+                <small>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-1">
+                      <i class="fas fa-qrcode"></i>
                     </div>
-                    <div *ngIf="f.subscriptionID.errors.minlength">
-                      Invalid Subscription ID (atleast 3 letter)
+                    <div class="col-9 text-left">
+                      Subscription ID
+                      <span
+                        data-title="Please enter the unique code for the organization,get in touch with your admin if you do not know the code"
+                        ><i class="fas fa-info-circle ml-2 text-info" title=""></i
+                      ></span>
                     </div>
-                    <div *ngIf="f.subscriptionID.errors.maxlength">
-                      Invalid Subscription ID (max 20 letter)
-                    </div>
-                    <div *ngIf="f.subscriptionID.errors.pattern">
-                      Invalid Pattern
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="subscriptionEmail"
-                    ><img
-                      src="../../../assets/image/imgs/msg.png"
-                      alt="email icon"
-                    />Email Address</label
-                  >
-                  <input
-                    id="subscriptionEmail"
-                    type="text"
-                    class="form-control"
-                    aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default"
-                    formControlName="subscriberEmail"
-                    [ngClass]="{
-                      'is-invalid': submitted && f.subscriberEmail.errors
-                    }"
-                  />
-                  <div
-                    *ngIf="submitted && f.subscriberEmail.errors"
-                    class="invalid-feedback"
-                  >
-                    <div *ngIf="f.subscriberEmail.errors.required">
-                      Email address is required
-                    </div>
-                    <div *ngIf="f.subscriberEmail.errors.email">
-                      Invalid Email
+                    <div class="col-12">
+                      <!-- <div class="form-group">
+                        <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                      </div> -->
+                      <input
+                        id="subscriptionID"
+                        type="text"
+                        class="form-control"
+                        aria-label="Sizing example input"qrcode
+                        aria-describedby="inputGroup-sizing-default"
+                        formControlName="subscriptionID"
+                        style="text-transform: uppercase"
+                        (keyup)="checkSID($event)"
+                        [ngClass]="{
+                          'is-invalid': submitted && f.subscriptionID.errors
+                        }"
+                      />
+                      <div
+                        *ngIf="submitted && f.subscriptionID.errors"
+                        class="invalid-feedback"
+                      >
+                        <div *ngIf="f.subscriptionID.errors.required">
+                          Subscription ID is required
+                        </div>
+                        <div *ngIf="f.subscriptionID.errors.minlength">
+                          Invalid Subscription ID (atleast 3 letter)
+                        </div>
+                        <div *ngIf="f.subscriptionID.errors.maxlength">
+                          Invalid Subscription ID (max 20 letter)
+                        </div>
+                        <div *ngIf="f.subscriptionID.errors.pattern">
+                          Invalid Pattern
+                        </div>
                     </div>
                   </div>
                 </div>
-                <div class="form-row">
-                  <div class="form-group mb-3 col-12">
-                    <label for="password"
-                      ><img
-                        src="../../../assets/image/imgs/password.png"
-                        alt="password icon"
-                      />Password</label
+              </div>
+              <div class="col-12 mt-2">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Email Address
+                  </div>
+                  <div class="col-12">
+                    <input
+                      id="subscriptionEmail"
+                      type="text"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      formControlName="subscriberEmail"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.subscriberEmail.errors
+                      }"
+                    />
+                    <div
+                      *ngIf="submitted && f.subscriberEmail.errors"
+                      class="invalid-feedback"
                     >
+                      <div *ngIf="f.subscriberEmail.errors.required">
+                        Email address is required
+                      </div>
+                      <div *ngIf="f.subscriberEmail.errors.email">
+                        Invalid Email
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <div class="col-8 text-left">
+                    Password
+                  </div>
+                  <div class="col-1" (click)="passShow()">
+                    <i [class]="passshow ? 'fas fa-eye btn btn-sm' : 'fa fa-eye-slash btn btn-sm'"></i>
+                  </div>
+                  <div class="col-12">
                     <input
                       id="password"
                       [type]="passshow ? 'text' : 'password'"
@@ -136,99 +158,69 @@
                       </div>
                     </div>
                   </div>
-                  <div
-                    class="hideAndShow"
-                    style="cursor: pointer"
-                    (click)="passShow()"
-                  >
-                    <span class="">
-                      <i
-                        class="fas"
-                        [ngClass]="{
-                          'fa-eye-slash': !passshow,
-                          'fa-eye': passshow
-                        }"
-                      ></i>
-                    </span>
                   </div>
                 </div>
-                <div class="row">
-                  <div
-                    class="col-sm-12 col-md-12 col-lg-8 order-sm-12 order-md-12 order-lg-1 mb-1"
-                  >
-                    <div>
-                      <span class="" style="font-size: 14px"
-                        >Don't have an account?<strong
-                          ><a routerLink="/register" class="text-primary">
-                            Sign up</a
-                          ></strong
-                        ></span
-                      ><br />
-                      <span class="" style="font-size: 14px"
-                        >Forgot password?<strong
-                          ><a
-                            class="text-primary"
-                            data-toggle="modal"
-                            data-target="#exampleModal"
-                          >
-                            Recover</a
-                          ></strong
-                        ></span
-                      >
-                    </div>
-                    <div></div>
-                  </div>
-                  <div
-                    class="col-sm-12 col-md-12 col-lg-4 order-sm-1 order-md-1 order-lg-12"
-                  >
-                    <button
-                      class="btn btn-sm btn-primary custom_log_reg_btn"
-                      type="submit"
-                    >
-                      LOG IN
-                    </button>
-                  </div>
-                </div>
-                <!-- <div class="d-flex flex-row justify-content-between">
+
+                <div
+                  class="col-12 mt-2 mb-2"
+                >
                   <div>
-                    <span class="" style="font-size: 14px"
-                      >Don't have an account?<strong
-                        ><a routerLink="/register" class="text-primary">
-                          Sign up</a
-                        ></strong
-                      ></span
-                    ><br />
-                    <span class="" style="font-size: 14px"
-                      >Forgot password?<strong
-                        ><a
+                    Don't have an account?
+                    <a routerLink="/register" class="text-primary">
+                          Sign up</a>
+
+                  </div>
+                  <div>
+                    Forgot password?
+                    <a
                           class="text-primary"
                           data-toggle="modal"
                           data-target="#exampleModal"
                         >
-                          Recover</a
-                        ></strong
-                      ></span
-                    >
+                          Recover</a>
                   </div>
-                  <div>
-                    <button
-                      class="btn btn-sm btn-primary mt-2 custom_log_reg_btn"
-                      type="submit"
-                    >
-                      LOG IN
-                    </button>
-                  </div>
-                </div> -->
-              </form>
+                  <div></div>
+                </div>
+                <div
+                  class="col-12 mt-2"
+                >
+                  <button
+                    class="btn btn-sm btn-primary btn-lg btn-block"
+                    type="submit"
+                  >
+                    LOG IN
+                  </button>
+                </div>
+
+              </small>
+              </div>
             </div>
+
+
           </div>
+
+
+
+
+        </form>
+          <!-- <h2 class="justify-content-start"><i class="fas fa-users-cog text-left"></i></h2>
+          <div class="text-right">
+            <h2>Manage Organisation</h2>
+            <small>
+              <p>Define and manage regions</p>
+              <p>Assign leave and expense admins</p>
+              <p>Create your team</p>
+              <p>Access control for the members</p>
+            </small>
+          </div> -->
         </div>
       </div>
     </div>
+    <div class="bluebg col-12 col-md-4 col-lg-7 rounded-right" [ngStyle]="{'opacity': '0.5'}">
+    </div>
   </div>
-
-  <!-- navbar -->
 </div>
+
 <div
   class="modal fade"
   id="exampleModal"

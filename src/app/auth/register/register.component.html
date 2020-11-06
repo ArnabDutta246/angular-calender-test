@@ -1,4 +1,386 @@
-<div class="body-register">
+<div>
+<div class="row">
+  <div class="col-12">
+    <div class="card-header bg-primary">
+      <div class="row">
+        <div class="col-3">
+          <img
+            src="../../assets/image/imgs/logo.png"
+            alt="occurens logo"
+            style="height: 35px"
+          />
+        </div>
+        <div class="col-9">
+          <div class="d-flex justify-content-end text-white">
+            <a class="btn btn-sm  mr-2 p-0" routerLink="/">
+                <button class="btn btn-sm btn-outline-light"><i class="fas fa-home"></i></button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pb-3" [ngStyle]="{'height': 'calc(100% - 40px)', 'overflow-y': 'auto', 'scrollbar-width': 'none'}">
+  <div class="row m-2">
+    <div class="col-12 col-md-8 col-lg-5 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1"
+    [ngStyle]="{'box-shadow': '3px 3px 5px 2px #9e9e9ea8'}"
+    >
+      <div class="card border-0">
+        <div class="card-header bg-white">
+          <h3 class="justify-content-start"><i class="fas fa-user-plus text-left"></i> Register</h3>
+        </div>
+        <div class="card-body">
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="onSubmit()"
+            class="pt-3"
+          >
+          <div class="row">
+            <div class="col-2 order-2 order-md-1">
+            </div>
+            <div class="col-10 order-1 order-md-2">
+              <div class="row">
+                <small>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-1">
+                      <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="col-9 text-left">
+                      Subscription ID
+                      <span
+                        data-title="Please enter the unique code for the organization,get in touch with your admin if you do not know the code"
+                        ><i class="fas fa-info-circle ml-2 text-info" title=""></i
+                      ></span>
+                    </div>
+                    <div class="col-12">
+                      <!-- <div class="form-group">
+                        <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                      </div> -->
+                      <input
+                        id="subscriptionid"
+                        type="text"
+                        class="form-control"
+                        aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default"
+                        [ngClass]="{
+                          'is-invalid': submitted && f.subscriptionID.errors
+                        }"
+                        formControlName="subscriptionID"
+                        style="text-transform: uppercase"
+                        (keyup)="checkSID($event)"
+                      />
+
+                      <div
+                        *ngIf="submitted && f.subscriptionID.errors"
+                        class="invalid-feedback"
+                      >
+                        <div *ngIf="f.subscriptionID.errors.required">
+                          Subscription ID is required
+                        </div>
+                        <div *ngIf="f.subscriptionID.errors.pattern">
+                          Invalid Pattern
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Your Name
+                  </div>
+                  <div class="col-12">
+                    <!-- <div class="form-group">
+                      <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                    </div> -->
+                    <input
+                      id="name"
+                      type="text"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.subscriberName.errors
+                      }"
+                      formControlName="subscriberName"
+                      style="text-transform: capitalize"
+                    />
+                    <div
+                      *ngIf="submitted && f.subscriberName.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberName.errors.required">
+                        Name is required
+                      </div>
+                      <div *ngIf="f.subscriberName.errors.minlength">
+                        Invalid Name Please Enter Full Name (min 5 character)
+                      </div>
+                      <div *ngIf="f.subscriberName.errors.maxlength">
+                        Invalid Name Please Enter Full Name (max 20 character)
+                      </div>
+                      <div *ngIf="f.subscriberName.errors.pattern">
+                        Invalid Name Please Enter Full Name
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Email Address
+                  </div>
+                  <div class="col-12">
+                    <!-- <div class="form-group">
+                      <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                    </div> -->
+                    <input
+                      id="email"
+                      type="text"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      [ngClass]="{
+                        'is-invalid': submitted && f.subscriberEmail.errors
+                      }"
+                      formControlName="subscriberEmail"
+                      style="text-transform: lowercase"
+                    />
+                    <div
+                      *ngIf="submitted && f.subscriberEmail.errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.subscriberEmail.errors.required">
+                        Email address is required
+                      </div>
+                      <div *ngIf="f.subscriberEmail.errors.email">
+                        Invalid Email
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-phone-alt"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Contact Number
+                  </div>
+                  <div class="col-12">
+                    <!-- <div class="form-group">
+                      <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                    </div> -->
+                    <div class="row">
+                      <div class="col-3">
+                        <div class="form-group mb-2">
+                          <label for="phone"></label>
+                          <select
+                            class="custom-select"
+                            id="inputGroupSelect01"
+                            (change)="changeCountry($event)"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.subscriberCtc.errors
+                            }"
+                            formControlName="subscriberCtc"
+                          >
+                            <option value="null" disabled selected>Country</option>
+                            <ng-container *ngFor="let country of Cd; let i = index">
+                              <option [value]="country.Iso2">
+                                <div>+{{ country.Dial }}({{ country.Iso2 }})</div>
+                              </option>
+                            </ng-container>
+                          </select>
+                          <div
+                            *ngIf="submitted && f.subscriberCtc.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.subscriberCtc.errors.required">
+                              Country is required
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-9 pt-1">
+                        <div class="form-group mb-1">
+                          <input
+                            id="phone"
+                            type="text"
+                            class="form-control"
+                            placeholder="Phone number"
+                            [ngClass]="{
+                              'is-invalid': submitted && f.subscriberPhone.errors
+                            }"
+                            formControlName="subscriberPhone"
+                          />
+
+                          <div
+                            *ngIf="submitted && f.subscriberPhone.errors"
+                            class="invalid-feedback"
+                          >
+                            <div *ngIf="f.subscriberPhone.errors.required">
+                              Phone number is required
+                            </div>
+                            <div *ngIf="f.subscriberPhone.errors.pattern">
+                              Invalid phone no
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Password
+                  </div>
+                  <div class="col-12">
+                    <!-- <div class="form-group">
+                      <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                    </div> -->
+                    <input
+                      id="password"
+                      [type]="passshow ? 'text' : 'password'"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submitted || f.password.value !== '') &&
+                          f.password.errors
+                      }"
+                      formControlName="password"
+                      (keyup)="paswStrength($event)"
+                    />
+                    <div
+                      *ngIf="
+                        (submitted || f.password.value !== '') &&
+                        f.password.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.password.errors.required">
+                        Password is required
+                      </div>
+                      <div *ngIf="f.password.errors.pattern">
+                        Password must be at least 8 characters containing
+                        symbol,number,capital & small letter
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <div class="col-9 text-left">
+                    Confirm Password
+                  </div>
+                  <div class="col-12">
+                    <!-- <div class="form-group">
+                      <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                    </div> -->
+                    <input
+                      id="confpass"
+                      [type]="passshowT ? 'text' : 'password'"
+                      class="form-control"
+                      aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-default"
+                      [ngClass]="{
+                        'is-invalid':
+                          (submitted || f.confirmPassword.value !== '') &&
+                          f.confirmPassword.errors
+                      }"
+                      formControlName="confirmPassword"
+                      (keyup)="
+                        checkPass(f.password.value, f.confirmPassword.value)
+                      "
+                    />
+                    <div
+                      *ngIf="
+                        (submitted || f.confirmPassword.value !== '') &&
+                        f.confirmPassword.errors
+                      "
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f.confirmPassword.errors.required">
+                        Confirm Password is required
+                      </div>
+                      <div *ngIf="f.confirmPassword.errors.validatePass">
+                        Confirm Password Not Matched
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-12 mt-2 mb-2"
+              >
+                <div>
+                  Already have an account?
+                  <a routerLink="/login" class="text-primary">
+                        Login</a>
+
+                </div>
+                <div></div>
+              </div>
+              <div
+                class="col-12 mt-2"
+              >
+                <button
+                  class="btn btn-sm btn-primary btn-lg btn-block"
+                  type="submit"
+                >
+                  REGISTER
+                </button>
+              </div>
+
+            </small>
+            </div>
+          </div>
+
+
+        </div>
+
+
+
+
+      </form>
+        <!-- <h2 class="justify-content-start"><i class="fas fa-users-cog text-left"></i></h2>
+        <div class="text-right">
+          <h2>Manage Organisation</h2>
+          <small>
+            <p>Define and manage regions</p>
+            <p>Assign leave and expense admins</p>
+            <p>Create your team</p>
+            <p>Access control for the members</p>
+          </small>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <div class="bluebg col-12 col-md-4 col-lg-7 rounded-right" [ngStyle]="{'opacity': '0.5'}">
+  </div>
+</div>
+</div>
+
+<!-- <div class="body-register">
   <div class="containerr px-3 pb-5">
     <div class="row">
       <div class="col-12 formSection">
@@ -250,7 +632,7 @@
                       </div>
                     </div>
                   </div>
-                  <!-- password strength checker -->
+
                   <div class="passwordStrength">
                     <span
                       [ngStyle]="
@@ -403,32 +785,13 @@
                   </button>
                 </div>
               </div>
-              <!-- <div class="d-flex flex-row justify-content-between mt-3">
-                <div class="flex-grow-1">
-                  <span class="font-weight-bold"
-                    >Already have an account?
-                    <strong
-                      ><a routerLink="/login" class="text-primary">
-                        Login</a
-                      ></strong
-                    ></span
-                  >
-                </div>
-                <div>
-                  <button
-                    class="btn btn-sm btn-primary custom_log_reg_btn"
-                    type="submit"
-                  >
-                    REGISTER
-                  </button>
-                </div>
-              </div> -->
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div> -->
 </div>
 <!------------------------   model open  ------------------------>
 <button
