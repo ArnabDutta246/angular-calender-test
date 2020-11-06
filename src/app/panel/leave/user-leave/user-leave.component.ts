@@ -240,12 +240,57 @@ export class UserLeaveComponent implements OnInit {
 
 
   }
-detailsAdj(){
+detailsAdj(data){
+  let id = data.id;
+  let dataAdjNew = {
+    docId: id,
+    startDate:moment(data.startDate.seconds*1000).format('ll'),
+    endDate: moment(data.endDate.seconds*1000).format('ll'),
+    appliedAgo: (data.status == 'PENDING' && data.previousStatus ? 'Re-submitted ': 'Applied ')+
+                (
+                  data.applied && data.applied.seconds ?
+                  (
+                    moment().diff(data.applied.seconds * 1000,'days') > 0 ?
+                    (
+                      moment().diff(data.applied.seconds * 1000,'days')==1 ?
+                      moment().diff(data.applied.seconds * 1000,'days') + ' day ago'
+                      :
+                      moment().diff(data.applied.seconds * 1000,'days') + ' days ago'
+                    )
+                    :
+                    moment().diff(data.applied.seconds * 1000,'hour') + ' hr ago'
+                  )
+                  :
+                  '0 hr ago'
+                ),
+    updatedOn: (data.status == 'CANCELLED' ? 'Canceled ': data.status == 'APPROVED'? 'Approved ' : 'Rejected ')+(
+                  (data.updatedOn) ?
+                    moment().diff(data.updatedOn.seconds * 1000,'days') > 0
+                    ?
+                    moment().diff(data.updatedOn.seconds * 1000,'days')==1
+                      ?
+                      moment().diff(data.updatedOn.seconds * 1000,'days') + ' day ago'
+                      :
+                      moment().diff(data.updatedOn.seconds * 1000,'days') + ' days ago'
+
+                    :
+                    moment().diff(data.updatedOn.seconds * 1000,'hour') + ' hr ago'
+                  :
+                  '0 hr ago'),
+    data:{
+      id: id,
+      ...data
+    }
+  };
+
+
     this.showHidePendingLeaves = !this.showHidePendingLeaves ;
     this.leaveAdminView = false;
     this.viewMode = 'USER'
-    let element = document.getElementById("my-leaves"); //leave-details
-    element.scrollIntoView({behavior: "smooth"});
+    // let element = document.getElementById("my-leaves"); //leave-details
+    // element.scrollIntoView({behavior: "smooth"});
+    console.log("dataAdjNew", dataAdjNew);
+    this.details(dataAdjNew);
   }
 
   //=============================== apply leave ====================
@@ -568,7 +613,7 @@ detailsAdj(){
    // console.log("getLeaveAdminRegions",this.leaveAdminRegions.length,this.leaveAdminRegions[0],this.session.leaveAdmin[this.selectedRegionCode],this.selectedCountry,this.selectedRegion,this.session.role, this.viewMode);
   }
 
-  @ViewChild(AdminLeaveCalenderComponent,{static:true}) adminLeaveCalenderComponent: AdminLeaveCalenderComponent 
+  @ViewChild(AdminLeaveCalenderComponent,{static:true}) adminLeaveCalenderComponent: AdminLeaveCalenderComponent
   getSelectedRegion(){
     this.selectedCountry = this.session.leaveAdmin[this.selectedRegionCode].country;
     this.selectedRegion = this.session.leaveAdmin[this.selectedRegionCode].region;
@@ -660,8 +705,8 @@ detailsAdj(){
         .subscribe(data =>{
           this.dataSource = data;
           this.pendingData = data.filter(function(finding) { return finding.data.status == "PENDING"; });
-          this.otherData = data.filter(function(finding) { 
-            return this.leaveAdminView == true ? finding.data.status === "APPROVED" : finding.data.status !== "PENDING"; 
+          this.otherData = data.filter(function(finding) {
+            return this.leaveAdminView == true ? !['CANCELLED','PENDING'].includes(finding.data.status) : finding.data.status !== "PENDING";
             }.bind(this)
           );
           this.spinner.hide();
