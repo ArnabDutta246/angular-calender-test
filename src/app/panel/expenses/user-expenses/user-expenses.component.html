@@ -1,0 +1,488 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a routerLink="/panel/dashboard"><i class="fab fa-houzz mr-1"></i>Dashboard</a>
+    </li>
+    <li class="breadcrumb-item active-breadcrumb-nav" aria-current="page">
+      <i class="fas fa-money-bill mr-1"></i> User Expenses
+    </li>
+  </ol>
+</nav>
+
+<div class="p-3">
+  <div class="row">
+    <!-- left hand side (expense summery + apply form + details) -->
+    <div class="col-sm-12 col-md-6 col-lg-6">
+    <div class="row p-1">
+      <div class="col-12 card">
+        <div class="row">
+        <div class="col-12 card-header bg-primary text-white">
+          <div class="row p-1">
+            <div class="col-1" *ngIf="addExpense === true || detailsData !== null" (click)="toggleBack()">
+              <button class="btn btn-sm btn-primary" >
+                <i class="fas fa-arrow-left"></i>
+              </button>
+            </div>
+            <div [ngClass]="addExpense ? 'col-11':'col-9'">
+             {{addExpense? 'Add Expense': detailsData == null ? 'Expense' : 'Expense Details' }}
+            </div>
+            <div class="col-1 text-center" *ngIf="addExpense !== true && detailsData == null">
+              <button class="btn btn-sm btn-primary" title="add expense" (click)="addExpense = !addExpense">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="col-2 text-center" *ngIf="session.user.expenseAdmin && addExpense !== true && detailsData == null" (click)="toggleExpenseAdminView()">
+              <button class="btn btn-sm btn-primary" title="toggle expense view">
+                <i class="fas fa-user-cog" *ngIf="expenseAdminView !== true"></i>
+                <i class="fas fa-user" *ngIf="expenseAdminView === true"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- user view expense  -->
+        <div class="col-12 card-body" *ngIf="addExpense !== true && detailsData === null">
+          <!-- =====  calender ==== -->
+          <div class="row bg-light pt-1">
+            <div class="col-2 btn btn-sm">
+              <i class="fas fa-caret-left" *ngIf="grphXViewType == 'month'" (click)="graphXMonth('back')"></i>
+            </div>
+            <div class="col-8 text-center">
+              <span>{{ grphXViewType == 'ytd' ? 'YTD value' : myObject.selctedMonth.generated}}</span>
+            </div>
+            <div class="col-2 btn btn-sm">
+              <i class="fas fa-caret-right" *ngIf="grphXViewType == 'month'" (click)="graphXMonth('forward')"></i>
+            </div>
+          </div>
+          <!-- ==== calender end ==== -->
+          <!-- ==== summery ==== -->
+            <div class="col-12 leaveSummary">
+              <div class="eachSummary" *ngFor="let data of graphX[grphXViewType]; let i=index;">
+                <div class="floats">
+                  <p>
+                    <i [class]="data.icon" style="margin-right: 3px;"></i>{{ data.type}}
+                  </p>
+                  <p>{{(data.spent) ? data.spent : '0'}}</p>
+                  <div class="clear"></div>
+                </div>
+                <div class="rating">
+                  <div [class]="myObject.graphColors[ i % 6 ]" [ngStyle]="{'width': data.width+'%'}"></div>
+                </div>
+              </div>
+            </div>
+          <!-- ==== summery end ==== -->
+          <!-- ==== graph mood ==== -->
+              <div class="row">
+                <div class="col-4">
+                </div>
+                <div class="col-4 text-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="month" checked [(ngModel)]="grphXViewType">
+                    <label class="form-check-label" for="exampleRadios1">
+                    Month
+                    </label>
+                  </div>
+                </div>
+                <div class="col-4 text-center">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="ytd" [(ngModel)]="grphXViewType">
+                    <label class="form-check-label" for="exampleRadios2">
+                      YTD
+                    </label>
+                  </div>
+                </div>
+              </div>
+          <!-- ==== graph mood end ==== -->
+          <!-- ==== month graph ==== -->
+          <div class="row">
+            <div class="col-12 graphBox">
+              <div class="graphTitle">
+                <h3>Monthly expenses graph</h3>
+              </div>
+              <div class="trends">
+                <div class="maxlabel">{{graphY.maxValue}}</div>
+                <!-- <div>{{data.cssClass}}</div> -->
+                <div class="halfwaymark">{{graphY.maxValue/2}}</div>
+                <div class="eachbar monthly" *ngFor="let data of graphY.expenseGraph; let i=index;">
+                  <div [class]="data.cssClass" [ngStyle]="{'height': data.height +'%'}"></div>
+                  <!-- <span class="xAxis" *ngIf="data.day">{{data.day}}</span> -->
+                </div>
+              </div>
+              <div class="xAxis">
+                <div class="eachbar monthly" *ngFor="let data of graphY.expenseGraph; let i=index;">
+                  <div *ngIf="i==0">{{data.day}} &nbsp;<i class="fas fa-caret-right"></i>
+                  </div>
+                  <div *ngIf="i!=0">{{data.day}}</div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+          <!-- ==== month graph end -->
+        </div>
+        <!-- user view expense end -->
+        <!-- ============== add expense start =============-->
+        <div class="col-12 card-body" *ngIf="addExpense === true && detailsData === null">
+            <div class="row card-header">
+              <div class="col-2"> 
+                <img [src]="session.user.picUrl ? session.user.picUrl : '../../../../assets/image/imgs/user.png'" class="border rounded" style="height: 60px;">
+              </div>
+              <div class="col-10">
+                <span>{{ session.user.name }}</span><br>
+                <small class="text-muted">{{ session.user.jobTitle }}</small>
+              </div>
+            </div>
+            <div [formGroup]="formGroup">
+              <div class="col-12 my-3">
+                <div class="label row">
+                  <div class="col-1">
+                    <i class="far fa-calendar-alt text-danger"></i>
+                  </div>
+                  <div class="col-11">
+                    State Date
+                  </div> <br>
+                  <div class="col-12">
+                    <input type="date" name="start-date-expense" id="" class="form-control" formControlName="startDate" (change)="calendarYear($event)">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 my-3">
+                <div class="label row">
+                  <div class="col-1">
+                    <i class="far fa-calendar-alt text-danger"></i>
+                  </div>
+                  <div class="col-11">
+                    End Date
+                  </div> <br>
+                  <div class="col-12">
+                    <input type="date" name="end-date-expense" id="" class="form-control" formControlName="endDate">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 my-3">
+                <div class="label row">
+                  <div class="col-1">
+                    <i class="fas fa-link text-danger"></i>
+                  </div>
+                  <div class="col-11">
+                    Expense Title
+                  </div> <br>
+                  <div class="col-12">
+                    <input type="text" name="expense-title" id="" class="form-control text-primary" formControlName="title">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 my-3">
+                <div class="label row">
+                  <div class="col-1">
+                    <i class="far fa-edit text-danger"></i>
+                  </div>
+                  <div class="col-11">
+                    Expense Description
+                  </div> <br>
+                  <div class="col-12">
+                    <textarea type="text" name="expense-details" class="form-control text-primary" formControlName="description"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 my-3">
+                <div class="label row">
+                  <div class="col-1">
+                    <i class="far fa-money-bill-alt text-danger"></i>
+                  </div>
+                  <div class="col-11">
+                    Advance Amount
+                  </div> <br>
+                  <div class="col-12">
+                    <input name="advance" class="form-control text-primary" type="number"  formControlName="advance" min="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 my-3">
+              <div class="label row">
+                <div class="col-1">
+                  <i class="fas fa-calculator text-danger"></i>
+                </div>
+                <div class="col-11">
+                  Expense Details
+                </div> <br>
+                <!-- <div class="col-12">
+                  <input name="nothing" class="form-control text-primary" type="number" [(ngModel)]="nothing">
+                </div> -->
+              </div>
+            </div>
+            <div class="col-12 card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-7 text-center">
+                    Categories
+                  </div>
+                  <div class="col-5 text-center">
+                    Amount
+                  </div>
+                </div>
+                <div *ngFor="let leave of calendarMeta.userexpenseTypes; let i=index;">
+                  <div class="row my-1">
+                    <div class="col-7">
+                      <div class="row">
+                        <div class="col-2 pt-1 text-muted">
+                           <i [class]="calendarMeta.userCalendarYear.expenseTypes[leave].icon"></i>
+                        </div>
+                        <div class="col-10">
+                      <input type="text" class="form-control text-muted" readonly
+                        [(ngModel)]="calendarMeta.userCalendarYear.expenseTypes[leave].type">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <input type="number" class="form-control text-primary" (ngModelChange)="onexpenseAmountChange(leave)" [(ngModel)]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent" min="0" [value]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent">
+                    </div>
+                  </div>
+                </div>
+                <div class="row my-2">
+                  <div class="col-7">
+                    <div class="row">
+                      <div class="col-2 pt-1">
+                        <i class="fas fa-tags text-primary"></i>
+                      </div>
+                      <div class="col-10">
+                        Total
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    {{ addnewspentTotal }}
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <p>{{errorCode}}</p>
+          <div class="button">
+            <button class="btn btn-sm btn-block btn-primary" [disabled]="formGroup.invalid || addnewspentTotal<=0" (click)="formSubmit()">Submit</button>
+          </div>
+        <!-- add expense end -->
+        </div>
+        <!-- ============== add expense start =============-->
+
+        <!-- ============== details expense start =============-->
+         <div class="col-12 card-body" *ngIf="addExpense !== true && detailsData !== null">
+           <app-expenses-details [detailsData]="detailsData" (returnBack)="returnBack()"></app-expenses-details>
+         </div>
+        <!-- ============== details expense start =============-->
+        
+
+      </div>
+
+    </div>
+    </div>
+  </div>
+    <!-- left hand side (expense summery + apply form + details) -->
+    <!-- right hand side (expense history) -->
+    <div class="col-sm-12 col-md-6 col-lg-6">
+
+          <div class="row p-1">
+            <!--============  pending/recent expense section start ========== -->
+          
+            <!-- ExpenseAdmin Selected region check -->
+            <div class="col-12 mb-2 card"
+              *ngIf="session.user.expenseAdmin && expenseAdminView !== false">
+              <div class="row card-header bg-white">
+                <div class="col-1">
+                  <i class="fas fa-search-location text-danger"></i>
+                </div>
+                <div class="col-4 text-dark">
+                  Region
+                </div>
+                <div class="col-7">
+                  <select class="form-control" id="adminRegionSelect" name="adminRegionSelect"
+                    (change)="dataProcess($event)">
+                    <option *ngFor="let region of expenseAdminRegions; let i = index" [value]="i" [selected]="i == 0 ? true : false">{{region.country}} - {{region.region}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- LeaveAdmin Selected region check -->
+          
+            <!-- pending/recent leave search card -->
+            <div class="col-12 card bg-white mb-2">
+              <div class="row card-header bg-primary text-white">
+                Search Here
+              </div>
+              <div class="card-body">
+                <div class="row bg-white">
+                  <div class="col-10 col-lg-11">
+                    <div class="searchBox">
+                      <input type="text" placeholder="Search Here....." class="form-control" [(ngModel)]="searchTexts" />
+                    </div>
+                  </div>
+                  <div class="col-1">
+                    <button class="btn btn-sm btn-default"><i class="fas fa-search" (click)="getDataOfallSearch()"></i></button>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-5">
+                    <p><small>Result for</small></p>
+                  </div>
+                  <div class="col-7 mr-0 pr-0 d-flex justify-content-end">
+                    <div class="search-toggle-switch">
+                      <label class="switch">
+                        <input type="checkbox" (click)="changeSearchMode()" checked />
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- pending/recent leave  search card -->
+            <!-- pending/recent leave all cards -->
+            <div class="col-12 allBoxes card my-2">
+          
+              <div class="row card-header pendingBox">
+                <div class="col-12">
+                  Pending
+                </div>
+              </div>
+              <div class="row mb-3 innerBox">
+                <div class="col-12">
+                  <div class="row" *ngFor="let data of pendingData">
+                    <div class="col-12 bg-white border-bottom" (click)="details(data)">
+                      <div class="row card-body" style="padding-bottom: 0px; padding-top: 0.5em">
+                        <div class="col-3 col-md-3 col-lg-2">
+                          <img class="mx-auto d-block p-1 rounded-circle" style="width: 35px; height: 35px"
+                            src="{{(data.user.picUrl) ? data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+                            (error)="'../../../../assets/image/imgs/profile.png'" />
+                          <div class="row">
+                            <!-- <h6 class="col-12 text-danger text-center"><small><b>{{data.daysCount}}</b>
+                                {{(data.daysCount > 1)?' Days':' Day'}}</small></h6> -->
+                            <h6 class="text-primary text-center"><small>{{data.appliedAgo}}</small></h6>
+                          </div>
+                        </div>
+                        <div class="col-8 col-sm-8 col-lg-9">
+                          <!-- <div class=""> -->
+                          <h5 class="">
+                            <small>{{data.user.name}}</small>
+                          </h5>
+                          <div class="row">
+                            <div class="col-6 pr-0">
+                              <h6 class="text-muted">
+                                <small><i class="fas fa-calendar-alt pr-1"></i>{{data.displaystartDate}}</small>
+                              </h6>
+                            </div>
+                            <div class="col-6 pr-0">
+                              <h6 class="text-muted">
+                                <small><i class="fas fa-calendar-alt pr-1"></i>{{data.displayendDate}}</small>
+                              </h6>
+                            </div>
+                          </div>
+                          <h6 class="text-danger"><small>{{data.title}}</small></h6>
+                          <div class="row">
+                            <div class="col-11 pr-0">
+                              <h6 class="text-muted  text-truncate">
+                                <small>{{data.description}}</small>
+                              </h6>
+                            </div>
+                            <div class="col-1 pr-0 btn btn-sm">
+                              <i class="fas fa-arrow-right text-primary"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && (viewMode=='EXPENSEADMIN')">
+                  <p>There are no expense requests requring your action for the selected region {{selectedCountry}} -
+                    {{selectedRegion}}.</p>
+                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                </div>
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && viewMode!='EXPENSEADMIN'">
+                  <p>There are no expense requests submitted by you for approval.</p>
+                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                </div>
+          
+              </div>
+            </div>
+            <div class="col-12 allBoxes card my-2">
+              <div class="row card-header recentBox">
+                <div class="col-12">
+                  Recent
+                </div>
+              </div>
+              <div class="row mb-3 innerBox">
+                <div class="col-12">
+                  <div class="row" *ngFor="let data of otherData">
+                    <div class="col-12 bg-white border-bottom" (click)="details(data)">
+                      <div class="row card-body" style="padding-bottom: 0px; padding-top: 0.5em">
+                        <div class="col-3 col-md-3 col-lg-2 justify-content-center">
+                          <img class="mx-auto d-block p-1 rounded-circle" style="width: 35px; height: 35px"
+                            src="{{(data.user.picUrl) ? data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+                            (error)="'../../../../assets/image/imgs/profile.png'" />
+                          <div class="row justify-content-center">
+                     
+                            <h6 class="badge badge-success p-2 text-white text-center" [ngClass]="'status ' + data.status">
+                              <small>{{data.status}}</small></h6>
+                          </div>
+                        </div>
+                        <div class="col-8 col-sm-8 col-lg-9">
+                          <!-- <div class=""> -->
+                          <div class="row">
+                            <div class="col-12">
+                              <h5 class="">
+                                <small>{{data.user.name}}</small>
+                              </h5>
+                            </div>
+          
+                          </div>
+          
+          
+                          <div class="row">
+                            <div class="col-6 pr-0">
+                              <h6 class="text-muted">
+                                <small><i class="fas fa-calendar-alt pr-1"></i>{{data.displaystartDate}}</small>
+                              </h6>
+                            </div>
+                            <div class="col-6 pr-0">
+                              <h6 class="text-muted">
+                                <small><i class="fas fa-calendar-alt pr-1"></i>{{data.displayendDate}}</small>
+                              </h6>
+                            </div>
+                          </div>
+                          <h6 class="text-success"><small>{{data.title}}</small></h6>
+                          <div class="row">
+                            <div class="col-11 pr-0">
+                              <h6 class="text-muted  text-truncate">
+                                <small>{{data.description}}</small>
+                              </h6>
+                            </div>
+                            <div class="col-1 pr-0 btn btn-sm">
+                              <i class="fas fa-arrow-right text-primary"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+          
+                  </div>
+                </div>
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
+                  <p>There are no expense request recently processed for the selected region {{selectedCountry}} -
+                    {{selectedRegion}}.</p>
+                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                </div>
+                <div class="noTaskForAdmin mt-3 text-center" *ngIf="otherData.length == 0 && viewMode!='LEAVEADMIN'">
+                  <p>There are no recent expense request created by you.</p>
+                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                </div>
+          
+              </div>
+            </div>
+            <!-- pemding/recent leave all cards -->
+            <!--============  pending/recent leave section end ========== -->
+          </div>
+    </div>
+    <!-- right hand side (expense history) -->
+  </div>
+</div>

@@ -39,11 +39,14 @@ import { PaymentComponent } from "./allPayments/payment/payment.component";
 import { ManageRegionsComponent } from './panel/admin/manage-regions/manage-regions.component';
 import { ManageYearlyCalenderComponent } from './panel/admin/manage-yearly-calender/manage-yearly-calender.component';
 import { SelectMembersComponent } from './panel/admin/select-members/select-members.component';
-import { ApplyLeavesComponent } from './panel/leave/apply-leaves/apply-leaves.component';
+
 import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
 import { HorizontalBarComponent } from './panel/graph/horizontal-bar/horizontal-bar.component';
 import { UserLeaveDetailsComponent } from './panel/leave/user-leave-details/user-leave-details.component';
 import { AdminLeaveCalenderComponent } from './panel/admin/leave/admin-leave-calender/admin-leave-calender.component';
+import { UserExpensesComponent } from './panel/expenses/user-expenses/user-expenses.component';
+import { ExpensesDetailsComponent } from './panel/expenses/expenses-details/expenses-details.component';
+
 
 //.......................................................................
 
@@ -71,11 +74,13 @@ import { AdminLeaveCalenderComponent } from './panel/admin/leave/admin-leave-cal
     ManageRegionsComponent,
     ManageYearlyCalenderComponent,
     SelectMembersComponent,
-    ApplyLeavesComponent,
     UserLeaveComponent,
     HorizontalBarComponent,
     UserLeaveDetailsComponent,
     AdminLeaveCalenderComponent,
+    UserExpensesComponent,
+    ExpensesDetailsComponent,
+
   ],
   imports: [
     BrowserModule,

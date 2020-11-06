@@ -20,6 +20,7 @@ import { UserProfileComponent } from "./panel/user/user-profile/user-profile.com
 import { UpdatePlansComponent } from "./allPayments/update-plans/update-plans.component";
 import { ManageRegionsComponent } from "./panel/admin/manage-regions/manage-regions.component";
 import { UserLeaveComponent } from './panel/leave/user-leave/user-leave.component';
+import { UserExpensesComponent } from './panel/expenses/user-expenses/user-expenses.component';
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "/", pathMatch: "full" },
@@ -76,6 +77,11 @@ const appRoutes: Routes = [
         path: "user-leave",
         canActivateChild: [AuthGuardUserService],
         component: UserLeaveComponent,
+      },
+       {
+        path: "user-expense",
+        canActivateChild: [AuthGuardUserService],
+        component: UserExpensesComponent,
       }
     ],
   },

@@ -1,0 +1,280 @@
+<div class="bg-white ">
+  <div class="row card-body p-0">
+    <div class="col-3 col-md-3 col-lg-2">
+      <img class="mx-auto d-block p-0 rounded-circle" style="width: 45px; height: 45px"
+        src="{{(details.user.picUrl) ? details.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
+        (error)="'../../../../assets/image/imgs/profile.png'" />
+      <span class="row badge p-2 text-white d-flex justify-content-center" [ngClass]="
+          details.status
+        ">
+        {{ details.status.toLowerCase() }}
+      </span>
+    </div>
+    <div class="col-8 col-sm-8 col-lg-9">
+      <!-- <div class=""> -->
+      <h5 class="">
+        <small>{{details.user.name}}</small>
+      </h5>
+      <div class="row">
+        <div class="col-6 pr-0">
+          <h6 class="text-muted">
+            <small><i class="fas fa-calendar-alt pr-1"></i>{{details.displaystartDate}}</small>
+          </h6>
+        </div>
+        <div class="col-6 pr-0">
+          <h6 class="text-muted">
+            <small><i class="fas fa-calendar-alt pr-1"></i>{{details.displayendDate}}</small>
+          </h6>
+        </div>
+      </div>
+      <div class="row">
+        <h6 class="col-4 pr-0 text-danger text-left"><small><b>
+          <i class="far fa-money-bill-alt"></i>
+        </b>
+            {{details.expenseTotal}}
+          </small>
+        </h6>
+        <h6 class="col-8 p-0 text-primary text-center">
+          <small>{{details.status=='PENDING' ? details.appliedAgo : details.updatedMadeOn}}</small></h6>
+      </div>
+    </div>
+    <div class="col-12 mt-3">
+      <div class="p-2 CANCELLED"
+        *ngIf="details.status=='PENDING' && details.previousStatus=='APPROVED'">
+        <div class="row">
+          <div class="col-1 text-white">
+            <i class="fas fa-hand-paper"></i>
+          </div>
+          <div class="col-10 col-lg-11">
+            <p class="text-white"><small>Approved leave cancellation request</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- expense title -->
+    <div class="col-12 mt-3">
+      <div class="row">
+        <div class="col-12 text-dark">
+          <div class="row">
+            <div class="col-1">
+              <i class="fas fa-link"></i>
+            </div>
+            <div class="col-11">
+              Expense Title
+            </div>
+          </div>
+         
+        </div>
+        <div class="col-12 col-lg-11">
+          <p class="text-muted"><small>{{details.title}}</small> </p>
+        </div>
+      </div>
+    </div>
+    <!-- expense description -->
+    <div class="col-12 mt-3">
+      <div class="row">
+        <div class="col-12 text-dark">
+          <div class="row">
+            <div class="col-1">
+              <i class="fas fa-comment-alt"></i>
+            </div>
+            <div class="col-11">
+              Expense Description
+            </div>
+          </div>
+    
+        </div>
+        <div class="col-12 col-lg-11">
+          <p class="text-muted"> <small>{{details.description}}</small></p>
+        </div>
+      </div>
+    </div>
+    <!-- expense total -->
+    <div class="col-12">
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header bg-white text-dark" id="headingOne">
+            <div class="row">
+             <div class="col-9">
+              <div class="row">
+                <div class="col-1">
+                  <i class="fas fa-calculator"></i>
+                </div>
+                <div class="col-11">
+                  Expense Total
+                </div>
+              </div>
+             </div>
+             <div class="col-3">
+                <h6 class="mb-0">
+                  {{details.expenseTotal}}
+                  <button class="btn btn-sm text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fas fa-chevron-down"></i>
+                  </button>
+                </h6>
+             </div>
+            </div>
+
+          </div>
+      
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-7 text-left">
+                  Categories
+                </div>
+                <div class="col-5 text-center">
+                  Amount
+                </div>
+              </div>
+              <div *ngFor="let et of details.expenseTypes; let i=index;">
+                <div class="row my-1">
+                  <div class="col-7">
+                    <div class="row">
+                      <div class="col-2 pt-1 text-muted">
+                        <i [class]="details.expenses[et].icon"></i>
+                      </div>
+                      <div class="col-10">
+                        <span>{{details.expenses[et].type}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <span>{{(details.expenses[et].spent) ? details.expenses[et].spent : '0'}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row my-2">
+                <div class="col-7">
+                  <div class="row">
+                    <div class="col-2 pt-1">
+                      <i class="fas fa-tags text-primary"></i>
+                    </div>
+                    <div class="col-10">
+                      <h6> Advance </h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-5">
+                        {{details.advance}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 my-3" *ngIf="actionType!='back'">
+      <div class="row">
+        <div class="col-1 text-muted">
+          <i class="fas fa-edit"></i>
+        </div>
+        <div class="col-10 col-lg-11">
+          <h6 class="">
+            Comments
+          </h6>
+        </div>
+        <div class="col-12">
+          <textarea #noteTxt (keyup)="resizeNote()" placeholder="Write your comments here" id="noteTxt" [(ngModel)]="detailsNote" name="detailsNote" class="form-control"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mt-3">
+      <div class="row">
+        <div class="col-1 text-muted">
+          <i class="fas fa-th-list"></i>
+        </div>
+        <div class="col-10 col-lg-11">
+          <h6 class="">
+            User YTD Expense Summary
+          </h6>
+        </div>
+        <div class="col-12">
+          <div class="card-body">
+            <!-- =========== horizontal bar graph ==============-->
+            <div class="leaveSummary">
+              <div class="eachSummary" *ngFor="let data of graphX.ytd; let i=index;">
+                <div class="floats">
+                  <p>
+                    <i [class]="data.icon" style="margin-right: 3px;"></i>{{ data.type}}
+                  </p>
+                  <p>{{(data.spent) ? data.spent : '0'}}</p>
+                  <div class="clear"></div>
+                </div>
+                <div class="rating">
+                  <div [class]="graphColors[ i % 6 ]" [ngStyle]="{'width': data.width+'%'}"></div>
+                </div>
+              </div>
+            </div>
+            <!-- =========== horizontal bar graph ==============-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-1 text-muted">
+          <i class="fas fa-stream"></i>
+        </div>
+        <div class="col-10 col-lg-11">
+          <h6 class="">
+            Request Timeline
+          </h6>
+        </div>
+        <div class="col-12">
+          <div class="history">
+            <div class="eachHistory" *ngFor="let data of details.changeHistory"
+              [ngClass]="(data.status == 'CANCELLED') ? 'can' : (data.status == 'APPROVED') ? 'appr' : (data.status == 'REJECTED') ? 'rej' : 'pen'">
+
+              <h6>{{data.actionType ? data.actionType : data.status}}</h6>
+              <p class="time">{{getDateFormat(data.updatedOn.seconds * 1000,'lll')}} </p>
+              <div class="box">
+                <img
+                  [src]="(data.updatedBy.picUrl) ? data.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png'" />
+                <div>
+                  <p>{{data.updatedBy.name}}</p>
+                  <p>{{data.comment}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="eachHistory"
+              [ngClass]="(details.status == 'CANCELLED') ? 'can' : (details.status == 'APPROVED') ? 'appr' : (details.status == 'REJECTED') ? 'rej' : 'pen'">
+              <h6>{{details.actionType ? details.actionType : details.status}}</h6>
+              <p class="time">
+                {{getDateFormat(details.updatedOn ? details.updatedOn.seconds*1000 : details.appliedOn.seconds*1000,'lll')}}
+              </p>
+              <div class="box">
+                <img [src]="(details.updatedBy) ?
+                                  (details.updatedBy.picUrl ? details.updatedBy.picUrl : '../../../../assets/image/imgs/user2.png') :
+                                  (details && details.user.picUrl) ?
+                                  details.user.picUrl : '../../../../assets/image/imgs/user2.png'" />
+                <div>
+                  <p>{{(details.updatedBy) ? details.updatedBy.name : details.user.name}}
+                  </p>
+                  <p>{{details.comment ? details.comment : details.reason}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+
+        <div class="col-12 mb-2" *ngIf="actionType == 'approve'"><button type="button"
+            class="btn btn-block text-white CANCELED" (click)="reject()">Reject</button></div>
+        <div class="col-12 mb-2" *ngIf="actionType == 'approve'"><button type="button"
+            class="btn btn-block text-white  APPROVED" (click)="approve()">Approve</button></div>
+        <div class="col-12 mb-2" *ngIf="actionType=='cancel'"><button type="button"
+            class="btn btn-block  text-white CANCELLED" (click)="cancel()">Cancel</button></div>
+        <div class="col-12 mb-2" *ngIf="actionType=='back'"><button type="button" class="btn btn-primary btn-block"
+            (click)="toBackPage()">Back</button></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
