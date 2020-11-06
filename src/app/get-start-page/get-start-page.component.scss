@@ -1,0 +1,114 @@
+.type-writer-row{
+  .type-writer{
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    // border-right: .15em solid black; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 15px;
+    // letter-spacing: .15em; /* Adjust as needed */
+    animation:
+    //   typing 4s steps(40,) infinite,
+      blink-caret .75s step-end infinite
+      ;
+    // animation-delay: 3s;
+
+  }
+  :nth-child(1){
+    width: 0;
+    // animation-name: typing;
+    // animation-duration: 16s;
+    // animation-iteration-count: infinite;
+    // animation-timing-function: steps(40,end);
+    // animation-delay: 0s;
+    animation:
+      typing 16s 0s steps(40,end) infinite,
+      blink-caret .75s step-end infinite;
+  }
+  :nth-child(2){
+    width: 0;
+    // animation-name: typing;
+    // animation-duration: 16s;
+    // animation-iteration-count: infinite;
+    // animation-timing-function: steps(40,end);
+    // animation-delay: 4s;
+    animation:
+      typing 16s 4s steps(40,end) infinite,
+      blink-caret .75s step-end infinite;
+  }
+  :nth-child(3){
+    width: 0;
+    // animation-name: typing;
+    // animation-duration: 16s;
+    // animation-iteration-count: infinite;
+    // animation-timing-function: steps(40,end);
+    // animation-delay: 8s;
+    animation:
+      typing 16s 8s steps(40,end) infinite,
+      blink-caret .75s step-end infinite;
+  }
+  :nth-child(4){
+    width: 0;
+    // animation-name: typing;
+    // animation-duration: 16s;
+    // animation-iteration-count: infinite;
+    // animation-timing-function: steps(40,end);
+    // animation-delay: 12s;
+    animation:
+      typing 16s 12s steps(40,end) infinite,
+      blink-caret .75s step-end infinite;
+  }
+}
+
+
+/* The typing effect */
+@keyframes typing {
+  0% {
+    width: 0;
+    border-right: .1em solid black; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    // margin: 0 15px; /* Gives that scrolling effect as the typing happens */
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 15px;
+   }
+  5% {
+    width: 10em; //85%;
+    border-right: .1em solid black; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    // margin: 0 15px; /* Gives that scrolling effect as the typing happens */
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 15px;
+   }
+  22% { width: 10em;
+        //85%
+    }
+  24% {
+    width: 0;
+    // border-right: 0; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    // margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 15px;
+    }
+  25% {
+    // margin: 0;
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 0px;
+  }
+  40%{
+    border-right: 0;
+  }
+  100% {
+    width: 0;
+    border-right: 0; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    // margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin: 0; /* Gives that scrolling effect as the typing happens */
+    margin-left: 0px;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: black; }
+}

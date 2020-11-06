@@ -1,5 +1,176 @@
 <!-- navbar -->
-<div class="d-flex justify-content-between px-5 pt-4">
+<div class="row">
+  <div class="col-12">
+    <div class="card-header bg-primary">
+      <div class="row">
+        <div class="col-2">
+          <img
+            src="../../assets/image/imgs/logo.png"
+            alt="occurens logo"
+            style="height: 35px"
+          />
+        </div>
+        <div class="col-10">
+          <div class="d-flex justify-content-end text-white">
+            <a class="btn btn-sm btn-outline-light text-white mr-2" routerLink="/subscribe">
+                Get Started
+            </a>
+            <a class="btn btn-sm btn-outline-light text-white" routerLink="/login">
+                Sign In
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pb-3" [ngStyle]="{'height': 'calc(100% - 40px)', 'overflow-y': 'auto', 'scrollbar-width': 'none'}">
+  <div class="row m-2">
+    <div class="col-12 col-md-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-1">
+      <div class="card border-0">
+        <div class="card-body ">
+          <div class="row"><h2 class="col-12 col-lg-9 justify-content-start">All your HRMS needs </h2></div>
+          <div class="row type-writer-row">
+            <h2 class="type-writer">delivered together</h2>
+            <h2 class="type-writer">supported by stats</h2>
+            <h2 class="type-writer">with work-flows</h2>
+            <h2 class="type-writer">for growing team</h2>
+          </div>
+          <div class="text-left">
+            <br/>
+            <p>
+              Onestop solution for your organisation HRMS needs.
+              Be it expanding operations across regions or viewing trends in one place, bring everything together.
+              Get the team to focus on the targets and leave the rest to HRMS.
+            </p>
+          </div>
+          <div class="">
+            <div class="d-flex justify-content-start text-white">
+              <a class="btn btn-sm btn-primary text-white mr-2" routerLink="/subscribe">
+                  Get Started
+              </a>
+              <a class="btn btn-sm btn-outline-primary text-primary" routerLink="/login">
+                  Sign In
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-2">
+    </div>
+    <div class="col-12 col-lg-5 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-3">
+      <div class="card aquabg border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-start"><i class="fas fa-users-cog text-left"></i></h2>
+          <div class="text-right">
+            <h2>Manage Organisation</h2>
+            <small>
+              <p>Define and manage regions</p>
+              <p>Assign leave and expense admins</p>
+              <p>Create your team</p>
+              <p>Access control for the members</p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8 col-lg-4 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-4">
+      <div class="card PENDING border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-end text-right"><i class="fas fa-fingerprint"></i></h2>
+          <div class="text-left">
+            <h2>Attendance</h2>
+            <small>
+              <p>Employee attendance and geo-location</p>
+              <p>Summary view at a glance</p>
+              <p>Details of the attendance records</p>
+              <p>Attendance trends across months</p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-3 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-5">
+      <div class="card bg-warning border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-start text-left"><i class="fas fa-coffee"></i></h2>
+          <div class="text-right">
+            <h2>Leave</h2>
+            <small>
+              <p>Complete leave work flow</p>
+              <p>Define leave types as required</p>
+              <p>Leave calendar</p>
+              <p>Trends across months</p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8 col-lg-4 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-8 order-lg-6">
+      <div class="card purplebg border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-end text-right"><i class="fas fa-money-check-alt"></i></h2>
+          <div class="text-left">
+            <h2>Expenses</h2>
+            <small>
+              <p>Comprehensive expense work flow</p>
+              <p>Summary view for monthly and YTD</p>
+              <p>Expense trends to plan better</p>
+              <p>You are incharge to define expense categories</p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-5 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-6 order-lg-7">
+      <div class="card bg-primary border-0">
+        <div class="card-body text-white">
+          <h2 class="justify-content-start text-left"><i class="fas fa-search"></i></h2>
+          <div class="text-right">
+            <h2>Powerful Search</h2>
+            <small>
+              <p>Powerful search engine for the content</p>
+              <p>Search by name, keyword, date, month, year, email</p>
+              <p>View details from the search results</p>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-3 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1 order-7 order-lg-8">
+      <div class="row">
+        <div class="col-12 pb-2">
+          <div class="card bluebg border-0">
+            <div class="card-body text-white">
+              <h2 class="justify-content-end text-right"><i class="fas fa-chart-bar"></i></h2>
+              <div class="text-left">
+                <h2>Stats</h2>
+                <small>
+                  <p>Statistics needed to be on top</p>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card moderate border-0">
+            <div class="card-body text-white">
+              <h2 class="justify-content-end text-left"><i class="fas fa-chart-line"></i></h2>
+              <div class="text-right">
+                <h2>Trends</h2>
+                <small>
+                  <p>Trends to help actions</p>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="d-flex justify-content-between px-5 pt-4">
   <img
     src="../../assets/image/imgs/logo.png"
     alt="occurens logo"
@@ -22,5 +193,5 @@
     </li>
   </ul>
 </div>
-<hr />
+<hr /> -->
 <!-- navbar -->
