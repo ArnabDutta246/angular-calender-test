@@ -48,6 +48,12 @@
                   <span>Leaves</span>
                 </div>
               </a>
+              <a routerLink="/panel/user-expense">
+                <div class="menu-link text-center" routerLinkActive="active-url">
+                  <i class="fas fa-money-bill mr-3"></i>
+                  <span>Expenses</span>
+                </div>
+              </a>
               <div
                 [ngClass]="
                   currentUser.role === 'ADMIN' &&
@@ -132,6 +138,12 @@
             <div class="menu-link text-center" routerLinkActive="active-url">
               <i class="fas fa-coffee mr-3"></i>
               <span>Leaves</span>
+            </div>
+          </a>
+          <a routerLink="/panel/user-expense">
+            <div class="menu-link text-center" routerLinkActive="active-url">
+              <i class="fas fa-money-bill mr-3"></i>
+              <span>Expenses</span>
             </div>
           </a>
           <div

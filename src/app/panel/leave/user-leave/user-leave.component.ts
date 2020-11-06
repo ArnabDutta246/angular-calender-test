@@ -142,7 +142,6 @@ export class UserLeaveComponent implements OnInit {
           const id = a.payload.doc.id;
           return { id, ...data };
         }))).subscribe((data: any[]) => {
-          console.log(".........",data)
           this.monthsData = data;
           this.cal.extractHolidays(data,
                           'user',

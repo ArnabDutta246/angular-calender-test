@@ -35,7 +35,7 @@ export class UserLeaveDetailsComponent implements OnInit,OnChanges {
     private cal: CalenderFunctionsService,
     private spinner:NgxSpinnerService
   ) {
-    console.log("constructor data detailsData", this.detailsData);
+    //console.log("constructor data detailsData", this.detailsData);
   }
 
   ngOnInit() {
