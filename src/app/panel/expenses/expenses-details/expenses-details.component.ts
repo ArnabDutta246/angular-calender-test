@@ -45,7 +45,8 @@ export class ExpensesDetailsComponent implements OnInit,OnChanges {
     this.data = this.detailsData.data;
     this.details = this.detailsData.details;
     this.actionType = this.detailsData.actionType;
-    Object.assign(this.details,this.data);
+
+    //Object.assign(this.details,this.data);
 
     console.log("---- details");
     console.log(this.details);
