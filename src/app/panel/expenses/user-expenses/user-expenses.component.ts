@@ -93,6 +93,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
     this.calendarMeta = this.cal.getCalendarMeta();
     this.session = {};
     Object.assign(this.session,{ user: session },{ calendarMeta: this.calendarMeta},{ admin: session });
+    console.log("......session clg.....",this.session);
    }
 
   ngOnInit() {
@@ -207,6 +208,8 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
         if(data.length > 0){
           expenseTypes = data[0].expenseSummary;
         }
+
+
         let values = expenseTypes ? Object.keys(expenseTypes).map(e=>expenseTypes[e].spent ? expenseTypes[e].spent : 0) : [];
         let maxValue = values.length > 0 ? 1.1*Math.max(...values) : 1.1;
         this.graphX.month = expenseTypes ? Object.keys(expenseTypes).map(et=>{
@@ -224,6 +227,8 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
                                     {icon: 'md-calendar', type:'Select the period', allowed: 0, spent: null, width: 0 },
                                     {icon: 'md-cash', type:'Manage expense types', allowed: 0, spent: null, width: 0 },
                                   ];
+   
+
         // Lets get the YTD figures now
         expenseTypes = this.myObject.currentPanel=='admin' ?
                        this.session.calendarMeta.orgCalendarYear.expenseTypes
@@ -246,6 +251,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
                                     {icon: 'md-calendar', type:'Select the period', allowed: 0, spent: null, width: 0 },
                                     {icon: 'md-cash', type:'Manage expense types', allowed: 0, spent: null, width: 0 },
                                   ];
+                                
         this.spinner.hide();
       })
   }
@@ -564,8 +570,8 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
         this.alertMessage.showAlert("info", "Please note that your account is not linked to any valid region as expense admin. Request your administrator to associate your account to a valid region from Admin panel > Maintain Region > Assign Expense Admin","No Expense Region");
         //this.toBackPage();
       } else {
-        this.selectedCountry = this.expenseAdminRegions[position].country;
-        this.selectedRegion = this.expenseAdminRegions[position].region;
+        this.selectedCountry = this.expenseAdminRegions[position.target.value].country;
+        this.selectedRegion = this.expenseAdminRegions[position.target.value].region;
       }
     }
     this.getAllExpenses();
@@ -633,14 +639,18 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
       }))).subscribe(data=>{
         this.pendingData = data.filter(function(finding) { return finding.status == "PENDING"; });
         this.otherData = data.filter(function(finding) { 
-      return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING"; 
-      }.bind(this)
+          return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING"; 
+          }.bind(this)
        );
+
+       console.log("...pendding array..",this.pendingData);
+       console.log("...pendding array..",this.otherData);
         this.spinner.hide();
       })
   }
 
   details(data){
+    console.log("......... details object.....",data)
     let actionType = 'back';
     if(this.session.user.role == "ADMIN" || this.viewMode == 'EXPENSEADMIN'){ // if admin
       if(data.uid == this.session.user.uid && ['PENDING','APPROVED'].includes(data.status)){ // if own requests
@@ -654,10 +664,13 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
       }
     }
     //this.navCtrl.push(ExpenseDetailsPage,{data:this.session,details:data,actionType: actionType});
+
+    
     this.detailsData = {
       data:this.session,
       details:data,
-      actionType: actionType}
+      actionType: actionType
+    }
   }
 
   toggleExpenseAdminView(){
@@ -665,10 +678,13 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
     this.viewMode = this.expenseAdminView? 'EXPENSEADMIN':'USER';
     if(this.session.user.expenseAdmin && this.viewMode == 'EXPENSEADMIN'){
       this.expenseAdminRegions = Object.values(this.session.user.expenseAdmin).sort();
-    } 
+      console.log("expense admin ... ",this.expenseAdminRegions);
+    }
+    this.changeView() 
     this.changeSearchMode();
   }
-    returnBack(){
+
+  returnBack(){
     this.detailsData = null;
   }
 }
