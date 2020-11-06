@@ -24,22 +24,22 @@ export const environment = {
   // },
   //------------------------My own two------------------------
   firebaseConfig: {
-    // apiKey: "AIzaSyD_XV23xloumZKsnY6T6iod_JV34dlE5so",
-    // authDomain: "angular-hub.firebaseapp.com",
-    // databaseURL: "https://angular-hub.firebaseio.com",
-    // projectId: "angular-hub",
-    // storageBucket: "angular-hub.appspot.com",
-    // messagingSenderId: "481177104315",
-    // appId: "1:481177104315:web:09bcc953d6e7d468c49e9e",
-    // measurementId: "G-8BNS0YP0NE",
-    apiKey: "AIzaSyBAY9Jaq2AxSm0BOd-EI99U4P8LbXm9T_Q",
-      authDomain: "hrms-2aae7.firebaseapp.com",
-      databaseURL: "https://hrms-2aae7.firebaseio.com",
-      projectId: "hrms-2aae7",
-      storageBucket: "hrms-2aae7.appspot.com",
-      messagingSenderId: "861175361633",
-      appId: "1:861175361633:web:94baa25fe6565d9e72ba20",
-      measurementId: "G-7Z29Z8ESVW"
+    apiKey: "AIzaSyD_XV23xloumZKsnY6T6iod_JV34dlE5so",
+    authDomain: "angular-hub.firebaseapp.com",
+    databaseURL: "https://angular-hub.firebaseio.com",
+    projectId: "angular-hub",
+    storageBucket: "angular-hub.appspot.com",
+    messagingSenderId: "481177104315",
+    appId: "1:481177104315:web:09bcc953d6e7d468c49e9e",
+    measurementId: "G-8BNS0YP0NE",
+    // apiKey: "AIzaSyBAY9Jaq2AxSm0BOd-EI99U4P8LbXm9T_Q",
+    //   authDomain: "hrms-2aae7.firebaseapp.com",
+    //   databaseURL: "https://hrms-2aae7.firebaseio.com",
+    //   projectId: "hrms-2aae7",
+    //   storageBucket: "hrms-2aae7.appspot.com",
+    //   messagingSenderId: "861175361633",
+    //   appId: "1:861175361633:web:94baa25fe6565d9e72ba20",
+    //   measurementId: "G-7Z29Z8ESVW"
   },
   //--------------------------old--------------------------
   paypalBasicUrl:
