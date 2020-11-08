@@ -17,6 +17,8 @@ import { SweetAlertService } from "src/app/shared/sweet-alert.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted: boolean = false;
+  resetsubmitted: boolean = false;
+  recoverPwd: boolean = false;
   alert: string = "choose";
   resetPassForm: FormGroup;
   passshow: boolean = false;
@@ -73,16 +75,27 @@ export class LoginComponent implements OnInit {
     }
   }
   resetPassword() {
-    if (!this.resetPassForm.get("emailAdd").value) {
-      this.sl.showAlert("error", "Type in your email first", "Error");
+    this.resetsubmitted = true;
+    // if (!this.resetPassForm.get("emailAdd").value) {
+    //   this.sl.showAlert("error", "Type in your email first", "Error");
+    // }
+    if(this.resetPassForm.invalid){
+      // Nothing to be checked
     } else {
       this.loginService
         .resetPasswordInit(this.resetPassForm.get("emailAdd").value)
-        .then(() =>
-          this.sl.showAlert(
-            "info",
-            "A password reset link has been sent to your email address"
-          )
+        .then(() =>{
+            this.sl.showAlert(
+              "info",
+              "A password reset link has been sent to your email address"
+            );
+            this.resetPassForm.patchValue({
+                    emailAdd: '',
+                  });
+            this.recoverPwd = false;
+            this.resetsubmitted = false;
+            this.submitted = false;
+          }
         )
         .catch((e) =>
           this.sl.showAlert(

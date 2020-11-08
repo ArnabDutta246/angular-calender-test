@@ -20,6 +20,7 @@ export class ManageRegionsComponent implements OnInit {
   manageYearCalenderPanel: ElementRef;
   //variables
   country: any = CountryCode;
+  regionCount: number = 0;
   getUserData: any;
   status = "ONLINE"; //initializing as online by default
   isConnected = true;
@@ -73,6 +74,7 @@ export class ManageRegionsComponent implements OnInit {
             actions.map((a: any) => {
               const data = a.payload.doc.data();
               const id = a.payload.doc.id;
+              this.regionCount += data.region ? data.region.length : 0;
               return { id, ...data };
             })
           )

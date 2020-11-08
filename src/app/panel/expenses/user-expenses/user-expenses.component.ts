@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
 import * as moment from 'moment';
@@ -52,7 +53,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
   addExpense:boolean =false;
   expenseAdminView:boolean = false;
 
-  
+
   // add expense form data
   expenseAdmins: any = [];
   formGroup: FormGroup;
@@ -101,7 +102,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
       this.myObject.expenseDetails.isExpenseAdmin = true;
       this.myObject.expenseDetails.adminAreas = Object.values(this.session.user.expenseAdmin).sort();
     }
-    
+
 
     //============ Add expense form data ================
     this.calendarMeta.calendarOptions.from = moment().startOf('month').subtract(12,'month');
@@ -130,7 +131,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
     } else {
       this.pageTitle = "User view expenses";
     }
-    this.dataProcess(0);
+    this.dataProcess({target:{value:0}});
   }
 
   ngAfterViewInit(){
@@ -227,7 +228,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
                                     {icon: 'md-calendar', type:'Select the period', allowed: 0, spent: null, width: 0 },
                                     {icon: 'md-cash', type:'Manage expense types', allowed: 0, spent: null, width: 0 },
                                   ];
-   
+
 
         // Lets get the YTD figures now
         expenseTypes = this.myObject.currentPanel=='admin' ?
@@ -251,11 +252,11 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
                                     {icon: 'md-calendar', type:'Select the period', allowed: 0, spent: null, width: 0 },
                                     {icon: 'md-cash', type:'Manage expense types', allowed: 0, spent: null, width: 0 },
                                   ];
-                                
+
         this.spinner.hide();
       })
   }
-  
+
 
 
 
@@ -394,7 +395,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
   formSubmit(){
       this.pushIntoCollection();
   }
-  pushIntoCollection(){ 
+  pushIntoCollection(){
     this.spinner.show();
     if(this.addnewspentTotal<=0){
       this.alertMessage.showAlert("error","Total expense should be more than zero, please check the amounts and try submitting again.","Invalid Total Expense")
@@ -552,8 +553,8 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
               return {id, ...data};
             }))).subscribe(data=>{
               this.pendingData = data.filter(function(finding) { return finding.status == "PENDING"; });
-            this.otherData = data.filter(function(finding) { 
-              return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING"; 
+            this.otherData = data.filter(function(finding) {
+              return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING";
               }.bind(this)
               );
               this.spinner.hide();
@@ -639,8 +640,8 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
         return {id, ...data};
       }))).subscribe(data=>{
         this.pendingData = data.filter(function(finding) { return finding.status == "PENDING"; });
-        this.otherData = data.filter(function(finding) { 
-          return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING"; 
+        this.otherData = data.filter(function(finding) {
+          return this.expenseAdminView == true ? finding.status === "APPROVED" : finding.status !== "PENDING";
           }.bind(this)
        );
 
@@ -666,12 +667,15 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
     }
     //this.navCtrl.push(ExpenseDetailsPage,{data:this.session,details:data,actionType: actionType});
 
-    
+    this.addExpense = false;
     this.detailsData = {
       data:this.session,
       details:{...data},
       actionType: actionType
     }
+
+    let element = document.getElementById("my-expenses"); //leave-details
+    element.scrollIntoView({behavior: "smooth"});
   }
 
   toggleExpenseAdminView(){
@@ -681,7 +685,7 @@ export class UserExpensesComponent implements OnInit,AfterViewInit {
       this.expenseAdminRegions = Object.values(this.session.user.expenseAdmin).sort();
       console.log("expense admin ... ",this.expenseAdminRegions);
     }
-    this.changeView() 
+    this.changeView()
     this.changeSearchMode();
   }
 

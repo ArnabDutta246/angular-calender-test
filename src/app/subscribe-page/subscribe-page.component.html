@@ -30,7 +30,7 @@
         <div class="card-header bg-white">
           <div class="row">
             <div class="col-6">
-              <h3 class="justify-content-start"><i class="fas fa-qrcode text-left"></i>+ Subscribe</h3>
+              <h4 class="justify-content-start"><i class="fas fa-qrcode text-left"></i>+ Subscribe</h4>
             </div>
             <div class="col-6 url-toggle-switch">
               <label class="switch">
@@ -443,6 +443,7 @@
                     <button
                       class="btn btn-sm btn-primary btn-lg btn-block"
                       type="submit"
+                      [disabled]="subscriptionForm.invalid"
                     >
                       SUBSCRIBE
                     </button>
@@ -1002,6 +1003,7 @@
 >
   Launch demo modal
 </button>
+
 <div
   class="modal fade"
   id="exampleModal"
@@ -1012,8 +1014,83 @@
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-user-shield pr-1"></i>Verify account</h5>
+      </div>
+      <div class="modal-body">
+
+
+
+        <div class="card border-0">
+          <!-- <div class="card-header bg-white">
+            <h5 class="justify-content-start text-truncate"><i class="fas fa-lock text-left"></i> Recover password</h5>
+          </div> -->
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <p class="text-left">
+                  It seems the email id is already registered with us.
+                  Please validate the existing account to proceed.
+                </p>
+              </div>
+              <div class="col-12">
+                <div class="row">
+
+                  <div class="col-12 mt-2">
+                    <div class="row">
+                      <div class="col-1">
+                        <i class="fas fa-lock"></i>
+                      </div>
+                      <div class="col-9 col-lg-11 text-left">
+                        Password
+                      </div>
+                      <div class="col-12">
+                        <input
+                          type="password"
+                          class="form-control"
+                          placeholder="Re-enter password"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-default"
+                          [(ngModel)]="repassword"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          data-dismiss="modal"
+          (click)="onSignIn()"
+          [disabled]="repassword == ''"
+        >
+          VERIFY
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
       <div class="modal-header">
-        <!-- <h5 class="modal-title" id="exampleModalLabel">{{}}</h5> -->
         <div
           class="alert alert-warning alert-dismissible fade show"
           role="alert"
@@ -1067,5 +1144,5 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!------------------------   model open  ------------------------>

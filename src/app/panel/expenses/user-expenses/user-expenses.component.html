@@ -13,20 +13,20 @@
   <div class="row">
     <!-- left hand side (expense summery + apply form + details) -->
     <div class="col-sm-12 col-md-6 col-lg-6">
-    <div class="row p-1">
+    <div id="my-expenses" class="row p-md-1">
       <div class="col-12 card">
         <div class="row">
         <div class="col-12 card-header bg-primary text-white">
-          <div class="row p-1">
+          <div class="row">
             <div class="col-1" *ngIf="addExpense === true || detailsData !== null" (click)="toggleBack()">
               <button class="btn btn-sm btn-primary" >
                 <i class="fas fa-arrow-left"></i>
               </button>
             </div>
-            <div [ngClass]="addExpense ? 'col-11':'col-9'">
+            <div [ngClass]="addExpense ? 'col-11':'col-8 col-lg-9'">
              {{addExpense? 'Add Expense': detailsData == null ? 'Expense' : 'Expense Details' }}
             </div>
-            <div class="col-1 text-center" *ngIf="addExpense !== true && detailsData == null">
+            <div class="col-1 text-center" *ngIf="expenseAdminView !== true && addExpense !== true && detailsData == null">
               <button class="btn btn-sm btn-primary" title="add expense" (click)="addExpense = !addExpense">
                 <i class="fas fa-plus"></i>
               </button>
@@ -58,7 +58,33 @@
           <!-- ==== summery ==== -->
             <div class="col-12 leaveSummary">
               <div class="eachSummary" *ngFor="let data of graphX[grphXViewType]; let i=index;">
-                <div class="floats">
+                <div class="row">
+                  <div class="col-7  text-muted text-truncate">
+                    <h6><small><i [class]="data.icon" style="margin-right: 3px;"></i>{{data.type}}</small></h6>
+                  </div>
+                  <div class="col-5 text-muted text-right">
+                    <h6><small>
+                      {{(data.spent) ? data.spent : '0'}}
+                    </small>
+                    </h6>
+                  </div>
+                  <div class="col-12">
+                    <div class="chartrate">
+                      <div
+                        [class]="myObject.graphColors[ i % 6 ]"
+                        [ngStyle]="{'width': data.width ?
+                                       data.width +'%'
+                                       : '0%'
+                                     }">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+                <!-- <div class="floats">
                   <p>
                     <i [class]="data.icon" style="margin-right: 3px;"></i>{{ data.type}}
                   </p>
@@ -67,7 +93,7 @@
                 </div>
                 <div class="rating">
                   <div [class]="myObject.graphColors[ i % 6 ]" [ngStyle]="{'width': data.width+'%'}"></div>
-                </div>
+                </div> -->
               </div>
             </div>
           <!-- ==== summery end ==== -->
@@ -115,7 +141,7 @@
                   <div *ngIf="i!=0">{{data.day}}</div>
                 </div>
               </div>
-            
+
             </div>
           </div>
           <!-- ==== month graph end -->
@@ -124,138 +150,124 @@
         <!-- ============== add expense start =============-->
         <div class="col-12 card-body" *ngIf="addExpense === true && detailsData === null">
             <div class="row card-header">
-              <div class="col-2"> 
-                <img [src]="session.user.picUrl ? session.user.picUrl : '../../../../assets/image/imgs/user.png'" class="border rounded" style="height: 60px;">
+              <div class="col-3">
+                <img [src]="session.user.picUrl ? session.user.picUrl : '../../../../assets/image/imgs/user.png'" class="border" style="height: 40px; width: 40px; border-radius: 50%;">
               </div>
-              <div class="col-10">
-                <span>{{ session.user.name }}</span><br>
+              <div class="col-9 text-truncate">
+                {{ session.user.name }}<br/>
                 <small class="text-muted">{{ session.user.jobTitle }}</small>
               </div>
             </div>
             <div [formGroup]="formGroup">
-              <div class="col-12 my-3">
-                <div class="label row">
-                  <div class="col-1">
-                    <i class="far fa-calendar-alt text-danger"></i>
-                  </div>
-                  <div class="col-11">
-                    State Date
-                  </div> <br>
-                  <div class="col-12">
-                    <input type="date" name="start-date-expense" id="" class="form-control" formControlName="startDate" (change)="calendarYear($event)">
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 my-3">
-                <div class="label row">
-                  <div class="col-1">
-                    <i class="far fa-calendar-alt text-danger"></i>
-                  </div>
-                  <div class="col-11">
-                    End Date
-                  </div> <br>
-                  <div class="col-12">
-                    <input type="date" name="end-date-expense" id="" class="form-control" formControlName="endDate">
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 my-3">
-                <div class="label row">
-                  <div class="col-1">
-                    <i class="fas fa-link text-danger"></i>
-                  </div>
-                  <div class="col-11">
-                    Expense Title
-                  </div> <br>
-                  <div class="col-12">
-                    <input type="text" name="expense-title" id="" class="form-control text-primary" formControlName="title">
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 my-3">
-                <div class="label row">
-                  <div class="col-1">
-                    <i class="far fa-edit text-danger"></i>
-                  </div>
-                  <div class="col-11">
-                    Expense Description
-                  </div> <br>
-                  <div class="col-12">
-                    <textarea type="text" name="expense-details" class="form-control text-primary" formControlName="description"></textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 my-3">
-                <div class="label row">
-                  <div class="col-1">
-                    <i class="far fa-money-bill-alt text-danger"></i>
-                  </div>
-                  <div class="col-11">
-                    Advance Amount
-                  </div> <br>
-                  <div class="col-12">
-                    <input name="advance" class="form-control text-primary" type="number"  formControlName="advance" min="0">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 my-3">
-              <div class="label row">
-                <div class="col-1">
-                  <i class="fas fa-calculator text-danger"></i>
-                </div>
-                <div class="col-11">
-                  Expense Details
-                </div> <br>
-                <!-- <div class="col-12">
-                  <input name="nothing" class="form-control text-primary" type="number" [(ngModel)]="nothing">
-                </div> -->
-              </div>
-            </div>
-            <div class="col-12 card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-7 text-center">
-                    Categories
-                  </div>
-                  <div class="col-5 text-center">
-                    Amount
-                  </div>
-                </div>
-                <div *ngFor="let leave of calendarMeta.userexpenseTypes; let i=index;">
-                  <div class="row my-1">
+              <div class="my-2">
+                <div class="label">
+                  <div class="row">
+                    <div class="col-5 text-truncate">
+                      <p><i class="far fa-calendar-alt pr-1 text-danger"></i>
+                      State Date<p>
+                    </div>
                     <div class="col-7">
-                      <div class="row">
-                        <div class="col-2 pt-1 text-muted">
-                           <i [class]="calendarMeta.userCalendarYear.expenseTypes[leave].icon"></i>
-                        </div>
-                        <div class="col-10">
-                      <input type="text" class="form-control text-muted" readonly
-                        [(ngModel)]="calendarMeta.userCalendarYear.expenseTypes[leave].type">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-5">
-                      <input type="number" class="form-control text-primary" (ngModelChange)="onexpenseAmountChange(leave)" [(ngModel)]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent" min="0" [value]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent">
+                      <input type="date" name="start-date-expense" id="" class="form-control" formControlName="startDate" (change)="calendarYear($event)">
                     </div>
                   </div>
                 </div>
-                <div class="row my-2">
-                  <div class="col-7">
-                    <div class="row">
-                      <div class="col-2 pt-1">
-                        <i class="fas fa-tags text-primary"></i>
-                      </div>
-                      <div class="col-10">
-                        Total
-                      </div>
+              </div>
+              <div class="my-2">
+                <div class="label">
+                  <div class="row">
+                    <div class="col-5 text-truncate">
+                      <p><i class="far fa-calendar-alt pr-1 text-danger"></i>
+                     End Date</p>
+                    </div>
+                    <div class="col-7">
+                      <input type="date" name="end-date-expense" id="" class="form-control" formControlName="endDate">
                     </div>
                   </div>
-                  <div class="col-5">
-                    {{ addnewspentTotal }}
+                </div>
+              </div>
+              <div class="my-2">
+                <div class="label">
+                  <div class="row">
+                    <div class="col-12 text-truncate">
+                      <p><i class="fas fa-link pr-1 text-danger"></i>
+                      Expense Title</p>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" name="expense-title" id="" class="form-control text-primary" formControlName="title">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-2">
+                <div class="label">
+                  <div class="row">
+                    <div class="col-12">
+                      <p><i class="far fa-edit pr-1 text-danger"></i>
+                    Expense Description</p>
+                    </div>
+                    <div class="col-12">
+                      <textarea type="text" name="expense-details" class="form-control text-primary" formControlName="description"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-2">
+                <div class="label">
+                  <div class="row">
+                    <div class="col-5 text-truncate">
+                      <p><i class="far fa-money-bill-alt pr-1 text-danger"></i>
+                    Advance Amount</p>
+                    </div>
+                    <div class="col-7 text-righti">
+                      <input name="advance" class="form-control text-primary text-right" type="number"  formControlName="advance" min="0">
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="my-2">
+              <div class="label">
+                <div class="row">
+                  <div class="col-12">
+                    <p><i class="fas fa-calculator pr-1 text-danger"></i>
+                  Expense Details</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <small>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-7 text-info text-left">
+                      Categories
+                    </div>
+                    <div class="col-5 text-info text-right">
+                      Amount
+                    </div>
+                  </div>
+                  <div *ngFor="let leave of calendarMeta.userexpenseTypes; let i=index;">
+                    <div class="row my-1">
+                      <div class="col-7 text-left text-muted text-truncate">
+                        <i [class]="calendarMeta.userCalendarYear.expenseTypes[leave].icon + 'pr-1'"></i>
+                        {{calendarMeta.userCalendarYear.expenseTypes[leave].type}}
+                      </div>
+                      <div class="col-5 text-right text-muted">
+                        <input type="number" class="form-control text-primary text-right" (ngModelChange)="onexpenseAmountChange(leave)" [(ngModel)]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent" min="0" [value]="calendarMeta.userCalendarYear.expenseTypes[leave].addnewspent">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row my-1">
+                    <div class="col-7 text-left">
+                      <i class="fas fa-tags text-primary pr-1"></i>
+                        Total
+                    </div>
+                    <div class="col-5 text-right">
+                      {{ addnewspentTotal }}
+                  </div>
+                </div>
+              </div>
+            </small>
 
           </div>
           <p>{{errorCode}}</p>
@@ -271,7 +283,7 @@
            <app-expenses-details [detailsData]="detailsData" (returnBack)="returnBack()"></app-expenses-details>
          </div>
         <!-- ============== details expense start =============-->
-        
+
 
       </div>
 
@@ -284,18 +296,16 @@
 
           <div class="row p-1">
             <!--============  pending/recent expense section start ========== -->
-          
+
             <!-- ExpenseAdmin Selected region check -->
             <div class="col-12 mb-2 card"
               *ngIf="session.user.expenseAdmin && expenseAdminView !== false">
               <div class="row card-header bg-white">
-                <div class="col-1">
-                  <i class="fas fa-search-location text-danger"></i>
+                <div class="col-5 text-truncate">
+                  <p><i class="fas fa-search-location pr-2 text-danger"></i>
+                <span class="text-dark">Region</span></p>
                 </div>
-                <div class="col-4 text-dark">
-                  Region
-                </div>
-                <div class="col-7">
+                <div class="col-6 col-md-7">
                   <select class="form-control" id="adminRegionSelect" name="adminRegionSelect"
                     (change)="dataProcess($event)">
                     <option *ngFor="let region of expenseAdminRegions; let i = index" [value]="i" [selected]="i == 0 ? true : false">{{region.country}} - {{region.region}}</option>
@@ -304,7 +314,7 @@
               </div>
             </div>
             <!-- LeaveAdmin Selected region check -->
-          
+
             <!-- pending/recent leave search card -->
             <div class="col-12 card bg-white mb-2">
               <div class="row card-header bg-primary text-white">
@@ -339,8 +349,8 @@
             <!-- pending/recent leave  search card -->
             <!-- pending/recent leave all cards -->
             <div class="col-12 allBoxes card my-2">
-          
-              <div class="row card-header pendingBox">
+
+              <div class="row card-header purplebg text-white pendingBox">
                 <div class="col-12">
                   Pending
                 </div>
@@ -396,17 +406,17 @@
                 <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && (viewMode=='EXPENSEADMIN')">
                   <p>There are no expense requests requring your action for the selected region {{selectedCountry}} -
                     {{selectedRegion}}.</p>
-                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                  <!-- <img src="../../../../assets/image/imgs/splash_scr4.png" /> -->
                 </div>
                 <div class="noTaskForAdmin mt-3 text-center" *ngIf="pendingData.length == 0 && viewMode!='EXPENSEADMIN'">
                   <p>There are no expense requests submitted by you for approval.</p>
-                  <img src="../../../../assets/image/imgs/splash_scr4.png" />
+                  <!-- <img src="../../../../assets/image/imgs/splash_scr4.png" /> -->
                 </div>
-          
+
               </div>
             </div>
             <div class="col-12 allBoxes card my-2">
-              <div class="row card-header recentBox">
+              <div class="row card-header aquabg text-white recentBox">
                 <div class="col-12">
                   Recent
                 </div>
@@ -421,7 +431,7 @@
                             src="{{(data.user.picUrl) ? data.user.picUrl : '../../../../assets/image/imgs/profile.png'}}"
                             (error)="'../../../../assets/image/imgs/profile.png'" />
                           <div class="row justify-content-center">
-                     
+
                             <h6 class="badge badge-success p-2 text-white text-center" [ngClass]="'status ' + data.status">
                               <small>{{data.status}}</small></h6>
                           </div>
@@ -434,10 +444,10 @@
                                 <small>{{data.user.name}}</small>
                               </h5>
                             </div>
-          
+
                           </div>
-          
-          
+
+
                           <div class="row">
                             <div class="col-6 pr-0">
                               <h6 class="text-muted">
@@ -464,7 +474,7 @@
                         </div>
                       </div>
                     </div>
-          
+
                   </div>
                 </div>
                 <div class="noTaskForAdmin mt-3 text-center" *ngIf="otherData.length == 0 && (viewMode=='LEAVEADMIN')">
@@ -476,7 +486,7 @@
                   <p>There are no recent expense request created by you.</p>
                   <img src="../../../../assets/image/imgs/splash_scr4.png" />
                 </div>
-          
+
               </div>
             </div>
             <!-- pemding/recent leave all cards -->

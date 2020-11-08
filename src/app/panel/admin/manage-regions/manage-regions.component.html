@@ -31,7 +31,7 @@
                 <div class="col-1">
                   <i class="fas fa-globe-americas text-danger"></i>
                 </div>
-                <div class="col-8">Country</div>
+                <div class="col-7 col-sm-8">Country</div>
                 <div class="col-3 text-right cursor_pointer">
                   <button
                     class="btn btn-sm btn-light"
@@ -238,7 +238,7 @@
                     </div>
                     <div class="col-11">
                       <p>
-                        No region added for Bangladesh. Let's add one by clicking add
+                        No region added for {{ data.countryName }}. Let's add one by clicking add
                         region button.
                       </p>
                     </div>
@@ -262,7 +262,7 @@
                   <i class="fas fa-home"></i
                   ><small class="text-muted ml-1">added +</small>
                   <div class="text-right">
-                    <h2>3</h2>
+                    <h2>{{pageObj.haveCountries.length}}</h2>
                     <h6>Countries</h6>
                   </div>
                 </div>
@@ -275,7 +275,7 @@
                 <div class="card-body text-white">
                   <i class="fas fa-flag"></i><small class="ml-1">added +</small>
                   <div class="text-right">
-                    <h2>11</h2>
+                    <h2>{{regionCount}}</h2>
                     <h6>Regions</h6>
                   </div>
                 </div>
@@ -310,7 +310,7 @@
               <i class="fas fa-arrow-left"></i>
             </button>
           </div>
-          <div class="col-11">Maintain Region Calender Data</div>
+          <div class="col-10 col-sm-11 text-truncate">Maintain Region Calendar Data</div>
         </div>
       </div>
     </div>

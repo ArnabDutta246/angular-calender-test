@@ -20,41 +20,45 @@
   <div class="col-sm-12 col-md-6 col-lg-6">
     <div id="my-leaves" class="row p-1">
       <div class="col-12 card bg-white">
-        <div class="row card-header bg-primary text-white">
-          <div class="col-1" *ngIf="showHidePendingLeaves === true">
-            <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="toggleCondition()" >
-            <i class="fas fa-arrow-left"></i>
+        <div class="row">
+          <div class="col-12 card-header bg-primary text-white">
+            <div class="row">
+              <div class="col-1" *ngIf="showHidePendingLeaves === true">
+                <div class="btn btn-sm btn-primary" title="Leaves Status" (click)="toggleCondition()" >
+                <i class="fas fa-arrow-left"></i>
+                </div>
+              </div>
+              <div [class]="leaveAdminView == true && detailsData !== null ? 'col-9' : 'col-10'" *ngIf="showHidePendingLeaves === true">
+               {{ leaveAdminView === true ? 'Leave admin view':'My Leaves' }}
+              </div>
+              <div class="col-9 col-lg-9 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
+              <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" (click)="switchApplyform = !switchApplyform">
+                  <i class="fas fa-plus" *ngIf="switchApplyform !== true" title="Apply Leave"></i>
+                  <i class="fas fa-times ml-1" *ngIf="switchApplyform === true" title="Cancel"></i>
+              </div>
+              <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" title="Leaves Status" (click)="leaveAdminViewToggle()">
+                  <i class="fas fa-th-list"></i>
+              </div>
+              <div class="col-1 btn btn-sm btn-primary" *ngIf="session.leaveAdmin && leaveAdminView !== true && showHidePendingLeaves !== true" (click)="leaveAdminViewToggle(true)">
+                <i class="fas fa-users-cog"></i>
+              </div>
+              <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves == true && leaveAdminView == true && detailsData !== null" title="admin graph view" (click)="detailsData = null">
+                <i class="fas fa-chart-line"></i>
+              </div>
             </div>
-          </div>
-          <div [class]="leaveAdminView == true && detailsData !== null ? 'col-9' : 'col-10'" *ngIf="showHidePendingLeaves === true">
-           {{ leaveAdminView === true ? 'Leave admin view':'My Leaves' }}
-          </div>
-          <div class="col-9 col-lg-9 align-left" *ngIf="showHidePendingLeaves !== true">{{ switchApplyform !== true ? 'Leave Calendar': 'Apply Leave' }}</div>
-          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" (click)="switchApplyform = !switchApplyform">
-              <i class="fas fa-plus" *ngIf="switchApplyform !== true" title="Apply Leave"></i>
-              <i class="fas fa-times ml-1" *ngIf="switchApplyform === true" title="Cancel"></i>
-          </div>
-          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves !== true" title="Leaves Status" (click)="leaveAdminViewToggle()">
-              <i class="fas fa-th-list"></i>
-          </div>
-          <div class="col-1 btn btn-sm btn-primary" *ngIf="session.leaveAdmin && leaveAdminView !== true && showHidePendingLeaves !== true" (click)="leaveAdminViewToggle(true)">
-            <i class="fas fa-users-cog"></i>
-          </div>
-          <div class="col-1 btn btn-sm btn-primary" *ngIf="showHidePendingLeaves == true && leaveAdminView == true && detailsData !== null" title="admin graph view" (click)="detailsData = null">
-            <i class="fas fa-chart-line"></i>
           </div>
         </div>
         <!-- =================== normal view (calender view) =============-->
         <div class="card-body" *ngIf="showHidePendingLeaves !== true">
         <!--=============== readonly mood for leave calender =============-->
         <div class="row" *ngIf="switchApplyform !== true">
-            <!-- <div class="col-12"> -->
+            <div class="row">
             <ion-calendar
               [readonly]="true"
               [options]="calendarMeta.calendarOptions"
               (monthChange)="monthChanges($event)">
             </ion-calendar>
-            <!-- </div> -->
+            </div>
             <!-- <div class="col-12 my-3"> -->
               <div class="col-12 card">
                 <div class="card-body">
@@ -101,13 +105,13 @@
         <!--=============== readonly mood for leave calender =============-->
         <!--=============== apply leave form ===========================  -->
         <div class="row" *ngIf="switchApplyform === true">
-          <div class="col-12">
+          <div class="">
 
             <div class="row my-3">
               <div class="col-1">
                 <i class="fas fa-coffee text-danger"></i>
               </div>
-              <div class="col-11">
+              <div class="col-10 col-sm-11">
                 Leave Types
               </div>
               <div class="col-12">
@@ -122,7 +126,7 @@
               <div class="col-1">
               <i class="far fa-calendar-alt text-danger"></i>
               </div>
-              <div class="col-5">
+              <div class="col-4 col-sm-5 text-truncate">
                 Select Date{{toggleMode == 'range' ? 's' : ''}}
               </div>
               <div class="col-6 col-md-5 col-lg-6 d-flex justify-content-end">
@@ -133,7 +137,7 @@
                 </label>
               </div>
               </div>
-              <div class="col-12">
+              <div class="">
                 <!-- Calendar -->
                 <ion-calendar
                 #calendar
@@ -149,12 +153,12 @@
               <div class="col-1">
               <i class="fas fa-comment-alt text-danger"></i>
               </div>
-              <div class="col-11">
+              <div class="col-10 col-sm-11">
                 Reason
               </div>
               <div class="col-10">
                 <div class="form-group">
-                  <input type="text" class="form-control text-primary" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
+                  <input type="text" class="form-control text-muted" placeholder="Note for leave request *"  [(ngModel)]="pageObj.apllyingLeave.reason" name="apply reason">
                 </div>
               </div>
               <div class="col-2">
@@ -176,8 +180,8 @@
           <!-- if details is not selected -->
           <div *ngIf="detailsData === null">
             <div class="row">
-              <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1">
-                <div class="card PENDING">
+              <div class="col-5 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-0 mt-lg-0 p-1">
+                <div class="card PENDING border-0">
                   <div class="card-body text-white">
                     <i class="fas fa-coffee"></i><small class="ml-1">leaves +</small>
                     <div class="text-right">
@@ -187,11 +191,11 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0 p-1">
-                <div class="card APPROVED">
-                  <div class="card-body text-white">
+              <div class="col-7 col-md-12 col-lg-6 mt-xs-2 mt-sm-2 mt-md-1 mt-lg-0 p-1">
+                <div class="card APPROVED border-0">
+                  <div class="card-body text-white text-left">
                     <i class="fas fa-calendar-alt"></i><small class="ml-1">recent +</small>
-                    <div class="text-right">
+                    <div class="text-right text-truncate">
                       <h2>{{otherData.length}}</h2>
                       <h6>Recent Leaves</h6>
                     </div>
@@ -234,7 +238,7 @@
          <div class="col-4 text-dark">
            Region
          </div>
-         <div class="col-7">
+         <div class="col-6 col-lg-7">
               <select class="form-control" id="adminRegionSelect" name="adminRegionSelect" [(ngModel)]="selectedRegionCode" (change)="getSelectedRegion()">
                 <option *ngFor="let region of leaveAdminRegions" [value]="region">{{session.leaveAdmin[region].country}} - {{session.leaveAdmin[region].region}}</option>
               </select>
@@ -426,41 +430,44 @@
   <!--============  pending/recent leave section end ========== -->
 
       <div class="col-12 card bg-white" *ngIf="showHidePendingLeaves !== true">
-        <div class="row card-header  bg-primary text-white">
-          <div class="col-12">Leave Summary</div>
-        </div>
-        <div class="col-12">
-          <div class="card-body" *ngIf="!calendarMeta.userleaveTypes">
-            <p class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid region using Manage Region option</p>
+        <div class="row card-header bg-primary text-white">
+          <div class="col-12">
+            Leave Summary
           </div>
-          <div class="card-body" *ngIf="calendarMeta.userleaveTypes">
-            <h6 class="mb-2">Your Leave Summary</h6>
-            <!-- =========== horizontal bar graph ==============-->
-            <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
-              <div class="row">
-                <div class="col-7">
-                  <h6 class="text-muted text-truncate"><small>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</small></h6>
-                </div>
-                <div class="col-5">
-                  <h6 class="text-muted text-truncate">
-                  <small>
-                    {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
-                    of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
-                  </small>
-                  </h6>
-                </div>
-                <div class="col-12">
-                  <div class="chartrate">
-                    <div
-                      [ngStyle]="{'background': leaveColors[i%14],'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?(calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
+        </div>
+        <!-- <div class="col-12"> -->
+          <div class="card-body" >
+            <p *ngIf="!calendarMeta.userleaveTypes" class="mb-2 text-danger">No leave summary found. Please contact your leave admin to link your account to a vlaid region using Manage Region option</p>
+            <div *ngIf="calendarMeta.userleaveTypes">
+              <h6 class="mb-2">Your Leave Summary</h6>
+              <!-- =========== horizontal bar graph ==============-->
+              <div class="summary-data eachRates" *ngFor="let leave of calendarMeta.userleaveTypes; let i=index;">
+                <div class="row">
+                  <div class="col-7">
+                    <h6 class="text-muted text-truncate"><small>{{calendarMeta.userCalendarYear.leaveTypes[leave].type}}</small></h6>
+                  </div>
+                  <div class="col-5">
+                    <h6 class="text-muted text-truncate">
+                    <small>
+                      {{calendarMeta.userCalendarYear.leaveTypes[leave].taken ? calendarMeta.userCalendarYear.leaveTypes[leave].taken : 0 }}
+                      of {{calendarMeta.userCalendarYear.leaveTypes[leave].allowed}} Taken
+                    </small>
+                    </h6>
+                  </div>
+                  <div class="col-12">
+                    <div class="chartrate">
+                      <div
+                        [ngStyle]="{'background': leaveColors[i%14],'width': calendarMeta.userCalendarYear.leaveTypes[leave].taken ?(calendarMeta.userCalendarYear.leaveTypes[leave].taken * 100 /calendarMeta.userCalendarYear.leaveTypes[leave].allowed)+'%' : '0%'}">
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <!-- =========== horizontal bar graph ==============-->
             </div>
-            <!-- =========== horizontal bar graph ==============-->
           </div>
-        </div>
+
+        <!-- </div> -->
       </div>
 
 

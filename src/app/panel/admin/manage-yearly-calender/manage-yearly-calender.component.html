@@ -170,7 +170,7 @@
                         <i class="far fa-edit"></i></button>
                     </div>
                   </div>
-                  
+
                   <ng-container *ngIf="expenseAdmins">
                     <ng-container *ngFor="let data of expenseAdmins;let i= index">
                       <div class="row border-bottom">
@@ -206,7 +206,7 @@
           <!-- team  -->
           <div class="team-manager my-2">
             <label for="regions"><i class="fas fa-users mr-1 text-danger fa-1x"></i> Team Memebers</label>
-    
+
             <div class="accordion" id="accordionExampleFive">
               <div class="row">
                 <div class="card-header col-12 bg-white">
@@ -262,8 +262,8 @@
               </div>
             </div>
           </div>
-    
-    
+
+
         </div>
       </div>
     </div>
@@ -312,7 +312,7 @@
                               placeholder="Description*" name="leave_type">
                           </div>
                           <div class="col-3">
-                          <input class="form-control" type="number" placeholder="" [(ngModel)]="pageObj.newleaveTypes.allowed" name="leave_amount" min="0">
+                          <input class="form-control text-muted text-right" type="number" placeholder="" [(ngModel)]="pageObj.newleaveTypes.allowed" name="leave_amount" min="0">
                           </div>
                         </div>
                       </div>
@@ -324,31 +324,34 @@
                     </div>
 
 
-                    <div class="row">
-                      <div class="col-12">
+                    <!-- <div class="row">
+                      <div class="col-12"> -->
                         <div class="row" *ngFor="let leave of regionleaveTypes; let i=index;">
-                          <div class="col-8">
-                            <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].type"
-                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_types"/>
+                          <div class="col-10">
+                            <div class="row">
+                              <div class="col-9">
+                                <input type="text" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].type"
+                                  [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_types"/>
 
+                              </div>
+                              <div class="col-3">
+                                <input type="number" class="form-control text-muted text-right" [(ngModel)]="pageObj.leaveTypes[leave].allowed"
+                                  [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount" min="0"/>
+                              </div>
+                            </div>
                           </div>
                           <div class="col-2">
-                            <input type="number" class="form-control text-primary" [(ngModel)]="pageObj.leaveTypes[leave].allowed"
-                              [readonly]="!(session.role == 'ADMIN' || session.leaveAdmin)" name="leave_amount" min="0"/>
-                          </div>
-                          <div class="col-2" *ngIf="i==0 && (session.role == 'ADMIN' || session.leaveAdmin)">
 
-                            <button class="btn btn-sm btn-warning" (click)="leavetypeSave()">
+                            <button class="btn btn-sm btn-warning" *ngIf="i==0 && (session.role == 'ADMIN' || session.leaveAdmin)" (click)="leavetypeSave()">
                               <i class="fas fa-check"></i>
                             </button>
 
                           </div>
-                        </div>
 
                       </div>
-
+<!--
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -441,7 +444,7 @@
                 </label>
               </div>
             </div>
-          </div> 
+          </div>
           <div class="leave-calender my-3">
             <!-- holday calender heding -->
             <div class="row">
@@ -462,25 +465,26 @@
               <div class="col-10">
                 <div class="form-group">
                   <input type="text" class="form-control text-primary" id="holiday_description" aria-describedby="emailHelp"
-                  placeholder="description *" [(ngModel)]="holiday_desc" name="holiday_desc">
+                  placeholder="Description *" [(ngModel)]="holiday_desc" name="holiday_desc">
                 </div>
               </div>
               <div class="col-2">
                 <button class="btn btn-sm btn-success" (click)="holiday_add()"><i class="fas fa-plus"></i></button>
               </div>
             </div>
+          </div>
            <!-- holiday calender -->
-            <div class="row"> 
-              <ion-calendar
-              [(ngModel)]="single_or_range_date"
-              [options]="toggleMode !== 'single' ? optionsRange : optionsSingle"
-              (select)="onSelect($event)"
-              (selectStart)="onSelectStart($event)"
-              (selectEnd)="onSelectEnd($event)"
-              (monthChange)="onMonthChange($event)">
-              </ion-calendar>
-            </div>
-
+          <div class="row p-0" style="margin: -30px;">
+            <ion-calendar
+            [(ngModel)]="single_or_range_date"
+            [options]="toggleMode !== 'single' ? optionsRange : optionsSingle"
+            (select)="onSelect($event)"
+            (selectStart)="onSelectStart($event)"
+            (selectEnd)="onSelectEnd($event)"
+            (monthChange)="onMonthChange($event)">
+            </ion-calendar>
+          </div>
+          <div class="mt-4">
             <div class="row">
               <div class="HolidayCard col-12" *ngFor="let data of giveMentionYearHoliday()">
                 <p class="day">{{dateConvert(pageObj.holidayList[data].startDate)}}
@@ -489,7 +493,7 @@
                 </p>
                 <p class="desc">{{pageObj.holidayList[data].desc}}</p>
               </div>
-              
+
               </div>
             </div>
           </div>
